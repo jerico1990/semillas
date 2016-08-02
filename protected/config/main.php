@@ -61,10 +61,10 @@ return array(
 				// lee mas abajo respecto a 'Encriptando las claves'
 				//
 				'useEncryptedPassword' => false,
-				// Algoritmo de la función hash que deseas usar
-				// Los valores admitidos están en: http://www.php.net/manual/en/function.hash-algos.php
+				// Algoritmo de la funciÃ³n hash que deseas usar
+				// Los valores admitidos estÃ¡n en: http://www.php.net/manual/en/function.hash-algos.php
 				'hash' => 'md5',
-				// Estos tres atributos controlan la redirección del usuario. Solo serán son usados si no
+				// Estos tres atributos controlan la redirecciÃ³n del usuario. Solo serÃ¡n son usados si no
 				// hay un filtro de sesion definido (el componente MiSesionCruge), es mejor usar un filtro.
 				//  lee en la wiki acerca de:
                                 //   "CONTROL AVANZADO DE SESIONES Y EVENTOS DE AUTENTICACION Y SESION"
@@ -84,7 +84,7 @@ return array(
 				'editProfileLayout'=>'//layouts/column2',
 				// en la siguiente puedes especificar el valor "ui" o "column2" para que use el layout
 				// de fabrica, es basico pero funcional.  si pones otro valor considera que cruge
-				// requerirá de un portlet para desplegar un menu con las opciones de administrador.
+				// requerirÃ¡ de un portlet para desplegar un menu con las opciones de administrador.
 				//
 				'generalUserManagementLayout'=>'ui',
 				// permite indicar un array con los nombres de campos personalizados, 
@@ -111,7 +111,7 @@ return array(
                                 'SMTPSecure' => 'ssl',//tls,ssl
                         ),
                 //  IMPORTANTE:  asegurate de que la entrada 'user' (y format) que por defecto trae Yii
-			//               sea sustituida por estas a continuación:
+			//               sea sustituida por estas a continuaciÃ³n:
 			//
 			'user'=>array(
 				'allowAutoLogin'=>true,
@@ -172,10 +172,10 @@ return array(
 		//opensourcedbms   198.38.89.196
 		'db'=>array(
                 'class'=>'CDbConnection',
-			'connectionString' => 'mysql:host=localhost;dbname=inia',
+			'connectionString' => 'mysql:host=localhost;dbname=semillas',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '41592870',
+			'password' => '',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(

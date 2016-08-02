@@ -3,7 +3,7 @@ class SolicitudController extends Controller
 {
    public function actionIndex()
    {
-      //$this->layout='solicitud';
+      $this->layout='blanco';
       $this->pageTitle = "Inscribir Productor";
       $model=new Solicitud;
       
