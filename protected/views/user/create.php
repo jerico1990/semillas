@@ -38,7 +38,7 @@ if($tipo=='interno')
     echo '<div class="row-fluid">';		  
         echo '<div class="span12"><h2>Crear usuario de E.E.</h3></div>';				
     echo '</div>';
-    $this->renderPartial('i_form', array('model'=>$model));   
+    $this->renderPartial('i_form', array('model'=>$model,'departamentos'=>$departamentos,'estaciones'=>$estaciones));   
 }
 
 if($tipo=='inspector')

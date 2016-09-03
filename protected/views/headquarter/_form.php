@@ -1,3 +1,5 @@
+<script src="//code.jquery.com/jquery-1.8.2.js"></script>
+<script src="//code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
 <?php
 /*Direccion*/
 	$departments = Location::model()->findAll(array(
@@ -116,6 +118,63 @@ if($cruge!==null)
 	<div class="span12"><h3>Dirección</h3>
 </div>
 </div>
+<div class="row-fluid">
+	<div class="span4">
+	    <label for="Headquarter_departamento">Departamento</label>
+	    <select name="Headquarter[departamento]" id="Headquarter_departamento" onchange="Provincias($(this).val())">
+		<option value="">Seleccionar</option>
+		<?php foreach($departamentos as $departamento){ ?>
+		<option value="<?= $departamento->_departament_id ?>"><?= $departamento->department ?></option>
+		<?php } ?>
+	    </select>
+	    <div class="help-block error" id="Headquarter_departamento_em_" style="display:none">Departamento no es correcto.</div>
+	</div>
+	
+	<?php /*echo $form->dropDownListRow($model,'int_departamento',$departments,array(
+			       'prompt' => 'Seleccionar',
+			       'ajax' => array(
+			       'type'=>'GET', //request type
+			       'url'=>CController::createUrl('location/provinces'), //url to call.
+			       'update'=>'#Solicitud_int_provincia', //selector to update
+			       'data'   => 'js:$("#Solicitud_int_departamento").val()'
+	       )));*/ ?>
+	<div class="span8">
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span4">
+	    <label for="Headquarter_provincia">Provincia</label>
+	    <select name="Headquarter[provincia]" id="Headquarter_provincia" onchange="Distritos($(this).val())">
+		<option value="">Seleccionar</option>
+	    </select>
+	    <div class="help-block error" id="Headquarter_provincia_em_" style="display:none">Provincia no es correcto.</div>
+	</div>
+	
+	    <?php /*echo $form->dropDownListRow($model,'int_provincia',array(),array(
+		'prompt' => 'Seleccionar',
+		'ajax' => array(
+				 'type'=>'GET', //request type
+				  'url'=>CController::createUrl('location/districts'), //url to call.
+				  'update' => '#Solicitud_int_district',
+				  'data'   => 'js:$("#Solicitud_int_provincia").val()'
+			  )));*/
+	    ?>
+	<div class="span4"></div>
+    </div>
+    
+    <div class="row-fluid">
+	<div class="span8">
+	    <label for="Headquarter_location_id" class="required">Distrito <span class="required">*</span></label>
+	    <select name="Headquarter[location_id]" id="Headquarter_location_id">
+		<option value="">Seleccionar</option>
+	    </select>
+	    <div class="help-block error" id="Headquarter_location_id_em_" style="display:none">Distrito no es correcto.</div>
+	</div>
+	
+	<!--<div class="span8"> <?php //echo $form->dropDownListRow($model,'int_district',array(), array('prompt' => 'Seleccionar',)); ?></div>-->
+	<div class="span4"></div>
+    </div>
+    <?php /*
 <div class="row-fluid">		  
 	<div class="span4">
 		
@@ -155,7 +214,7 @@ if($cruge!==null)
 	</div>
 	<div class="span4"></div>
 </div>
-
+*/ ?>
 
 
 
@@ -293,3 +352,20 @@ if($cruge!==null)
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<?php
+$provincias=CController::createUrl('location/provinces');
+$distritos=CController::createUrl('location/districts');
+?>
+<script>
+	function Provincias(valor) {
+	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Headquarter_provincia" ).html( data );});
+        $("#Headquarter_provincia").find("option").remove().end().append("<option value></option>").val("");
+        $("#Headquarter_location_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+    
+    function Distritos(valor) {
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Headquarter_location_id" ).html( data );});
+        //$("#Headquarter_location_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+</script>

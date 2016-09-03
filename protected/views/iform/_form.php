@@ -226,8 +226,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									'url'=>CController::createUrl('location/districts'), //url to call.
 									'update' => '#Iform_location_id',
 									'data'   => 'js:$("#province_id").val()'
-									))).				   
-				$form->dropDownListRow($model,'location_id',array(), array('ajax'   => array(
+									)))			   
+				/*$form->dropDownListRow($model,'location_id',array(), array('ajax'   => array(
 									'type'    => 'GET', 
 									'url'     => CController::createUrl('location/district'),
 									'data'    => 'js:$("#Iform_location_id").val()',
@@ -279,7 +279,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									new_map.addControl(click);
 									click.activate();
 									}'
-									))).
+									)))*/.
 				$form->textFieldRow($model,'location_annex',array('size'=>60,'maxlength'=>100)).
 				"<div class='map' id='map' style='height: 400px; width: 100%;'></div>",
 				'active'=>true
@@ -300,6 +300,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				),
 		),
 	)); ?>
+	<input type="text" name="Iform[location_id]" value="110304">
 	<?php echo CHtml::hiddenField('location_lon'); ?>
 	<?php echo CHtml::hiddenField('location_lat'); ?>
 	

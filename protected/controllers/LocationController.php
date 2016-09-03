@@ -2,15 +2,15 @@
 
 class LocationController extends Controller
 {
-	public function actionProvinces() {
-
+	public function actionProvinces($departamento) {
+		//var_dump($provincia);die;
 		$locations = Location::model()->findAll(array(
-			'select'    => 't.id, t.province, t.province_id, t.departament_id',
-			'condition' => 'departament_id = ' . array_keys($_GET)[0],
+			'select'    => 't.id, t.province, t._province_id, t.departament_id',
+			'condition' => '_departament_id = "' . $departamento.'"',
 			'order'		=>	't.province',
 		));
 		$msg = array(""=>"");
-		$data = CHtml::listData($locations, 'province_id', 'province');
+		$data = CHtml::listData($locations, '_province_id', 'province');
 		$data=$msg+$data;
 		foreach ($data as $value => $name)
 		{
@@ -19,14 +19,14 @@ class LocationController extends Controller
 		}
 	}
 	
-	public function actionDistricts() {
+	public function actionDistricts($provincia) {
 		$locations = Location::model()->findAll(array(
-			'select'    => 't.id, t.district, t.district_id, t.province_id',
-			'condition' => 'province_id = ' . array_keys($_GET)[0],
+			'select'    => 't.district, t._district_id, t._province_id',
+			'condition' => '_province_id = "' . $provincia.'"',
 			'order'		=>	't.district',
 		));
 		$msg = array(""=>"");
-		$data = CHtml::listData($locations, 'district_id', 'district');
+		$data = CHtml::listData($locations, '_district_id', 'district');
 		$data=$msg+$data;
 		foreach ($data as $value => $name)
 		{

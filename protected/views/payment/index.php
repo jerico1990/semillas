@@ -13,7 +13,7 @@ $this->menu=array(
 <h1>Pendientes de Pago</h1>
 
 <div class="form">
-<?php echo CHtml::form('payment/pay', 'post', array ()); ?>
+<?php echo CHtml::form(array('pay'), 'post', array ()); ?>
 
 	<?php $this->widget('zii.widgets.CListView', array(
 		'dataProvider'=>$dataProvider,

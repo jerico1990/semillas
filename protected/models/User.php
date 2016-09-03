@@ -84,7 +84,7 @@ class User extends CActiveRecord
 			array('address', 'length', 'max'=>150),
 			array('reference, search_cultivo, search_usuario, search_oc_ee', 'length', 'max'=>200),
 			array('fax', 'length', 'max'=>20),
-			array('document_number', 'length', 'max'=>8),
+			array('document_number', 'length', 'max'=>9),
 			array('search_estado', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -298,7 +298,7 @@ class User extends CActiveRecord
 		$criteria->compare('search_usuario',$this->search_usuario,true);
 		$criteria->compare('search_estado',$this->search_estado,true);
 		$criteria->compare('search_oc_ee',$this->search_oc_ee,true);
-
+		$criteria->order = 'id DESC';
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

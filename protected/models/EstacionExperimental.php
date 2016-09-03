@@ -1,29 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "conditioning_lab".
+ * This is the model class for table "estacion_experimental".
  *
- * The followings are the available columns in table 'conditioning_lab':
+ * The followings are the available columns in table 'estacion_experimental':
  * @property integer $id
- * @property string $registry
- * @property string $date
- * @property string $name
- * @property string $document_number
- * @property string $address
- * @property integer $location_id
- * @property string $crops
- * @property integer $status_admin
+ * @property string $descripcion
+ * @property integer $estado
  */
-class Plantas extends CActiveRecord
+class EstacionExperimental extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
-	public $departamento;
-	public $provincia;
 	public function tableName()
 	{
-		return 'conditioning_lab';
+		return 'estacion_experimental';
 	}
 
 	/**
@@ -34,14 +26,12 @@ class Plantas extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('location_id, status_admin', 'numerical', 'integerOnly'=>true),
-			array('registry, document_number', 'length', 'max'=>50),
-			array('name, crops', 'length', 'max'=>200),
-			array('address', 'length', 'max'=>250),
-			array('date', 'safe'),
+			array('descripcion, estado', 'required'),
+			array('estado', 'numerical', 'integerOnly'=>true),
+			array('descripcion', 'length', 'max'=>120),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, registry, date, name, document_number, address, location_id, crops, status_admin', 'safe', 'on'=>'search'),
+			array('id, descripcion, estado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,16 +53,8 @@ class Plantas extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'registry' => 'Registro',
-			'date' => 'Fecha',
-			'name' => 'Nombre',
-			'document_number' => 'DNI',
-			'address' => 'Dirección',
-			'location_id' => 'Distrito',
-			'crops' => 'Cultivar',
-			'status_admin' => 'Estado',
-			'Departamento'=>'Departamento',
-			'Provincia'=>'Provincia',
+			'descripcion' => 'Descripcion',
+			'estado' => 'Estado',
 		);
 	}
 
@@ -95,14 +77,8 @@ class Plantas extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('registry',$this->registry,true);
-		$criteria->compare('date',$this->date,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('document_number',$this->document_number,true);
-		$criteria->compare('address',$this->address,true);
-		$criteria->compare('location_id',$this->location_id);
-		$criteria->compare('crops',$this->crops,true);
-		$criteria->compare('status_admin',$this->status_admin);
+		$criteria->compare('descripcion',$this->descripcion,true);
+		$criteria->compare('estado',$this->estado);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -113,7 +89,7 @@ class Plantas extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ConditioningLab the static model class
+	 * @return EstacionExperimental the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

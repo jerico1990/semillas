@@ -14,4 +14,4 @@ $this->widget('bootstrap.widgets.TbMenu', array(
 
 <h2>Editar usuario de E.E.</h2>
 
-<?php $this->renderPartial('i_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('i_form', array('model'=>$model,'departamentos'=>$departamentos,'estaciones'=>$estaciones)); ?>

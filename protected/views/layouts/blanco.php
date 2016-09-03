@@ -47,34 +47,22 @@
 	}
 </style>
 <body>
-	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
-		'type'=>'inverse', // null or 'inverse'
-		'fixed' => 'top',
-		'brand' => CHtml::image(Yii::app()->request->baseUrl."/images/large_logo.png"),
-		'brandOptions' => array('style' => 'float: left'),
-		'brandUrl'=>'#',
-		'collapse'=>true, // requires bootstrap-responsive.css	
-		)
-		); ?>
 		 
-		<div class="container">
-			<div class="row-fluid">
-				<div class="span3 bs-docs-sidebar"  >		
-				</div>
-			
-
-					<div class="span8">
-						<div class="row-fluid" >
-							<div class="span12">
-								<?php echo $content; ?>
-							</div>
-						</div>
-					</div>
-				</div>
+    <div class="container">
+	<div class="row-fluid">
+	    <div class="span3 bs-docs-sidebar"></div>
+		<div class="span8">
+		    <div class="row-fluid" >
+			<div class="span12">
+			    <?php echo $content; ?>
 			</div>
+		    </div>
 		</div>
+	    </div>
+	</div>
+    </div>
 </body>
 <script>
-	$('#midCol').affix({offset: {top: 200, bottom: function () {return (this.bottom = $('.bs-footer').outerHeight(true))}}})
+	//$('#midCol').affix({offset: {top: 200, bottom: function () {return (this.bottom = $('.bs-footer').outerHeight(true))}}})
 </script>
 </html>

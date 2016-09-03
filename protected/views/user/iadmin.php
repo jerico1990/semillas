@@ -32,7 +32,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
       'name',
 		'ruc',
 		'legal_name',
-		array('name'=>'district_id','value'=>'$data->departamento($data->district_id)','header'=>'Departamento'),
+		//array('name'=>'district_id','value'=>'$data->departamento($data->district_id)','header'=>'Departamento'),
       array(
 				'class'=>'bootstrap.widgets.TbButtonColumn',
 				'template'=>'{update}  ',

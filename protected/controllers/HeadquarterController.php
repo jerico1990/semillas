@@ -86,7 +86,12 @@ class HeadquarterController extends Controller
 		$rol=new CrugeAuthassignment;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		$departamentos = Location::model()->findAll(array(
+			  'select'   => 't.department, t._departament_id',
+			  'group'    => 't.department',
+			  'order'    => 't.department ASC',
+			  'distinct' => true
+		     ));
 		if(isset($_POST['Headquarter']))
 		{
 			
@@ -151,6 +156,7 @@ class HeadquarterController extends Controller
 		}
 		$this->render('create',array(
 			'model'=>$model,
+			'departamentos'=>$departamentos
 		));
 	}
 	

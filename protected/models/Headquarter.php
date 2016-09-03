@@ -35,6 +35,8 @@ class Headquarter extends CActiveRecord
 	public $last_name;
 	public $username;
 	public $email;
+	public $departamento;
+	public $provincia;
 	public function tableName()
 	{
 		return 'headquarter';

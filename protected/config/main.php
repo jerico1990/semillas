@@ -9,23 +9,18 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 return array(
    
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-   'timeZone' => 'America/Lima',
+        'timeZone' => 'America/Lima',
 	'name'=>'',
         'defaultController'=>'cruge/ui/login',
         'language'=>'es',
-        'sourceLanguage'=>'en',        
-        //'theme'=>"hebo",
-        
-	// preloading 'log' component
-	'preload'=>array(//'log'
-                         'bootstrap'//cgago
-                         ),
+        'sourceLanguage'=>'en',       
+	'preload'=>array('bootstrap'),
         
 	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-      'application.modules.cruge.components.*',
+                'application.modules.cruge.components.*',
 		'application.modules.cruge.extensions.crugemailer.*',
       //'application.vendors.phpexcel.PHPExcel',
 	),
@@ -33,8 +28,8 @@ return array(
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 		
-		'gii'=>array(
-         'generatorPaths' => array('bootstrap.gii'),
+	'gii'=>array(
+        'generatorPaths' => array('bootstrap.gii'),
 			'class'=>'system.gii.GiiModule',
 			'password'=>'123456',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
@@ -142,7 +137,7 @@ return array(
                         
 		// uncomment the following to enable URLs in path-format
 		
-		'urlManager'=>array(
+            'urlManager'=>array(
             'urlFormat'=>'path',
             'showScriptName'=>true,
             'rules'=>array(                               

@@ -162,9 +162,20 @@ class UserController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$model=$this->loadModel($id);		
-		$this->loadModel($id)->delete();
-		$this->mensaje_d($model->email);
+		$model=$this->loadModel($id);
+		if($model->cruge_user_id!=NULL)
+		{
+		    $model->status=3;
+		    $model->search_estado='Suspendido';
+		    $model->update();
+		}
+		else
+		{
+		    $this->loadModel($id)->delete();
+		    $this->mensaje_d($model->email);
+		}
+		
+		
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
@@ -253,20 +264,20 @@ class UserController extends Controller
 	}
 	public function actionCuenta()
 	{
-      $this->pageTitle = "Cuentas";
-		$model=new User('searchproductor');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['User']))
-			$model->attributes=$_GET['User'];
+	    $this->pageTitle = "Cuentas";
+	    $model=new User('searchproductor');
+	    $model->unsetAttributes();  // clear any default values
+	    if(isset($_GET['User']))
+		    $model->attributes=$_GET['User'];
 
-		$this->render('cuenta',array(
-			'model'=>$model,
-		));
+	    $this->render('cuenta',array(
+		    'model'=>$model,
+	    ));
 	}
 	
-	public function actionCuentaUpdate($id)
+	public function actionCuentaupdate($id)
 	{
-      $this->pageTitle = "Actualizar Productor";
+		$this->pageTitle = "Actualizar Productor";
 		$model=$this->loadModel($id);				
 		
 		if(isset($_POST['User']))
@@ -496,23 +507,44 @@ class UserController extends Controller
 	 */
 	public function actionIcreate()
 	{
-		$this->pageTitle = "Usuario Productor";
-		$model=new User;
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];
-			$model->ruc='20131365994';
-			$model->legal_name='INSTITUTO NACIONAL DE INNOVACION AGRARIA';
-			$model->type_id=2;
-			if($model->save())
-				$this->redirect(array('iadmin'));
-		}
+	    $this->pageTitle = "Usuario Productor";
+	    $model=new User;
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
+	    $departamentos = Location::model()->findAll(array(
+		      'select'   => 't.department, t._departament_id',
+		      'group'    => 't.department',
+		      'order'    => 't.department ASC',
+		      'distinct' => true
+	    ));
+	    
+	    $estaciones = EstacionExperimental::model()->findAll(array(
+		      'select'   => 't.id, t.descripcion',
+		      'group'    => 't.descripcion',
+		      'order'    => 't.descripcion ASC',
+		      'distinct' => true
+	    ));
+	    
+	    if(isset($_POST['User']))
+	    {
+		$model->attributes=$_POST['User'];
+		$model->ruc='20131365994';
+		$model->legal_name='INSTITUTO NACIONAL DE INNOVACION AGRARIA';
+		$model->type_id=2;
+		$model->district_id=$_POST['User']['int_district'];
+		$model->address=$_POST['User']['var_direccion'];
+		$model->reference=$_POST['User']['var_referencia'];
+		$model->tipo_estacion_experimental=$_POST['User']['tipo_estacion_experimental'];
+		$model->save();
+		$this->redirect(array('iadmin'));
+	    }
 
-		$this->render('create',array(
-			'model'=>$model,'tipo'=>'interno'
-		));
+	    $this->render('create',array(
+		    'model'=>$model,
+		    'tipo'=>'interno',
+		    'departamentos'=>$departamentos,
+		    'estaciones'=>$estaciones
+	    ));
 	}
 
 	/**
@@ -524,7 +556,47 @@ class UserController extends Controller
 	{
 		$this->pageTitle = "Actualizar";
 		$model=$this->loadModel($id);
-
+		/*
+		$distritos = Location::model()->findAll(array(
+		      'select'   => 't.district, t._district_id',
+		      'where'	 => 't._district_id="'..'"',
+		      'group'    => 't.district',
+		      'order'    => 't.district ASC',
+		      'distinct' => true
+		));
+		
+		$provincias = Location::model()->findAll(array(
+		      'select'   => 't.province, t._province_id',
+		      'where'	 => 't._department_id="'.$mode.'"',
+		      'group'    => 't.province',
+		      'order'    => 't.province ASC',
+		      'distinct' => true
+		));*/
+		$distritos = Location::model()->findAll(array(
+		      'select'   => 't.district, t.district_id',
+		      'condition'=> 't.district_id='.$model->district_id.'',
+		      'group'    => 't.district',
+		      'order'    => 't.district ASC',
+		      'distinct' => true
+		));
+		//var_dump($distritos);die;
+		$departamentos = Location::model()->findAll(array(
+		      'select'   => 't.department, t._departament_id',
+		      'group'    => 't.department',
+		      'order'    => 't.department ASC',
+		      'distinct' => true
+		));
+		
+		
+		
+		
+		
+		$estaciones = EstacionExperimental::model()->findAll(array(
+		      'select'   => 't.id, t.descripcion',
+		      'group'    => 't.descripcion',
+		      'order'    => 't.descripcion ASC',
+		      'distinct' => true
+		));
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -537,6 +609,8 @@ class UserController extends Controller
 
 		$this->render('iupdate',array(
 			'model'=>$model,
+			'estaciones'=>$estaciones,
+			'departamentos'=>$departamentos,
 		));
 	}
 
