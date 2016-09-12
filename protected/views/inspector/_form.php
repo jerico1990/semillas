@@ -1,15 +1,12 @@
 <?php
-	$departments = Location::model()->findAll(array(
-			  'select'   => 't.id, t.department, t.departament_id',
-			  'group'    => 't.id,t.department',
-			  'distinct' => true
-	)); 
-	$list = CHtml::listData($departments,'departament_id','department');
-	
-	$heard = Headquarter::model()->findAll('tipo_usuario=:tipo_usuario',array(':tipo_usuario'=>'2'));
-	$heardlist = CHtml::listData($heard,'id','name');
-	
-	
+    $departments = Location::model()->findAll(array(
+		      'select'   => 't.id, t.department, t.department_id',
+		      'group'    => 't.id,t.department',
+		      'distinct' => true
+		    )); 
+    $list = CHtml::listData($departments,'department_id','department');
+    $heard = Headquarter::model()->findAll('tipo_usuario=:tipo_usuario',array(':tipo_usuario'=>'2'));
+    $heardlist = CHtml::listData($heard,'id','name');
 ?>
 <div class="form well span12">
 <?php /*$form=$this->beginWidget('CActiveForm', array(
@@ -20,13 +17,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 ));*/
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	'id'=>'users-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array('validateOnSubmit'=>true),
-	//'htmlOptions'=>array('class'=>'well'),
-   
-));
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 ?>
 <?php echo $form->errorSummary($model); ?>		
 <div class="row-fluid" >

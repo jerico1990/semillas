@@ -65,9 +65,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	<div class="span4">
 	    <label for="Solicitud_var_tipo_documento" class="required">Tipo de documento <span class="required">*</span></label>
 	    <select name="Solicitud[tipo_documento]" id="Solicitud_tipo_documento" >
-		<option value="">Seleccionar</option>
-		<option value="1">DNI</option>
-		<option value="2">CARNET DE EXTRANJERÍA</option>
+		<option value>Seleccionar</option>
+		<option value=1>DNI</option>
+		<option value=2>CARNET DE EXTRANJERÍA</option>
 	    </select>
 	    <!--input class="span12" size="12" maxlength="12" name="Solicitud[tipo_persona]" id="Solicitud_var_tipo_persona" type="text">-->
 	    <div class="help-block error" id="Solicitud_var_tipo_documento_em_" style="display:none">Tipo de documento no es correcto.</div>
@@ -115,7 +115,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	</div>
 	<div class="span6">
 	    <label for="Solicitud_var_fax">Fax</label>
-	    <input class="span12" size="50" maxlength="150" name="Solicitud[var_fax]" id="Solicitud_var_fax" type="text">
+	    <input class="span12" size="50" maxlength="20" name="Solicitud[var_fax]" id="Solicitud_var_fax" type="text">
 	</div>
 	<!--<div class="span6"><?php //echo $form->textFieldRow($model,'var_telefono',array('class'=>'span12','size'=>50,'maxlength'=>150)); ?></div>-->
 	<!--<div class="span6"><?php //echo $form->textFieldRow($model,'var_fax',array('class'=>'span12','size'=>50,'maxlength'=>150)); ?></div>-->
@@ -128,43 +128,43 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
     </div>
     <div class="row-fluid">
 	<div class="span4">
-	    <label for="Solicitud_int_departamento">Departamento</label>
-	    <select name="Solicitud[int_departamento]" id="Solicitud_int_departamento" onchange="Provincias($(this).val())">
+	    <label for="Solicitud_department_id">Departamento</label>
+	    <select name="Solicitud[department_id]" id="Solicitud_department_id" onchange="Provincias($(this).val())">
 		<option value="">Seleccionar</option>
 		<?php foreach($departamentos as $departamento){ ?>
-		<option value="<?= $departamento->_departament_id ?>"><?= $departamento->department ?></option>
+		<option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
 		<?php } ?>
 	    </select>
-	    <div class="help-block error" id="Solicitud_int_departamento_em_" style="display:none">Departamento no es correcto.</div>
+	    <div class="help-block error" id="Solicitud_department_id_em_" style="display:none">Departamento no es correcto.</div>
 	</div>
 	
-	<?php /*echo $form->dropDownListRow($model,'int_departamento',$departments,array(
+	<?php /*echo $form->dropDownListRow($model,'department_id',$departments,array(
 			       'prompt' => 'Seleccionar',
 			       'ajax' => array(
 			       'type'=>'GET', //request type
 			       'url'=>CController::createUrl('location/provinces'), //url to call.
-			       'update'=>'#Solicitud_int_provincia', //selector to update
-			       'data'   => 'js:$("#Solicitud_int_departamento").val()'
+			       'update'=>'#Solicitud_province_id', //selector to update
+			       'data'   => 'js:$("#Solicitud_department_id").val()'
 	       )));*/ ?>
 	<div class="span8">
 	</div>
     </div>
     <div class="row-fluid">
 	<div class="span4">
-	    <label for="Solicitud_int_provincia">Provincia</label>
-	    <select name="Solicitud[int_provincia]" id="Solicitud_int_provincia" onchange="Distritos($(this).val())">
+	    <label for="Solicitud_province_id">Provincia</label>
+	    <select name="Solicitud[province_id]" id="Solicitud_province_id" onchange="Distritos($(this).val())">
 		<option value="">Seleccionar</option>
 	    </select>
-	    <div class="help-block error" id="Solicitud_int_provincia_em_" style="display:none">Provincia no es correcto.</div>
+	    <div class="help-block error" id="Solicitud_province_id_em_" style="display:none">Provincia no es correcto.</div>
 	</div>
 	
-	    <?php /*echo $form->dropDownListRow($model,'int_provincia',array(),array(
+	    <?php /*echo $form->dropDownListRow($model,'province_id',array(),array(
 		'prompt' => 'Seleccionar',
 		'ajax' => array(
 				 'type'=>'GET', //request type
 				  'url'=>CController::createUrl('location/districts'), //url to call.
-				  'update' => '#Solicitud_int_district',
-				  'data'   => 'js:$("#Solicitud_int_provincia").val()'
+				  'update' => '#Solicitud_district_id',
+				  'data'   => 'js:$("#Solicitud_province_id").val()'
 			  )));*/
 	    ?>
 	<div class="span4"></div>
@@ -172,14 +172,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
     
     <div class="row-fluid">
 	<div class="span8">
-	    <label for="Solicitud_int_district" class="required">Distrito <span class="required">*</span></label>
-	    <select name="Solicitud[int_district]" id="Solicitud_int_district">
+	    <label for="Solicitud_district_id" class="required">Distrito <span class="required">*</span></label>
+	    <select name="Solicitud[district_id]" id="Solicitud_district_id">
 		<option value="">Seleccionar</option>
 	    </select>
-	    <div class="help-block error" id="Solicitud_int_district_em_" style="display:none">Distrito no es correcto.</div>
+	    <div class="help-block error" id="Solicitud_district_id_em_" style="display:none">Distrito no es correcto.</div>
 	</div>
 	
-	<!--<div class="span8"> <?php //echo $form->dropDownListRow($model,'int_district',array(), array('prompt' => 'Seleccionar',)); ?></div>-->
+	<!--<div class="span8"> <?php //echo $form->dropDownListRow($model,'district_id',array(), array('prompt' => 'Seleccionar',)); ?></div>-->
 	<div class="span4"></div>
     </div>	
     <div class="row-fluid">
@@ -398,31 +398,31 @@ $email=CController::createUrl('solicitud/email');
 	}
 	
 	
-	if ($.trim($('#Solicitud_int_departamento').val())=='') {
+	if ($.trim($('#Solicitud_department_id').val())=='') {
 	    error=error+'RUC';
-	    $('#Solicitud_int_departamento_em_').show();
+	    $('#Solicitud_department_id_em_').show();
 	}
 	else
 	{
-	    $('#Solicitud_int_departamento_em_').hide();
+	    $('#Solicitud_department_id_em_').hide();
 	}
 	
-	if ($.trim($('#Solicitud_int_provincia').val())=='') {
+	if ($.trim($('#Solicitud_province_id').val())=='') {
 	    error=error+'RUC';
-	    $('#Solicitud_int_provincia_em_').show();
+	    $('#Solicitud_province_id_em_').show();
 	}
 	else
 	{
-	    $('#Solicitud_int_provincia_em_').hide();
+	    $('#Solicitud_province_id_em_').hide();
 	}
 	
-	if ($.trim($('#Solicitud_int_district').val())=='') {
+	if ($.trim($('#Solicitud_district_id').val())=='') {
 	    error=error+'RUC';
-	    $('#Solicitud_int_district_em_').show();
+	    $('#Solicitud_district_id_em_').show();
 	}
 	else
 	{
-	    $('#Solicitud_int_district_em_').hide();
+	    $('#Solicitud_district_id_em_').hide();
 	}
 	
 	if ($.trim($('#Solicitud_var_direccion').val())=='') {
@@ -455,14 +455,14 @@ $email=CController::createUrl('solicitud/email');
     });
     
     function Provincias(valor) {
-	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Solicitud_int_provincia" ).html( data );});
-        $("#Solicitud_int_provincia").find("option").remove().end().append("<option value></option>").val("");
-        $("#Solicitud_int_district").find("option").remove().end().append("<option value></option>").val("");
+	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Solicitud_province_id" ).html( data );});
+        $("#Solicitud_province_id").find("option").remove().end().append("<option value></option>").val("");
+        $("#Solicitud_district_id").find("option").remove().end().append("<option value></option>").val("");
     }
     
     function Distritos(valor) {
-	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Solicitud_int_district" ).html( data );});
-        $("#Solicitud_int_district").find("option").remove().end().append("<option value></option>").val("");
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Solicitud_district_id" ).html( data );});
+        $("#Solicitud_district_id").find("option").remove().end().append("<option value></option>").val("");
     }
     
     function validateEmail(sEmail) {

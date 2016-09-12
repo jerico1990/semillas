@@ -23,7 +23,7 @@ public function getDbConnection() {
 }*/
 	public function tableName()
 	{
-		return 'location';
+		return 'ubigeo';
 	}
 	/**
 	 * @return array validation rules for model attributes.
@@ -33,13 +33,13 @@ public function getDbConnection() {
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('department, province, district, wkt', 'required'),
-			array('departament_id, district_id, province_id', 'numerical', 'integerOnly'=>true),
+			array('department, province, district', 'required'),
+			array('department_id, district_id, province_id', 'numerical', 'integerOnly'=>true),
 			array('department, province, district', 'length', 'max'=>100),
-			array('wkt', 'length', 'max'=>1000000),
+			
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, department, province, district, wkt, departament_id, district_id, province_id', 'safe', 'on'=>'search'),
+			array('id, department, province, district, wkt, department_id, district_id, province_id', 'safe', 'on'=>'search'),
 		);
 	}
 

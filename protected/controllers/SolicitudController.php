@@ -8,18 +8,18 @@ class SolicitudController extends Controller
       $model=new Solicitud;
       //$departamentos=$connection->createCommand('select department_id,department,department_id from location')->queryAll();
       $locationsdeps = Location::model()->findAll(array(
-			  'select'   => 't.id, t.department, t.departament_id',
+			  'select'   => 't.id, t.department, t.department_id',
 			  'group'    => 't.id,t.department',
 			  'order'    => 't.department ASC',
 			  'distinct' => true
 		     ));
       $departamentos = Location::model()->findAll(array(
-			  'select'   => 't.department, t._departament_id',
+			  'select'   => 't.department, t.department_id',
 			  'group'    => 't.department',
 			  'order'    => 't.department ASC',
 			  'distinct' => true
 		     ));
-      $departments = CHtml::listData($locationsdeps,'departament_id','department');      
+      $departments = CHtml::listData($locationsdeps,'department_id','department');      
       
       if(isset($_POST['Solicitud']))
       {
@@ -29,6 +29,7 @@ class SolicitudController extends Controller
          $model->attributes=$_POST['Solicitud'];			
          if($model->validate())
          {
+	    //var_dump($model->tipo_documento);die;
             $producer=Producer::model()->find('registry=:registry', array(':registry'=>$model->var_registro));
             $user->registry=$model->var_registro;
             $user->ruc=$model->var_ruc;
@@ -39,12 +40,13 @@ class SolicitudController extends Controller
             $user->email=$model->var_correo;
             $user->phone=$model->var_telefono;
             $user->fax=$model->var_fax;
-            $user->district_id=$model->int_district;   
+            $user->district_id=$model->district_id;   
             $user->address=$model->var_direccion;
             $user->reference=$model->var_referencia;
             $user->producer_id=$producer->id;
             $user->status=1;
 	    $user->type_id=1;
+	    $user->tipo_documento=$model->tipo_documento;
 	    $user->fecha_registro=date("Y-m-d H:i:s");
             if($user->save())
             {

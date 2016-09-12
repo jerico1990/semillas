@@ -79,85 +79,79 @@ class HeadquarterController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$this->pageTitle = "Crear Estación";
-		$model=new Headquarter;
-		$user=new User;
-		$cruge=new Cruge;
-		$rol=new CrugeAuthassignment;
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		$departamentos = Location::model()->findAll(array(
-			  'select'   => 't.department, t._departament_id',
-			  'group'    => 't.department',
-			  'order'    => 't.department ASC',
-			  'distinct' => true
-		     ));
-		if(isset($_POST['Headquarter']))
+	    $this->pageTitle = "Crear Estación";
+	    $model=new Headquarter;
+	    $user=new User;
+	    $cruge=new Cruge;
+	    $rol=new CrugeAuthassignment;
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
+	    $departamentos = Location::model()->findAll(array(
+		      'select'   => 't.department, t.department_id',
+		      'group'    => 't.department',
+		      'order'    => 't.department ASC',
+		      'distinct' => true
+		 ));
+	    if(isset($_POST['Headquarter']))
+	    {
+		$model->attributes=$_POST['Headquarter'];
+		//Amarrando la estacion
+		$model->name=$_POST['Headquarter']['legal_name'];
+		$model->ruc=$_POST['Headquarter']['ruc'];
+		$model->district_id=$model->district_id;
+		$model->department_id=$_POST['Headquarter']['department_id'];
+		$model->province_id=$_POST['Headquarter']['province_id'];
+		$model->tipo_empresa=$_POST['Headquarter']['tipo_empresa'];
+		$model->tipo_usuario=2;//Aqui
+		if($_POST['Headquarter']['tipo_empresa']==1)
+		{$model->search_tipo_empresa="Privado";}
+		elseif($_POST['Headquarter']['tipo_empresa']==2)
+		{$model->search_tipo_empresa="Estatal";}
+		$model->ruc=$_POST['Headquarter']['ruc'];
+		
+		if($model->save())
 		{
-			
-			$model->attributes=$_POST['Headquarter'];
-			//Amarrando la estacion
-			$model->name=$_POST['Headquarter']['legal_name'];
-			$model->ruc=$_POST['Headquarter']['ruc'];
-			$model->location_id=$model->location_id;
-			$model->departamento=$_POST['Headquarter']['departamento'];
-			$model->provincia=$_POST['Headquarter']['provincia'];
-			$model->tipo_empresa=$_POST['Headquarter']['tipo_empresa'];
-			$model->tipo_usuario=2;//Aqui
-			
-			if($_POST['Headquarter']['tipo_empresa']==1)
-			{$model->search_tipo_empresa="Privado";}
-			elseif($_POST['Headquarter']['tipo_empresa']==2)
-			{$model->search_tipo_empresa="Estatal";}
-			
-			$model->ruc=$_POST['Headquarter']['ruc'];
-			
-			if($model->save())
-			{
-				//Creando datos del Cruge_user
-				$cruge->username=$_POST['Headquarter']['username'];
-				$cruge->password=$this->passwordGenerator();
-				$cruge->email=$_POST['Headquarter']['email'];
-				$cruge->state=1;
-				
-				if($cruge->save())
-				{
-					$cuenta=Cruge::model()->find('username=:username and email=:email',
-														array(':username'=>$_POST['Headquarter']['username'],
-																':email'=>$_POST['Headquarter']['email']));
-					////////////// Rol Estacion
-					$rol->userid=$cuenta->iduser;
-					$rol->itemname='estacion';
-					$rol->data='N;';
-					$rol->save();
-				
-						/////Fin
-						$user->ruc=$_POST['Headquarter']['ruc'];	
-						$user->legal_name=$_POST['Headquarter']['legal_name'];
-						$user->address=$_POST['Headquarter']['address'];
-						$user->name=$_POST['Headquarter']['username'];
-						$user->email=$_POST['Headquarter']['email'];
-						$user->first_name=$_POST['Headquarter']['first_name'];
-						$user->last_name=$_POST['Headquarter']['last_name'];
-						$user->document_number=$_POST['Headquarter']['document_number'];
-						$user->type_id=5;
-						$user->status=2;//Activo  
-						$user->headquarter_id=$model->id;				
-						$user->cruge_user_id=$cuenta->iduser;
-						$user->district_id=$_POST['Headquarter']['location_id'];
-					
-					if($user->save())
-					{					
-						$mensaje=$this->mensaje($cuenta->iduser);
-						$this->redirect(array('admin'));
-					}
-				}				
-			}			
-		}
-		$this->render('create',array(
-			'model'=>$model,
-			'departamentos'=>$departamentos
-		));
+		    //Creando datos del Cruge_user
+		    $cruge->username=$_POST['Headquarter']['username'];
+		    $cruge->password=$this->passwordGenerator();
+		    $cruge->email=$_POST['Headquarter']['email'];
+		    $cruge->state=1;
+		    if($cruge->save())
+		    {
+			$cuenta=Cruge::model()->find('username=:username and email=:email',
+												array(':username'=>$_POST['Headquarter']['username'],
+														':email'=>$_POST['Headquarter']['email']));
+			////////////// Rol Estacion
+			$rol->userid=$cuenta->iduser;
+			$rol->itemname='estacion';
+			$rol->data='N;';
+			$rol->save();
+			/////Fin
+			$user->ruc=$_POST['Headquarter']['ruc'];	
+			$user->legal_name=$_POST['Headquarter']['legal_name'];
+			$user->address=$_POST['Headquarter']['address'];
+			$user->name=$_POST['Headquarter']['username'];
+			$user->email=$_POST['Headquarter']['email'];
+			$user->first_name=$_POST['Headquarter']['first_name'];
+			$user->last_name=$_POST['Headquarter']['last_name'];
+			$user->document_number=$_POST['Headquarter']['document_number'];
+			$user->type_id=5;
+			$user->status=2;//Activo  
+			$user->headquarter_id=$model->id;				
+			$user->cruge_user_id=$cuenta->iduser;
+			$user->district_id=$_POST['Headquarter']['location_id'];
+			if($user->save())
+			{					
+			    $mensaje=$this->mensaje($cuenta->iduser);
+			    $this->redirect(array('admin'));
+			}
+		    }				
+		}			
+	    }
+	    $this->render('create',array(
+		    'model'=>$model,
+		    'departamentos'=>$departamentos
+	    ));
 	}
 	
 	public function actionCreate_ambito()

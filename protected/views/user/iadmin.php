@@ -29,22 +29,28 @@ $this->widget('bootstrap.widgets.TbMenu', array(
 		'filter'=>$model,
 		'template'=>"{items}\n{pager}",
 		'columns'=>array(
-      'name',
-		'ruc',
-		'legal_name',
-		//array('name'=>'district_id','value'=>'$data->departamento($data->district_id)','header'=>'Departamento'),
-      array(
-				'class'=>'bootstrap.widgets.TbButtonColumn',
-				'template'=>'{update}  ',
-            'htmlOptions'=>array('style'=>'width: 50px'),
-				'buttons'=>array (
-					'update'=> array(
-						'label'=>'',
-						'url'=>'Yii::app()->createUrl("user/iupdate", array("id"=>$data->id))',
-						),
-					/*'view'=>array(
-						'label'=>'',
-						'url'=>'Yii::app()->createUrl("user/iview", array("id"=>$data->id))',)*/
-),),),)); ?>
+		    'name',
+		    'ruc',
+		    'legal_name',
+		    array(
+			'header' => 'Estación experimental',
+			'type'=>'raw',
+			'value' => '$data->getEstacionExperimental($data->tipo_estacion_experimental)',
+		    ),
+		    //array('name'=>'district_id','value'=>'$data->departamento($data->district_id)','header'=>'Departamento'),
+		    array(
+			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}  ',
+			'htmlOptions'=>array('style'=>'width: 50px'),
+			    'buttons'=>array (
+				'update'=> array(
+					'label'=>'',
+					'url'=>'Yii::app()->createUrl("user/iupdate", array("id"=>$data->id))',
+				),
+			    ),
+		    ),
+		),
+	));
+?>
 
 

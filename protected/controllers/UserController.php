@@ -93,40 +93,38 @@ class UserController extends Controller
 	 */
 	public function actionCreate()
 	{
-			$this->pageTitle = "Inscribir Productor";
-			$model=new User;
-			if(isset($_POST['User']))
-			{
-				$model->attributes=$_POST['User'];
-				$user=User::model()->find('registry=:registry', array(':registry'=>$_POST['User']['registry']));
-				$producer=Producer::model()->find('registry=:registry', array(':registry'=>$_POST['User']['registry']));
-				if($user==null)
-				{
-					if($producer!==null)
-					{
-						$model->status=1;
-						$model->type_id=1;
-						$model->registry=$producer->registry;
-						$model->producer_id=$producer->id;
-						if($model->save())						
-							Yii::app()->user->setFlash('create','su inscripción ha sido enviada');
-							$this->refresh();							
-					}
-					else
-					{
-						$model->addError('registry', 'El N° de productor no se encuentra');
-					}										  
-				}
-				else
-				{
-				  $model->addError('registry', 'El N° de productor ya se encuentra registrado');
-				  //$this->addError($this->registry, 'Ya esta registrado');
-				}
-					
-			}  
-			$this->render('create',array(
-				'model'=>$model,'tipo'=>'externo'
-			));		  
+	    $this->pageTitle = "Inscribir Productor";
+	    $model=new User;
+	    if(isset($_POST['User']))
+	    {
+		$model->attributes=$_POST['User'];
+		$user=User::model()->find('registry=:registry', array(':registry'=>$_POST['User']['registry']));
+		$producer=Producer::model()->find('registry=:registry', array(':registry'=>$_POST['User']['registry']));
+		if($user==null)
+		{
+		    if($producer!==null)
+		    {
+			$model->status=1;
+			$model->type_id=1;
+			$model->registry=$producer->registry;
+			$model->producer_id=$producer->id;
+			if($model->save())						
+			Yii::app()->user->setFlash('create','su inscripción ha sido enviada');
+			$this->refresh();							
+		    }
+		    else
+		    {
+			$model->addError('registry', 'El N° de productor no se encuentra');
+		    }										  
+		}
+		else
+		{
+		  $model->addError('registry', 'El N° de productor ya se encuentra registrado');
+		}  
+	    }  
+	    $this->render('create',array(
+		    'model'=>$model,'tipo'=>'externo'
+	    ));		  
 	}
 
 	/**
@@ -284,7 +282,7 @@ class UserController extends Controller
 		{
 			$model->attributes=$_POST['User'];					
 			if($_POST['User']['status']=='1')
-			{				
+			{		
 				$cruge=Cruge::model()->find('username=:username', array(':username'=>$_POST['User']['ruc']));
 				if($cruge==null)
 				{					
@@ -314,11 +312,18 @@ class UserController extends Controller
 				if($cruge==null)
 				{
 					$user=new Cruge;					
-					$user->username=$_POST['User']['ruc'];
+					
+					if($model->type_id==2)
+					{
+					    $user->username=$model->tipo_estacion_experimental.'_'.$_POST['User']['ruc'];
+					}
+					else
+					{
+					    $user->username=$_POST['User']['ruc'];
+					}
 					$user->password=$this->passwordGenerator();
 					$user->email=$_POST['User']['email'];
-					$user->state=1;					
-					 
+					$user->state=1;	
 					$model->status=2;
 					$model->name=$_POST['User']['ruc'];
 					$model->search_estado="Activo";
@@ -327,15 +332,15 @@ class UserController extends Controller
 						if($user->save())
 						{
 							$rol=new CrugeAuthassignment;					
-							$anexar=Cruge::model()->find('username=:username', array(':username'=>$_POST['User']['ruc']));
+							//$anexar=Cruge::model()->findByPk($id);      ->find('username=:username', array(':username'=>$_POST['User']['ruc']));
 							$usuario=User::model()->find('ruc=:ruc', array(':ruc'=>$_POST['User']['ruc']));
-							$usuario->cruge_user_id=$anexar->iduser;						
-							$rol->userid=$anexar->iduser;
+							$usuario->cruge_user_id=$user->iduser;						
+							$rol->userid=$user->iduser;
 							$rol->itemname='productor';
 							$rol->data='N;';
 							$rol->save();
 							$usuario->save();
-							$mensaje=$this->mensaje($_POST['User']['ruc'],'1');							
+							$mensaje=$this->mensaje($user->username,'1');							
 							$this->redirect(array('cuenta'));
 						}					
 					}
@@ -402,7 +407,7 @@ class UserController extends Controller
 	
 	public function mensaje_d($email)
 	{
-			$smt=Yii::app()->Smtpmail;
+		$smt=Yii::app()->Smtpmail;
 		  $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
 		  $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';
 		  $smt->MsgHTML("<br />".
@@ -432,44 +437,41 @@ class UserController extends Controller
 	}
 	public function mensaje($usern,$id)
 	{
-		  if($id==1)
-		  {
-			  $user=User::model()->find('ruc=:ruc', array(':ruc'=>$usern));		
-			  $cruge=Cruge::model()->find('username=:username', array(':username'=>$usern));	
-		  }
-		  if($id==2)
-		  {
-			  $cruge=Cruge::model()->find('username=:username', array(':username'=>$usern));
-			  $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>$cruge->iduser));
-		  }
-		  $smt=Yii::app()->Smtpmail;
-		  $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
-		  $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';
-		  $smt->MsgHTML("Hola ".$user->legal_name.": <br />".
-					 "<br />".
-					 "Su cuenta ha sido registrada en las Bases del INIA,sus datos son:".
-					 "<br />".
-					 "Usuario:".$cruge->username."<br />".
-					 "Password:".$cruge->password."<br />".
-					 "<br />".
-					 "Para mas información contactar con el INIA".
-					 "<br />".
-					 "Atentamente,<br />".
-					 "Administrador del INIA<br />"
-					 );
-		  $smt->AddAddress($cruge->email, "");
-		  if(!$smt->Send())
-		  {
-					 $error="Mailer Error: " . $smt->ErrorInfo;
-		  }
-		  else
-		  {
-					 $error="Message sent!";
-		  }
-		
-			
-		  return $error;
-		
+	    if($id==1)
+	    {
+		$cruge=Cruge::model()->find('username=:username', array(':username'=>$usern));
+		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>$cruge->iduser));
+	    }
+	    if($id==2)
+	    {
+		$cruge=Cruge::model()->find('username=:username', array(':username'=>$usern));
+		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>$cruge->iduser));
+	    }
+	    $smt=Yii::app()->Smtpmail;
+	    $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
+	    $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';
+	    $smt->MsgHTML("Hola ".$user->legal_name.": <br />".
+				   "<br />".
+				   "Su cuenta ha sido registrada en las Bases del INIA,sus datos son:".
+				   "<br />".
+				   "Usuario:".$cruge->username."<br />".
+				   "Password:".$cruge->password."<br />".
+				   "<br />".
+				   "Para mas información contactar con el INIA".
+				   "<br />".
+				   "Atentamente,<br />".
+				   "Administrador del INIA<br />"
+				   );
+	    $smt->AddAddress($cruge->email, "");
+	    if(!$smt->Send())
+	    {
+		$error="Mailer Error: " . $smt->ErrorInfo;
+	    }
+	    else
+	    {
+		$error="Message sent!";
+	    }
+	    return $error;
 	}
 	
 	 public static function passwordGenerator()
@@ -512,7 +514,7 @@ class UserController extends Controller
 	    // Uncomment the following line if AJAX validation is needed
 	    // $this->performAjaxValidation($model);
 	    $departamentos = Location::model()->findAll(array(
-		      'select'   => 't.department, t._departament_id',
+		      'select'   => 't.department, t.department_id',
 		      'group'    => 't.department',
 		      'order'    => 't.department ASC',
 		      'distinct' => true
@@ -524,17 +526,19 @@ class UserController extends Controller
 		      'order'    => 't.descripcion ASC',
 		      'distinct' => true
 	    ));
-	    
+	    $provincias = array();
+	    $distritos = array();
 	    if(isset($_POST['User']))
 	    {
 		$model->attributes=$_POST['User'];
 		$model->ruc='20131365994';
 		$model->legal_name='INSTITUTO NACIONAL DE INNOVACION AGRARIA';
 		$model->type_id=2;
-		$model->district_id=$_POST['User']['int_district'];
+		$model->district_id=$_POST['User']['district_id'];
 		$model->address=$_POST['User']['var_direccion'];
 		$model->reference=$_POST['User']['var_referencia'];
 		$model->tipo_estacion_experimental=$_POST['User']['tipo_estacion_experimental'];
+		$model->fecha_registro=date("Y-m-d H:i:s");
 		$model->save();
 		$this->redirect(array('iadmin'));
 	    }
@@ -543,7 +547,9 @@ class UserController extends Controller
 		    'model'=>$model,
 		    'tipo'=>'interno',
 		    'departamentos'=>$departamentos,
-		    'estaciones'=>$estaciones
+		    'estaciones'=>$estaciones,
+		    'provincias'=>$provincias,
+		    'distritos'=>$distritos
 	    ));
 	}
 
@@ -572,22 +578,36 @@ class UserController extends Controller
 		      'order'    => 't.province ASC',
 		      'distinct' => true
 		));*/
-		$distritos = Location::model()->findAll(array(
-		      'select'   => 't.district, t.district_id',
+		/*$region = Location::model()->findOne(array(
+		      'select'   => 't.department_id,t.province_id,t.district, t.district_id',
 		      'condition'=> 't.district_id='.$model->district_id.'',
-		      'group'    => 't.district',
 		      'order'    => 't.district ASC',
 		      'distinct' => true
-		));
+		));*/
+		$region=Location::model()->find('district_id=:district_id', array(':district_id'=>$model->district_id));	
+		$model->department_id=$region->department_id;
+		$model->province_id=$region->province_id;
 		//var_dump($distritos);die;
 		$departamentos = Location::model()->findAll(array(
-		      'select'   => 't.department, t._departament_id',
+		      'select'   => 't.department, t.department_id',
 		      'group'    => 't.department',
 		      'order'    => 't.department ASC',
 		      'distinct' => true
 		));
 		
+		$provincias = Location::model()->findAll(array(
+			'select'    => 't.province_id, t.province, t.province_id, t.department_id',
+			'condition' => 'department_id = "' . $model->department_id.'"',
+			'order'		=>'t.province',
+			'distinct' => true
+		));
 		
+		$distritos = Location::model()->findAll(array(
+			'select'    => 't.district, t.district_id, t.province_id',
+			'condition' => 'province_id = "' . $model->province_id.'"',
+			'order'		=>'t.district',
+			'distinct' => true
+		));
 		
 		
 		
@@ -611,6 +631,8 @@ class UserController extends Controller
 			'model'=>$model,
 			'estaciones'=>$estaciones,
 			'departamentos'=>$departamentos,
+			'provincias'=>$provincias,
+			'distritos'=>$distritos
 		));
 	}
 

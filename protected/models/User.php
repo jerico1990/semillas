@@ -59,6 +59,7 @@ class User extends CActiveRecord
 	public $tipo_empresa;
 	public $tipo_usuario;
 	public $codigo_simple;
+	//public $int_departamento;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -76,7 +77,7 @@ class User extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			//array('search_cultivo, search_usuario, search_estado, search_oc_ee', 'required'),
-			array('cruge_user_id, type_id, district_id, status, headquarter_id, producer_id', 'numerical', 'integerOnly'=>true),
+			array('tipo_documento,cruge_user_id, type_id, district_id, status, headquarter_id, producer_id', 'numerical', 'integerOnly'=>true),
 			array('name, registry, email', 'length', 'max'=>30),
 			array('ruc, phone', 'length', 'max'=>12),
 			array('person_type, legal_name', 'length', 'max'=>120),
@@ -372,5 +373,10 @@ class User extends CActiveRecord
 	
 	public function getFullname(){
 		  return $this->first_name.' '.$this->last_name;
+	}
+	
+	public function getEstacionExperimental($tipo_estacion_experimental){
+	    $estacion=EstacionExperimental::model()->findByPk($tipo_estacion_experimental);
+	    return $estacion->descripcion;
 	}
 }
