@@ -98,9 +98,9 @@ class HeadquarterController extends Controller
 		//Amarrando la estacion
 		$model->name=$_POST['Headquarter']['legal_name'];
 		$model->ruc=$_POST['Headquarter']['ruc'];
-		$model->district_id=$model->district_id;
 		$model->department_id=$_POST['Headquarter']['department_id'];
 		$model->province_id=$_POST['Headquarter']['province_id'];
+		$model->location_id=$_POST['Headquarter']['district_id'];
 		$model->tipo_empresa=$_POST['Headquarter']['tipo_empresa'];
 		$model->tipo_usuario=2;//Aqui
 		if($_POST['Headquarter']['tipo_empresa']==1)
@@ -139,7 +139,7 @@ class HeadquarterController extends Controller
 			$user->status=2;//Activo  
 			$user->headquarter_id=$model->id;				
 			$user->cruge_user_id=$cuenta->iduser;
-			$user->district_id=$_POST['Headquarter']['location_id'];
+			$user->district_id=$_POST['Headquarter']['district_id'];
 			if($user->save())
 			{					
 			    $mensaje=$this->mensaje($cuenta->iduser);

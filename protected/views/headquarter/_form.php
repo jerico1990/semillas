@@ -524,13 +524,13 @@ $distritos=CController::createUrl('location/districts');
         }
     });
     function Provincias(valor) {
-	$.get( "<?= $province_ids ?>?department_id="+valor, function( data ) {$( "#Headquarter_province_id" ).html( data );});
+	$.get( "<?= $province_ids ?>?departamento="+valor, function( data ) {$( "#Headquarter_province_id" ).html( data );});
         $("#Headquarter_province_id").find("option").remove().end().append("<option value></option>").val("");
         $("#Headquarter_district_id").find("option").remove().end().append("<option value></option>").val("");
     }
     
     function Distritos(valor) {
-	$.get( "<?= $distritos ?>?province_id="+valor, function( data ) {$( "#Headquarter_district_id" ).html( data );});
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Headquarter_district_id" ).html( data );});
         //$("#Headquarter_district_id").find("option").remove().end().append("<option value></option>").val("");
     }
     

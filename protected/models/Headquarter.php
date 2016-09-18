@@ -84,7 +84,7 @@ class Headquarter extends CActiveRecord
 			'id' => 'ID',
 			'name' => 'Nombre',
 			
-			'location_id' => 'Distrito',
+			'location_id' => 'Distritoa',
 			'parent_id' => 'Organismo Certificador',
 			'tipo_empresa' => 'Tipo Empresa',
 			'ruc' => 'Ruc',
