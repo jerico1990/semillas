@@ -137,15 +137,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	    </select>
 	    <div class="help-block error" id="Solicitud_department_id_em_" style="display:none">Departamento no es correcto.</div>
 	</div>
-	
-	<?php /*echo $form->dropDownListRow($model,'department_id',$departments,array(
-			       'prompt' => 'Seleccionar',
-			       'ajax' => array(
-			       'type'=>'GET', //request type
-			       'url'=>CController::createUrl('location/provinces'), //url to call.
-			       'update'=>'#Solicitud_province_id', //selector to update
-			       'data'   => 'js:$("#Solicitud_department_id").val()'
-	       )));*/ ?>
 	<div class="span8">
 	</div>
     </div>
@@ -157,16 +148,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	    </select>
 	    <div class="help-block error" id="Solicitud_province_id_em_" style="display:none">Provincia no es correcto.</div>
 	</div>
-	
-	    <?php /*echo $form->dropDownListRow($model,'province_id',array(),array(
-		'prompt' => 'Seleccionar',
-		'ajax' => array(
-				 'type'=>'GET', //request type
-				  'url'=>CController::createUrl('location/districts'), //url to call.
-				  'update' => '#Solicitud_district_id',
-				  'data'   => 'js:$("#Solicitud_province_id").val()'
-			  )));*/
-	    ?>
 	<div class="span4"></div>
     </div>
     
@@ -178,8 +159,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	    </select>
 	    <div class="help-block error" id="Solicitud_district_id_em_" style="display:none">Distrito no es correcto.</div>
 	</div>
-	
-	<!--<div class="span8"> <?php //echo $form->dropDownListRow($model,'district_id',array(), array('prompt' => 'Seleccionar',)); ?></div>-->
 	<div class="span4"></div>
     </div>	
     <div class="row-fluid">

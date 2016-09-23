@@ -47,12 +47,12 @@ class LocationController extends Controller
 	$this->render('index');
     }
 
-    public function actionFiltrardep()
+    public function actionFiltrardep($ambito)
     {
-	$listdepartament=Headquarter::model()->findAll('parent_id=:parent_id',array(':parent_id'=>array_keys($_GET)[0]));
+	$listdepartament=Headquarter::model()->findAll('parent_id=:parent_id',array(':parent_id'=>$ambito));
 	$lista=CHtml::listData($listdepartament, 'location_id', 'location_id');
 	$criteria = new CDbCriteria();
-	$criteria->addInCondition("departament_id", $lista);
+	$criteria->addInCondition("department_id", $lista);
 	$result = Location::model()->findAll($criteria);
 	/*$locations = Location::model()->findAll(array(
 		'select'    => 't.id, t.province, t.province_id, t.departament_id',
@@ -61,7 +61,7 @@ class LocationController extends Controller
 	));*/
 	//$miarray = [ 0 => 'bar'];
 	
-	$data = CHtml::listData($result, 'departament_id', 'department');
+	$data = CHtml::listData($result, 'department_id', 'department');
 	$data=array(""=>"")+$data;
 	foreach ($data as $value => $name)
 	{

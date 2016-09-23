@@ -376,7 +376,7 @@ class User extends CActiveRecord
 	}
 	
 	public function getEstacionExperimental($tipo_estacion_experimental){
-	    $estacion=EstacionExperimental::model()->findByPk($tipo_estacion_experimental);
+	    $estacion=EstacionExperimental::model()->find('id=:id',array(':id'=>$tipo_estacion_experimental));
 	    return $estacion->descripcion;
 	}
 }

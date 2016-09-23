@@ -2,25 +2,25 @@
 <script src="//code.jquery.com/ui/1.8.24/jquery-ui.js"></script>
 <?php
 /*Direccion*/
-    $departments = Location::model()->findAll(array(
+    /*$departments = Location::model()->findAll(array(
     'select'   => 't.id, t.department, t.department_id',
     'group'    => 't.id,t.department',
     'order'    => 't.department ASC',
     'distinct' => true
     )); 
     $list = CHtml::listData($departments,'department_id','department');
-    
+    */
     if(isset($_REQUEST['id']))
     {
 	    $provinces = Location::model()->findAll(array(
-	    'select'    => 't.id, t.province, t.province_id, t.departament_id',
-	    'condition' => 'departament_id = ' . $model->department_id,
-	    'group'    => 't.id,t.province',			
-	    'order'		=>	't.province',
-	    'distinct' => true
+	    'select'    => 't.id, t.province, t.province_id, t.department_id',
+	    'condition' => 'department_id = "' . $model->department_id.'"',
+	    'group'    	=> 't.id,t.province',			
+	    'order'	=>	't.province',
+	    'distinct' 	=> true
 	    ));
-	    $listprovinces = CHtml::listData($provinces,'province_id','province');
-	    
+	   // $listprovinces = CHtml::listData($provinces,'province_id','province');
+	    /*
 	    $districts = Location::model()->findAll(array(
 	    'select'    => 't.id, t.district, t.district_id, t.province_id',
 	    'condition' => 'department_id = ' . $model->department_id.' and province_id='.$model->province_id,
@@ -31,7 +31,7 @@
 	    $listdistricts = CHtml::listData($districts,'district_id','district');
 	    
 	    $arrayp=$listprovinces;
-	    $arrayd=$listdistricts;
+	    $arrayd=$listdistricts;*/
     }
     else
     {
@@ -88,7 +88,7 @@ if($cruge!==null)
 <div class="row-fluid" >
     <div class="span4">
 	<label for="Headquarter_ruc" class="required">Ruc <span class="required">*</span></label>
-	<input size="11" maxlength="11" class="span12 numerico" name="Headquarter[ruc]" id="Headquarter_ruc" type="text">
+	<input size="11" maxlength="11" class="span12 numerico" name="Headquarter[ruc]" id="Headquarter_ruc" type="text" value="<?= $model->ruc ?>">
 	    <div class="help-block error" id="Headquarter_ruc_em_" style="display:none">RUC no es correcto.</div>
     </div>
     <div class="span8"></div>
@@ -108,7 +108,7 @@ if($cruge!==null)
     </div>-->
     <div class="span9">
 	<label for="Headquarter_legal_name">Razon Social</label>
-	<input size="12" maxlength="150" class="span12" name="Headquarter[legal_name]" id="Headquarter_legal_name" type="text">
+	<input size="12" maxlength="150" class="span12" name="Headquarter[legal_name]" id="Headquarter_legal_name" type="text" value="<?= $model->legal_name ?>">
 	<div class="help-block error" id="Headquarter_legal_name_em_" style="display:none">Razon Social no es correcto.</div>		  
     </div>
     
@@ -125,7 +125,7 @@ if($cruge!==null)
 	    <select name="Headquarter[department_id]" id="Headquarter_department_id" onchange="Provincias($(this).val())">
 		<option value="">Seleccionar</option>
 		<?php foreach($departamentos as $departamento){ ?>
-		<option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+		<option value="<?= $departamento->department_id ?>" <?= ($model->department_id==$departamento->department_id)?'selected':''; ?>><?= $departamento->department ?></option>
 		<?php } ?>
 	    </select>
 	    <div class="help-block error" id="Headquarter_department_id_em_" style="display:none">Departamento no es correcto.</div>
@@ -147,6 +147,9 @@ if($cruge!==null)
 	    <label for="Headquarter_province_id">Provincia</label>
 	    <select name="Headquarter[province_id]" id="Headquarter_province_id" onchange="Distritos($(this).val())">
 		<option value="">Seleccionar</option>
+		<?php foreach($provincias as $provincia){?>
+		    <option value="<?= $provincia->province_id ?>" <?= ($model->province_id==$provincia->province_id)?'selected':''; ?>><?= $provincia->province ?></option>
+		<?php }?>
 	    </select>
 	    <div class="help-block error" id="Headquarter_province_id_em_" style="display:none">Provincia no es correcto.</div>
 	</div>
@@ -168,6 +171,9 @@ if($cruge!==null)
 	    <label for="Headquarter_district_id" class="required">Distrito <span class="required">*</span></label>
 	    <select name="Headquarter[district_id]" id="Headquarter_district_id">
 		<option value="">Seleccionar</option>
+		<?php foreach($distritos as $distrito){?>
+		<option value="<?= $distrito->district_id ?>" <?= ($model->district_id==$distrito->district_id)?'selected':''; ?>><?= $distrito->district ?></option>
+		<?php }?>
 	    </select>
 	    <div class="help-block error" id="Headquarter_district_id_em_" style="display:none">Distrito no es correcto.</div>
 	</div>
@@ -236,7 +242,7 @@ if($cruge!==null)
     ?>
     <div class="span9">
 	<label for="Headquarter_address">Dirección</label>
-	<input size="12" maxlength="150" class="span12" name="Headquarter[address]" id="Headquarter_address" type="text">
+	<input size="12" maxlength="150" class="span12" name="Headquarter[address]" id="Headquarter_address" type="text" value="<?= $model->address ?>">
 	<div class="help-block error" id="Headquarter_address_em_" style="display:none">Dirección no es correcto.</div>
     </div>
     <div class="span3"></div>
@@ -245,9 +251,9 @@ if($cruge!==null)
     <div class="span4">
 	<label for="Headquarter_tipo_empresa">Tipo Empresa</label>
 	<select name="Headquarter[tipo_empresa]" id="Headquarter_tipo_empresa">
-	    <option value=""> </option>
-	    <option value="1">Privado</option>
-	    <option value="2">Estatal</option>
+	    <option value> </option>
+	    <option value="1" <?= ($model->tipo_empresa==1)?'selected':''; ?> >Privado</option>
+	    <option value="2" <?= ($model->tipo_empresa==2)?'selected':''; ?> >Estatal</option>
 	</select>
 	<div class="help-block error" id="Headquarter_tipo_empresa_em_" style="display:none">Tipo Empresa no es correcto.</div>
     </div>
@@ -266,7 +272,7 @@ if($cruge!==null)
 <div class="row-fluid" >
     <div class="span4">
 	<label for="Headquarter_document_number">N° de Documento</label>
-	<input size="8" maxlength="8" class="span12" name="Headquarter[document_number]" id="Headquarter_document_number" type="text">
+	<input size="8" maxlength="8" class="span12 numerico" name="Headquarter[document_number]" id="Headquarter_document_number" type="text" value="<?= $model->document_number ?>">
 	<div class="help-block error" id="Headquarter_document_number_em_" style="display:none">N° de Documento no es correcto.</div>
     </div>
     <?php /*
@@ -288,7 +294,7 @@ if($cruge!==null)
 <div class="row-fluid" >
     <div class="span8">
 	<label for="Headquarter_first_name">Nombres</label>
-	<input size="50" maxlength="50" class="span12" name="Headquarter[first_name]" id="Headquarter_first_name" type="text">
+	<input size="50" maxlength="50" class="span12 texto" name="Headquarter[first_name]" id="Headquarter_first_name" type="text" value="<?= $model->first_name ?>">
 	<div class="help-block error" id="Headquarter_first_name_em_" style="display:none">Nombres no es correcto.</div>
     </div>
     <?php /*
@@ -310,7 +316,7 @@ if($cruge!==null)
 <div class="row-fluid" >
     <div class="span8">
 	<label for="Headquarter_last_name">Apellidos</label>
-	<input size="50" maxlength="50" class="span12" name="Headquarter[last_name]" id="Headquarter_last_name" type="text">
+	<input size="50" maxlength="50" class="span12 texto" name="Headquarter[last_name]" id="Headquarter_last_name" type="text" value="<?= $model->last_name ?>">
 	<div class="help-block error" id="Headquarter_last_name_em_" style="display:none">Apellidos no es correcto.</div>
     </div>
     <?php /*
@@ -337,7 +343,7 @@ if($cruge!==null)
 <div class="row-fluid">
     <div class="span4">
 	<label for="Headquarter_username">Usuario</label>
-	<input size="30" maxlength="40" class="span12" name="Headquarter[username]" id="Headquarter_username" type="text">
+	<input size="30" maxlength="40" class="span12" name="Headquarter[username]" id="Headquarter_username" type="text" value="<?= $model->username ?>">
 	<div class="help-block error" id="Headquarter_username_em_" style="display:none">Usuario no es correcto.</div>
     </div>
     <?php /*
@@ -360,7 +366,7 @@ if($cruge!==null)
 <div class="row-fluid">
     <div class="span8">
 	<label for="Headquarter_email">Correo electrónico</label>
-	<input size="30" maxlength="30" class="span12" name="Headquarter[email]" id="Headquarter_email" type="text">
+	<input size="30" maxlength="30" class="span12" name="Headquarter[email]" id="Headquarter_email" type="text" value="<?= $model->email ?>">
 	<div class="help-block error" id="Headquarter_email_em_" style="display:none">Correo electrónico no es correcto.</div>
     </div>
     <?php /*

@@ -32,6 +32,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
 		    'name',
 		    'ruc',
 		    'legal_name',
+		    //'tipo_estacion_experimental',
 		    array(
 			'header' => 'Estación experimental',
 			'type'=>'raw',

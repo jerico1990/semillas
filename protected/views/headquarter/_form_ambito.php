@@ -35,18 +35,16 @@
 		<?php //echo $form->textFieldRow($model,'name',array('size'=>20,'maxlength'=>20)); ?>
 		
 	<div class="row-fluid" >
-		 
-		
-		 	 <div class="span4 success">
-			  		<label for="Headquarter_parent_id">Organismo Certificador</label>
-			  		<select name="Headquarter[parent_id]" id="Headquarter_parent_id">
-					    <option value=""> </option>
-					    <?php foreach($estaciones_experimentales as $estacion_experimental){ ?>
-						<option value="<?= $estacion_experimental->id ?>"><?= $estacion_experimental->name ?></option>
-					    <?php } ?>
-					</select>
-					<div class="help-block error" id="Headquarter_parent_id_em_" style="display:none">Organismo Certificador no es correcto.</div>	
-			  </div>
+	    <div class="span4 success">
+		<label for="Headquarter_parent_id">Organismo Certificador</label>
+		<select name="Headquarter[parent_id]" id="Headquarter_parent_id">
+		    <option value=""> </option>
+		    <?php foreach($estaciones_experimentales as $estacion_experimental){ ?>
+			<option value="<?= $estacion_experimental->id ?>" <?= ($estacion_experimental->id==$model->parent_id)?'selected':''; ?> ><?= $estacion_experimental->name ?></option>
+		    <?php } ?>
+		</select>
+		<div class="help-block error" id="Headquarter_parent_id_em_" style="display:none">Organismo Certificador no es correcto.</div>	
+	    </div>
 	</div>
 		
 	<div class="row-fluid" >
@@ -56,7 +54,7 @@
 					<select name="Headquarter[location_id]" id="Headquarter_location_id">
 						<option value=""> </option>
 						<?php foreach($departamentos as $departamento){ ?>
-						    <option value="<?= $departamento->department_id ?>"> <?= $departamento->department ?></option>
+						    <option value="<?= $departamento->department_id ?>" <?= ($departamento->department_id==$model->location_id)?'selected':''; ?>> <?= $departamento->department ?></option>
 						<?php } ?>
 					</select>
 					<div class="help-block error" id="Headquarter_location_id_em_" style="display:none">Región no es correcto.</div>	
@@ -67,11 +65,11 @@
 		
 	<div class="row-fluid" >
 
-			<div class="span4 success">
-					<label for="Headquarter_codigo_simple">Codigo Simple</label>
-					<input size="10" maxlength="50" class="span12 numerico" name="Headquarter[codigo_simple]" id="Headquarter_codigo_simple" type="text">
-					<div class="help-block error" id="Headquarter_codigo_simple_em_" style="display:none">Codigo Simple no es Correcto</div>		
-			</div>
+	    <div class="span4 success">
+			    <label for="Headquarter_codigo_simple">Codigo Simple</label>
+			    <input size="10" maxlength="50" class="span12" name="Headquarter[codigo_simple]" id="Headquarter_codigo_simple" type="text" value="<?= $model->codigo_simple ?>">
+			    <div class="help-block error" id="Headquarter_codigo_simple_em_" style="display:none">Codigo Simple no es Correcto</div>		
+	    </div>
 		 
 
 	</div>
@@ -83,7 +81,7 @@
 
 	<div class="row-fluid">
 	<div class="span12">
-	    <input type="submit" class="btn btn-success" id="registrar" value="Crear">
+	    <input type="submit" class="btn btn-success" id="registrar" value="Guardar">
 		<?php //$this->widget('bootstrap.widgets.TbButton', array( 'type'=>'success','buttonType'=>'submit','label'=>'Enviar' ,'htmlOptions' => array(),)); ?>
 	</div>
 </div>

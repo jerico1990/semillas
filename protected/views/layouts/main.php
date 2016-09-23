@@ -100,7 +100,7 @@
 			    array(),
 			    array(
 				'label' => 'Pago por servicio solicitado',
-				'url' => array('payment'),
+				'url' => array('/payment/index'),
 				'visible' => !Yii::app()->user->isGuest && (Yii::app()->user->checkAccess('productor'))
 			    ),
 			    array(

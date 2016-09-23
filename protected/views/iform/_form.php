@@ -86,10 +86,9 @@ jQuery( document ).ready(function( $ ) {
 </script>
 
 <?php
-
-//$maestro=Maestro::model()->find('codigo_detalle=:detalle and codigo=:codigo', array(':detalle'=>$data->category,':codigo'=>'005'));
-			$heard = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5'); //:model()->findAll('parent_id is null');
-			$headquarters = CHtml::listData($heard,'id','name');
+$ambitos = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5');
+$heard = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5'); //:model()->findAll('parent_id is null');
+$headquarters = CHtml::listData($heard,'id','name');
 			
 			
 		  
@@ -190,24 +189,117 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<h2>Campo de Multiplicacion</h2>
 	<?php
 		$departments = Location::model()->findAll(array(
-				'select'   => 't.id, t.department, t.departament_id',
+				'select'   => 't.id, t.department, t.department_id',
 				'group'    => 't.id,t.department',
 				'order'	  => 't.department',
 				'distinct' => true
 			)); 
-		$list = CHtml::listData($departments,'departament_id','department');
+		$list = CHtml::listData($departments,'department_id','department');
 	?>
-	<?php 	$this->widget('bootstrap.widgets.TbTabs', array(
+	
+	<ul class="nav nav-tabs">
+	    <li class="active"><a data-toggle="tab" href="#home">Ubicación</a></li>
+	    <li><a data-toggle="tab" href="#menu1">Datos</a></li>
+	</ul>
+	  
+	<div class="tab-content">
+	    <div id="home" class="tab-pane fade in active">
+		<div class="row-fluid">
+		    <div class="span4">
+			<label for="Iform_headquarter_id">Organismo Certificador</label>
+			<select name="Iform[headquarter_id]" id="Iform_headquarter_id" onchange="Region($(this).val())">
+			    <option value> </option>
+			    <?php foreach($ambitos as $ambito){ ?>
+				<option value="<?= $ambito->id ?>"><?= $ambito->name ?></option>
+			    <?php } ?>
+			</select>
+		    </div>
+		</div>
+		<div class="row-fluid">
+		    <div class="span4">
+			<label for="Iform_department_id">Departamento</label>
+			<select name="Iform[department_id]" id="Iform_department_id" onchange="Provincias($(this).val())">
+			    <option value>Seleccionar</option>
+			</select>
+			<div class="help-block error" id="Iform_department_id_em_" style="display:none">Departamento no es correcto.</div>
+		    </div>
+		    <div class="span8">
+		    </div>
+		</div>
+		<div class="row-fluid">
+		    <div class="span4">
+			<label for="Iform_province_id">Provincia</label>
+			<select name="Iform[province_id]" id="Iform_province_id" onchange="Distritos($(this).val())">
+			    <option value="">Seleccionar</option>
+			</select>
+			<div class="help-block error" id="Iform_province_id_em_" style="display:none">Provincia no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+		
+		<div class="row-fluid">
+		    <div class="span8">
+			<label for="Iform_location_id" class="required">Distrito <span class="required">*</span></label>
+			<select name="Iform[location_id]" id="Iform_location_id">
+			    <option value="">Seleccionar</option>
+			</select>
+			<div class="help-block error" id="Iform_location_id_em_" style="display:none">Distrito no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+		
+		<div class="row-fluid">
+		    <div class="span8">
+			<label for="Iform_location_annex" class="required">Anexo/Sector <span class="required">*</span></label>
+			<input size="60" maxlength="100" name="Iform[location_annex]" id="Iform_location_annex" type="text">
+			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Anexo/Sector no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+	    </div>
+	    <div id="menu1" class="tab-pane fade">
+		<div class="row-fluid">
+		    <div class="span8">
+			<label for="Iform_location_annex" class="required">Nombre de Campo <span class="required">*</span></label>
+			<input name="Iform[location_name]" id="Iform_location_name" type="text" maxlength="100">
+			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Nombre de Campo no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+		<div class="row-fluid">
+		    <div class="span8">
+			<label for="Iform_location_annex" class="required">Area (ha) <span class="required">*</span></label>
+			<input size="18" maxlength="18" class="solicitud" name="Iform[area]" id="Iform_area" type="text">
+			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Area (ha) no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+		<div class="row-fluid">
+		    <div class="span8">
+			<label for="Iform_location_annex" class="required">Fecha Estimada de Siembra <span class="required">*</span></label>
+			<input type="date"  name="Iform[seed_date]" id="Iform_seed_date">
+			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Fecha Estimada de Siembra no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+		<div class="row-fluid">
+		    <div class="span8">
+			<label for="Iform_location_annex" class="required">Estimado de Cosecha (kg) <span class="required">*</span></label>
+			<input class="solicitud" name="Iform[sow_estimate_quantity]" id="Iform_sow_estimate_quantity" type="text" maxlength="18">
+			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Estimado de Cosecha (kg) no es correcto.</div>
+		    </div>
+		    <div class="span4"></div>
+		</div>
+	    </div>
+	</div>
+
+	<?php 	/*$this->widget('bootstrap.widgets.TbTabs', array(
 		'type'=>'tabs', // 'tabs' or 'pills'
 		//'htmlOptions'=>array('style'=>'height: 400px; width: 400px;'),
 		'tabs'=>array(				
 		array('label'=>'Ubicacion', 
 			'content'=>
-				"Organismo Certificador</br>".
-				$form->dropDownListRow($model,'headquarter_id', $headquarters,array('empty'=>' ',
-				'ajax'=>array('type'=>'GET','url'=>CController::createUrl('location/filtrardep'),
-								  'update' => '#department_id','data'   => 'js:$("#Iform_headquarter_id").val()'))).
-				"</br>".
+				
 				"Región</br>".
 				CHtml::dropDownList('department_id','', array(),
 						    array(
@@ -226,8 +318,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									'url'=>CController::createUrl('location/districts'), //url to call.
 									'update' => '#Iform_location_id',
 									'data'   => 'js:$("#province_id").val()'
-									)))			   
-				/*$form->dropDownListRow($model,'location_id',array(), array('ajax'   => array(
+									))).			   
+				$form->dropDownListRow($model,'location_id',array(), array('ajax'   => array(
 									'type'    => 'GET', 
 									'url'     => CController::createUrl('location/district'),
 									'data'    => 'js:$("#Iform_location_id").val()',
@@ -279,7 +371,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									new_map.addControl(click);
 									click.activate();
 									}'
-									)))*/.
+									))).
 				$form->textFieldRow($model,'location_annex',array('size'=>60,'maxlength'=>100)).
 				"<div class='map' id='map' style='height: 400px; width: 100%;'></div>",
 				'active'=>true
@@ -299,8 +391,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				//'active'=>true
 				),
 		),
-	)); ?>
-	<input type="text" name="Iform[location_id]" value="110304">
+	)); */ ?>
 	<?php echo CHtml::hiddenField('location_lon'); ?>
 	<?php echo CHtml::hiddenField('location_lat'); ?>
 	
@@ -345,17 +436,35 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php $this->endWidget(); ?>
 </div><!-- form -->
 
-
+<?php
+$provincias=CController::createUrl('location/provinces');
+$distritos=CController::createUrl('location/districts');
+$filtrardep=CController::createUrl('location/filtrardep');
+?>
 <script>
+	function Region(valor) {
+	    $.get( "<?= $filtrardep ?>?ambito="+valor, function( data ) {$( "#Iform_department_id" ).html( data );});
+	}
+	
+	function Provincias(valor) {
+	    $.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Iform_province_id" ).html( data );});
+	    $("#Iform_province_id").find("option").remove().end().append("<option value></option>").val("");
+	    $("#Iform_location_id").find("option").remove().end().append("<option value></option>").val("");
+	}
+	
+	function Distritos(valor) {
+	    $.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Iform_location_id" ).html( data );});
+	    $("#Iform_location_id").find("option").remove().end().append("<option value></option>").val("");
+	}
 	$('.solicitud').on('blur', function(){
 		$('#Iform_area').val(numeral($('#Iform_area').val()).format('0,0.00'));
 		$('#Iform_sow_estimate_quantity').val(numeral($('#Iform_sow_estimate_quantity').val()).format('0,0.00'));
-	})
-	
-	
-	
+	});
 	$(document).ready(function(){
 	//
+	
+	
+	
 	$(document).on('click','caption',function(){
 		//obtener la tabla que contiene el caption clickeado
 		var objTabla=$(this).parent();

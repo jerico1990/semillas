@@ -21,4 +21,4 @@ $this->widget('bootstrap.widgets.TbMenu', array(
 
 <h2>Crear O.C. / E.E.</h2>
 
-<?php $this->renderPartial('_form', array('model'=>$model,'departamentos'=>$departamentos)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'departamentos'=>$departamentos,'provincias'=>$provincias,'distritos'=>$distritos)); ?>

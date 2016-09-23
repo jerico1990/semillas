@@ -26,19 +26,24 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     'columns'=>array(
          //array('name'=>'id', 'header'=>'#'),
         array('name'=>'codigo_simple', 'header'=>'Nombre'),
+	array(
+	    'header' => 'Ambito',
+	    'type'=>'raw',
+	    'value' => '$data->getAmbito($data->location_id)',
+	),
 		  //array('name'=>'tipo_empresa','value'=>'$data->descripciontempresa($data->tipo_empresa)', 'header'=>'Tipo Empresa'),
 		  //array('name'=>'tipo_usuario','value'=>'$data->descripciontusuario($data->tipo_usuario)', 'header'=>'Tipo Usuario'),
         array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
-				'template'=>'{update}  ',
-				'buttons'=>array (
-					'update'=> array(
-						'url'=>'Yii::app()->createUrl("headquarter/update_ambito", array("id"=>$data->id))',			
-					),
-					'view'=> array(
-						'url'=>'Yii::app()->createUrl("headquarter/view_ambito", array("id"=>$data->id))',			
-					),
-				),
+		'template'=>'{update}  ',
+		'buttons'=>array (
+			'update'=> array(
+				'url'=>'Yii::app()->createUrl("headquarter/update_ambito", array("id"=>$data->id))',			
+			),
+			'view'=> array(
+				'url'=>'Yii::app()->createUrl("headquarter/view_ambito", array("id"=>$data->id))',			
+			),
+		),
             'htmlOptions'=>array('style'=>'width: 50px'),
         ),
     ),

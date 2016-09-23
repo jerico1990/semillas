@@ -6,7 +6,7 @@ $this->widget('bootstrap.widgets.TbMenu', array(
     'stacked'=>false, // whether this is a stacked menu
     'items'=>array(
         //array('label'=>'Listar', 'url'=>array('index'), 'active'=>true),
-        array('label'=>'Listar O.C. / E.E.', 'url'=>array('admin'),'active'=>true),      
+        array('label'=>'Listar O.C. / E.E.', 'url'=>array('admin_ambito'),'active'=>true),      
     ),
 ));
 ?>

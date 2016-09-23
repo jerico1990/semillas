@@ -37,8 +37,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	    <label for="User_var_tipo_documento" class="required">Tipo de documento <span class="required">*</span></label>
 	    <select name="User[tipo_documento]" id="User_tipo_documento" >
 		<option value>Seleccionar</option>
-		<option value=1>DNI</option>
-		<option value=2>CARNET DE EXTRANJERÍA</option>
+		<option value=1 <?= ($model->tipo_documento==1)?'selected':'';?> >DNI</option>
+		<option value=2 <?= ($model->tipo_documento==2)?'selected':'';?> >CARNET DE EXTRANJERÍA</option>
 	    </select>
 	    <!--input class="span12" size="12" maxlength="12" name="Solicitud[tipo_persona]" id="Solicitud_var_tipo_persona" type="text">-->
 	    <div class="help-block error" id="User_var_tipo_documento_em_" style="display:none">Tipo de documento no es correcto.</div>

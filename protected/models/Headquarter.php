@@ -37,6 +37,7 @@ class Headquarter extends CActiveRecord
 	public $email;
 	public $departamento;
 	public $provincia;
+	public $district_id;
 	public function tableName()
 	{
 		return 'headquarter';
@@ -191,5 +192,25 @@ class Headquarter extends CActiveRecord
 		   $usuario=Maestro::model()->find('codigo=:codigo and codigo_detalle=:codigo_detalle',
 										  array(':codigo'=>'009',':codigo_detalle'=>$descripcion));
 		  return $usuario->descripcion;
+	}
+	
+	
+	public function getAmbito($departament_id)
+	{
+	    $departamentos = Location::model()->findAll(array(
+		  'select'   => 't.department, t.department_id',
+		  'group'    => 't.department',
+		  'order'    => 't.department ASC',
+		  'distinct' => true
+	     ));
+	    $descripcion="";
+	    foreach($departamentos as $departamento)
+	    {
+		if($departamento->department_id==$departament_id)
+		{
+		    $descripcion=$departamento->department;
+		}
+	    }
+	    return $descripcion;
 	}
 }

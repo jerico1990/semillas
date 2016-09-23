@@ -92,6 +92,8 @@ class HeadquarterController extends Controller
 		      'order'    => 't.department ASC',
 		      'distinct' => true
 		 ));
+	    $distritos=array();
+	    $provincias=array();
 	    if(isset($_POST['Headquarter']))
 	    {
 		$model->attributes=$_POST['Headquarter'];
@@ -150,7 +152,9 @@ class HeadquarterController extends Controller
 	    }
 	    $this->render('create',array(
 		    'model'=>$model,
-		    'departamentos'=>$departamentos
+		    'departamentos'=>$departamentos,
+		    'provincias'=>$provincias,
+		    'distritos'=>$distritos
 	    ));
 	}
 	
@@ -257,7 +261,41 @@ class HeadquarterController extends Controller
 	{
 		$this->pageTitle = "Editar Estación";
 		$model=$this->loadModel($id);
-
+		$empresa=User::model()->find('headquarter_id=:headquarter_id',[':headquarter_id'=>$id]);
+		$ubigeo=Location::model()->find('district_id=:district_id',[':district_id'=>$empresa->district_id]);
+		$usuario=Cruge::model()->find('iduser=:iduser',[':iduser'=>$empresa->cruge_user_id]);
+		$model->username=$usuario->username;
+		$model->email=$empresa->email;
+		$model->legal_name=$empresa->legal_name;		
+		$model->department_id=$ubigeo->department_id;
+		$model->province_id=$ubigeo->province_id;
+		$model->location_id=$ubigeo->district_id;
+		$model->district_id=$ubigeo->district_id;
+		$model->address=$empresa->address;
+		$model->first_name=$empresa->first_name;
+		$model->last_name=$empresa->last_name;
+		$model->document_number=$empresa->document_number;
+		
+		$departamentos = Location::model()->findAll(array(
+		      'select'   => 't.department, t.department_id',
+		      'group'    => 't.department',
+		      'order'    => 't.department ASC',
+		      'distinct' => true
+		 ));
+		$provincias = Location::model()->findAll(array(
+			'select'    => 't.province_id, t.province, t.province_id, t.department_id',
+			'condition' => 'department_id = "' . $model->department_id.'"',
+			'order'		=>'t.province',
+			'distinct' => true
+		));
+		
+		$distritos = Location::model()->findAll(array(
+			'select'    => 't.district, t.district_id, t.province_id',
+			'condition' => 'province_id = "' . $model->province_id.'"',
+			'order'		=>'t.district',
+			'distinct' => true
+		));
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);		
 		
@@ -266,28 +304,28 @@ class HeadquarterController extends Controller
 			
 			$model->attributes=$_POST['Headquarter'];
 			$model->ruc=$_POST['Headquarter']['ruc'];
-			$model->location_id=$_POST['Headquarter']['location_id'];
+			$model->location_id=$_POST['Headquarter']['district_id'];
 			$model->tipo_empresa=$_POST['Headquarter']['tipo_empresa'];
-			$model->departamento=$_POST['Headquarter']['departamento'];
-			$model->provincia=$_POST['Headquarter']['provincia'];
+			//$model->departamento=$_POST['Headquarter']['departamento'];
+			//$model->provincia=$_POST['Headquarter']['provincia'];
 			if($_POST['Headquarter']['tipo_empresa']==1)
 			{$model->search_tipo_empresa="Privado";}
 			elseif($_POST['Headquarter']['tipo_empresa']==2)
 			{$model->search_tipo_empresa="Estatal";}
 			
-			$model->name=$_POST['User']['legal_name'];
+			$model->name=$_POST['Headquarter']['legal_name'];
 			if($model->save())	
 			{
 				$user=User::model()->find('type_id=5 and headquarter_id=:headquarter_id',array(':headquarter_id'=>$model->id));			
-				$user->legal_name=$_POST['User']['legal_name'];
-				$user->address=$_POST['User']['address'];
-				$user->document_number=$_POST['User']['document_number'];
-				$user->first_name=$_POST['User']['first_name'];
-				$user->last_name=$_POST['User']['last_name'];
-				$user->name=$_POST['Cruge']['username'];
+				$user->legal_name=$_POST['Headquarter']['legal_name'];
+				$user->address=$_POST['Headquarter']['address'];
+				$user->document_number=$_POST['Headquarter']['document_number'];
+				$user->first_name=$_POST['Headquarter']['first_name'];
+				$user->last_name=$_POST['Headquarter']['last_name'];
+				$user->name=$_POST['Headquarter']['username'];
 				$user->save();		
 				
-				if($_REQUEST['username_ant']!==$_POST['Cruge']['username'] || $_REQUEST['email_ant']!==$_POST['Cruge']['email'])
+				if($_REQUEST['username_ant']!==$_POST['Headquarter']['username'] || $_REQUEST['email_ant']!==$_POST['Headquarter']['email'])
 				{
 					$cruge=Cruge::model()->find('username=:username',array(':username'=>$_REQUEST['username_ant']));					
 					$cruge->username=$_POST['Cruge']['username'];
@@ -301,6 +339,9 @@ class HeadquarterController extends Controller
 		}
 		$this->render('update',array(
 			'model'=>$model,
+			'departamentos'=>$departamentos,
+			'provincias'=>$provincias,
+			'distritos'=>$distritos
 		));
 	}
 	
