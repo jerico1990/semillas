@@ -152,7 +152,7 @@ $(function(){
 																				'type'=>'POST',
 																				'data' => 'js:$("#inspection-form").serialize()',
 																				'success' =>'function( data ){
-																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 																				}'
 																				),													
 													'htmlOptions'=>array('class'=>'span12',
@@ -236,7 +236,7 @@ $(function(){
 										  'fecha'=>'js:$("#Inspection_aprobado_fecha_propuesta").val()'
 										  ),
 								'success' => 'function(data){
-																location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+																location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 																}'
 								),
 								
@@ -280,7 +280,7 @@ $(function(){
 								'type'=>'POST',	
 								'data' => "js:$('#inspection-form').serializeArray()",
 								'success' =>'function( data ){
-								location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+								location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 								}'
 								),
 								'htmlOptions'=>array('data-dismiss'=>'modal',

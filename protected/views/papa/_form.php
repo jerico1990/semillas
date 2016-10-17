@@ -189,7 +189,7 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 																				'type'=>'POST',
 																				'data' => 'js:$("#inspection-form").serialize()',
 																				'success' =>'function( data ){
-																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 																				}'
 																				),													
 													'htmlOptions'=>array('class'=>'span12',
@@ -262,7 +262,7 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 										   'id'=>$model->id,
 										   'fecha'=>'js:$("#Inspection_aprobado_fecha_propuesta").val()'
 										  ),
-								'success' => 'function(data){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());}'
+								'success' => 'function(data){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
 								),								
 								'htmlOptions'=>array('data-dismiss'=>'modal',
 								'url' => Yii::app()->createUrl( 'inspection/cumple' ),
@@ -301,7 +301,7 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 								//'dataType'=> 'jsonp',		  
 								'type'=>'POST',	
 								'data' => "js:$('#inspection-form').serializeArray()",
-								'success' =>'function( data ){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());}'
+								'success' =>'function( data ){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
 								),
 								'htmlOptions'=>array('data-dismiss'=>'modal',
 								'url' => Yii::app()->createUrl( 'inspection/condicional' ),

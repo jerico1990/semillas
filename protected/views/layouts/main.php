@@ -27,6 +27,7 @@
     <!--Steps-->
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/fuelux.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/docs.css" />
+    
     <!--Wijmon-->
     <?php
     Yii::app()->clientScript->registerCoreScript('jquery');

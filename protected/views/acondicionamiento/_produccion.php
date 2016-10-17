@@ -95,7 +95,7 @@ $(function(){
 													'id_acondicionamiento'=>$maxacond->id,
 													),
 												'success' => 'function(data){
-																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/view/"+$("#formu").val());
+																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/view/"+$("#formu").val());
 																				}'
 												),
 												'htmlOptions'=>array('class'=>'span12',
@@ -110,7 +110,7 @@ $(function(){
 																	'label'=>'Cancelar',
 																	'ajaxOptions'=>array(
 																		'success' => 'function(){
-																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 																		}'	),
 																	'htmlOptions'=>array('class'=>'span12',))); ?>																		 
                   </div>

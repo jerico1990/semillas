@@ -21,7 +21,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	<?php
 		$departments = Location::model()->findAll(array(
-				'select'   => 't.id, t.department, t.departament_id',
+				'select'   => 't.id, t.department, t.department_id',
 				'group'    => 't.id,t.department',
 				'order'	  => 't.department',
 				'distinct' => true
@@ -150,7 +150,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 											'btn'=>'1',
 											'id'=>$model->id,										
 											),
-								'success' => 'function(data){	location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());}'
+								'success' => 'function(data){	location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
 								),								
 								'htmlOptions'=>array('data-dismiss'=>'modal','class'=>'span12','id'=>'btn_aprobado_si','name'=>'btn_aprobado_si',
 								'url' => Yii::app()->createUrl( 'acondicionamiento/cumple' ),
@@ -177,7 +177,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 																		'type'=>'POST',
 																		'data' => 'js:$("#acondicionamiento-form").serialize()',
 																		'success' =>'function( data ){
-																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 																		}'
 																		),													
 											'htmlOptions'=>array('class'=>'span12',
@@ -288,7 +288,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 								'type'=>'POST',	
 								'data' => "js:$('#acondicionamiento-form').serializeArray()",
 								'success' =>'function( data ){
-								location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+								location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 								}'
 								),
 								'htmlOptions'=>array('data-dismiss'=>'modal',

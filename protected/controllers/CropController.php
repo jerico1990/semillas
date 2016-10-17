@@ -196,37 +196,35 @@ class CropController extends Controller
 	
 	
 	
-	public function actionVariedad()
-	{		
+	public function actionVariedad($crop)
+	{
+		
 		$criteria=new CDbCriteria;
 		$criteria->select='id,name';  // seleccionar solo la columna 'title'
 		$criteria->condition='parent=:parent and status=1';
-		$criteria->params=array(':parent'=>$_REQUEST['crop_id']);
+		$criteria->params=array(':parent'=>$crop);
 		
 		$cultivar = Crop::model()->findAll($criteria); // $params no es necesario
-		
+		$options="";
 		foreach ($cultivar as $data) {
-			echo CHtml::tag('option',
-			array('value'=>$data->id),CHtml::encode($data->name),true);			
+			$options=$options."<option value='$data->id'>$data->name</option>";		
 		}
-		
-		
+		//var_dump($options);die;
+		echo $options;		
 	}
-	public function actionVariedadanterior()
+	public function actionVariedadanterior($crop)
 	{		
 		$criteria=new CDbCriteria;
 		$criteria->select='id,name';  // seleccionar solo la columna 'title'
 		$criteria->condition='parent=:parent and status=1';
-		$criteria->params=array(':parent'=>$_REQUEST['crop_before_id']);
+		$criteria->params=array(':parent'=>$crop);
 		
 		$cultivar = Crop::model()->findAll($criteria); // $params no es necesario
-		
+		$options="";
 		foreach ($cultivar as $data) {
-			echo CHtml::tag('option',
-			array('value'=>$data->id),CHtml::encode($data->name),true);			
+			$options=$options."<option value='$data->id'>$data->name</option>";				
 		}
-		
-		
+		echo $options;
 	}
 	public function actionCategory()
 	{		

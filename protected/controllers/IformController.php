@@ -115,106 +115,131 @@ class IformController extends Controller
 	{
 		$this->pageTitle = "Generar Solicitud";
 		$model=new Iform;
-		$inbox=new Inbox;		
-		
-		//$crop = Crop::model()->findAll('parent is null');		
+		$inbox=new Inbox;
 		
 		if(isset($_POST['Iform']))
-		{			
-			
-			$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));			
-			$model->attributes=$_POST['Iform'];                        
-			$model->user_id=$user->id;
-			
-			if($_REQUEST['location_lon']=="" || $_REQUEST['location_lat']==""){
-				$_REQUEST['location_lat']=0;
-				$_REQUEST['location_lon']=0;
+		{	
+		    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));			
+		    $model->attributes=$_POST['Iform'];                        
+		    $model->user_id=$user->id;
+		    /*
+		    if($_REQUEST['location_lon']=="" || $_REQUEST['location_lat']==""){
+			    $_REQUEST['location_lat']=0;
+			    $_REQUEST['location_lon']=0;
+		    }*/
+		    
+		    //$model->location_lon=$_REQUEST['location_lon'];
+		    //$model->location_lat=$_REQUEST['location_lat'];
+		    
+		    $crop_before=Crop::model()->find('id=:id', array(':id'=>$model->variety_before_id));
+		    $model->variety_before_id=$model->variety_before_id;
+		    $model->crop_before_id=$crop_before->parent;
+		    
+		    $crop=Crop::model()->find('id=:id', array(':id'=>$model->variety_id));
+		    $model->crop_id=$crop->parent;
+		    
+		    $model->area=str_replace(',','',$model->area);
+		    $model->sow_estimate_quantity=str_replace(',','',$model->sow_estimate_quantity);
+		    $model->seed_date=date('Y-m-d',strtotime($model->seed_date));
+		    if($model->save())
+		    {
+			if(!$model->farmers_dnis)
+			{
+			    $countAgricultores=0;
 			}
-			$model->location_lon=$_REQUEST['location_lon'];
-			$model->location_lat=$_REQUEST['location_lat'];
-			$crop_before=Crop::model()->find('id=:id', array(':id'=>$_POST['Iform']['variety_before_id']));
-			$model->variety_before_id=$_POST['Iform']['variety_before_id'];
-			$model->crop_before_id=$crop_before->parent;
-			
-			
-			$crop=Crop::model()->find('id=:id', array(':id'=>$_POST['Iform']['variety_id']));
-			$model->crop_id=$crop->parent;
-			
-			$model->area=str_replace(',','',$_POST['Iform']['area']);
-			$model->sow_estimate_quantity=str_replace(',','',$_POST['Iform']['sow_estimate_quantity']);
-			$model->seed_date=date('Y-m-d',strtotime($_POST['Iform']['seed_date']));
-			if($model->save())
-			{	
-				$criteria=new CDbCriteria;
-				$criteria->select='max(id) as id';
-				$criteria->condition='user_id=:user_id';
-				$criteria->params=array(':user_id'=>$user->id);
-				$form = Iform::model()->find($criteria);
-				
-				
-				//Insertando Farmers
-				for($i = 0; $i < (count($_REQUEST['Iform'])-10); ++$i)
-				{				
-					if(isset( $_REQUEST['Iform']['farmers_nombre_'.$i.'']) && $_REQUEST['Iform']['farmers_nombre_'.$i.'']!=="")
-					{
-						$farmers=new Farmers;
-						$farmers->form_id=$model->id;
-						$farmers->name=$_REQUEST['Iform']['farmers_nombre_'.$i.''];
-						$farmers->document_number=$_REQUEST['Iform']['farmers_dni_'.$i.''];
-						$farmers->save();
-					}
-				}
-				
-				
-				//Insertando Fuentes
-				for($a = 0; $a < (count($_REQUEST['Iform'])-10); ++$a)
-				{				
-					if(isset( $_REQUEST['Iform']['source_control_'.$a.'']) && $_REQUEST['Iform']['source_control_'.$a.'']!=="")
-					{
-						$source_doc=new SourceDoc;
-						//echo $_REQUEST['Iform']['farmers_nombre_'.$i.''];
-						$source_doc->form_id=$model->id;
-						$source_doc->control=$_REQUEST['Iform']['source_control_'.$a.''];
-						$source_doc->etiqueta=$_REQUEST['Iform']['source_etiqueta_'.$a.''];
-						$source_doc->cantidad=$_REQUEST['Iform']['source_cantidad_'.$a.''];
-						$source_doc->document_reference=$_REQUEST['Iform']['document_reference_'.$a.''];
-						$source_doc->productor=$_REQUEST['Iform']['productor_'.$a.''];
-						$source_doc->save();
-					}
-				}
-				
-				$inbox->attributes=$_POST['Iform'];
-				$inbox->form_id=$form->id;
-				$inbox->to=$user->id;
-				$inbox->status_id=1;
-				$inbox->estado=1;
-				$inbox->date=date('Y-m-d');			
-				
-				
-				if($inbox->save())
-				{
-					
-					//Pagos
-					$headquarter=Headquarter::model()->find('id=:id',array(':id'=>$_POST['Iform']['headquarter_id']));
-					if($headquarter->tipo_empresa==2)
-					{
-						
-						$concepto = Concept::model()->find('id=:id',array(':id'=>1));					
-						$payment=new Payment;
-						$payment->concept_id=$concepto->id;
-						$payment->date=date('Y-m-d');
-						$payment->quantity=1;
-						$payment->ruc=$user->ruc;
-						$payment->price=$concepto->price;
-						$payment->form_id=$model->id;
-						$payment->user_id=$model->user_id;
-						$payment->descripcion=$concepto->short_name." de ".$model->crop->name;
-						$payment->document_reference=date('Y-m-d');
-						$payment->save();
-					}					
-					$this->redirect(array('view','id'=>$model->id));
-				}
+			else
+			{
+			    $countAgricultores=count(array_filter($model->farmers_dnis));
 			}
+			for($i=1;$i<$countAgricultores;$i++)
+			{
+			    $farmers=new Farmers;
+			    $farmers->form_id=$model->id;
+			    $farmers->name=$model->farmers_nombres[$i];
+			    $farmers->document_number=$model->farmers_dnis[$i];
+			    $farmers->save();
+			}
+			    /*
+			    //Insertando Farmers
+			    for($i = 0; $i < (count($_REQUEST['Iform'])-10); ++$i)
+			    {				
+				    if(isset( $_REQUEST['Iform']['farmers_nombre_'.$i.'']) && $_REQUEST['Iform']['farmers_nombre_'.$i.'']!=="")
+				    {
+					    $farmers=new Farmers;
+					    $farmers->form_id=$model->id;
+					    $farmers->name=$_REQUEST['Iform']['farmers_nombre_'.$i.''];
+					    $farmers->document_number=$_REQUEST['Iform']['farmers_dni_'.$i.''];
+					    $farmers->save();
+				    }
+			    }*/
+			    
+			if(!$model->productors)
+			{
+			    $countFuentes=0;
+			}
+			else
+			{
+			    $countFuentes=count(array_filter($model->productors));
+			}
+			for($i=1;$i<$countFuentes;$i++)
+			{
+			    $source_doc=new SourceDoc;
+			    $source_doc->form_id=$model->id;
+			    $source_doc->control=$model->sources_controls[$i];
+			    $source_doc->etiqueta=$model->sources_etiquetas[$i];  
+			    $source_doc->cantidad=$model->sources_cantidades[$i]; 
+			    $source_doc->document_reference=$model->documents_references[$i]; 
+			    $source_doc->productor=$model->productors[$i];  
+			    $source_doc->save();
+			}
+			/*
+			    //Insertando Fuentes
+			    for($a = 0; $a < (count($_REQUEST['Iform'])-10); ++$a)
+			    {				
+				    if(isset( $_REQUEST['Iform']['source_control_'.$a.'']) && $_REQUEST['Iform']['source_control_'.$a.'']!=="")
+				    {
+					    $source_doc=new SourceDoc;
+					    //echo $_REQUEST['Iform']['farmers_nombre_'.$i.''];
+					    $source_doc->form_id=$model->id;
+					    $source_doc->control=$_REQUEST['Iform']['source_control_'.$a.''];
+					    $source_doc->etiqueta=$_REQUEST['Iform']['source_etiqueta_'.$a.''];
+					    $source_doc->cantidad=$_REQUEST['Iform']['source_cantidad_'.$a.''];
+					    $source_doc->document_reference=$_REQUEST['Iform']['document_reference_'.$a.''];
+					    $source_doc->productor=$_REQUEST['Iform']['productor_'.$a.''];
+					    $source_doc->save();
+				    }
+			    }
+			*/
+			    $inbox->attributes=$_POST['Iform'];
+			    $inbox->form_id=$model->id;
+			    $inbox->to=$user->id;
+			    $inbox->status_id=1;
+			    $inbox->estado=1;
+			    $inbox->date=date('Y-m-d');		
+			    if($inbox->save())
+			    {
+				    
+				    //Pagos
+				    $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$_POST['Iform']['headquarter_id']));
+				    if($headquarter->tipo_empresa==2)
+				    {
+					    
+					    $concepto = Concept::model()->find('id=:id',array(':id'=>1));					
+					    $payment=new Payment;
+					    $payment->concept_id=$concepto->id;
+					    $payment->date=date('Y-m-d');
+					    $payment->quantity=1;
+					    $payment->ruc=$user->ruc;
+					    $payment->price=$concepto->price;
+					    $payment->form_id=$model->id;
+					    $payment->user_id=$model->user_id;
+					    $payment->descripcion=$concepto->short_name." de ".$model->crop->name;
+					    $payment->document_reference=date('Y-m-d');
+					    $payment->save();
+				    }					
+				    $this->redirect(array('view','id'=>$model->id));
+			    }
+		    }
 		}
 
 		$this->render('create',array(
@@ -266,7 +291,7 @@ class IformController extends Controller
 	 */
 	public function actionIndex()
 	{
-     $this->pageTitle = "Solicitudes";
+	    $this->pageTitle = "Solicitudes";
 		if(Yii::app()->user->name=='admin')
             {
                 $dataProvider=new CActiveDataProvider('Iform');
@@ -491,11 +516,12 @@ class IformController extends Controller
 	public function actionIview($id)
 	{
 		  $this->pageTitle = "Detalle de expediente";
+		  die;
 		  $this->render('ivsolicitud',array(
 			  'model'=>$this->loadModel($id),
 		  ));
 	}
-   public function actionIvsolicitud($id)
+	public function actionIvsolicitud($id)
 	{
 		  $this->pageTitle = "Solicitud";
 		  $this->render('ivsolicitud',array(
@@ -552,7 +578,7 @@ class IformController extends Controller
 			
 			$location=Location::model()->find('district_id=:district_id',array(':district_id'=>$form->location_id));
 			$headquarter=Headquarter::model()->find('parent_id=:parent_id and location_id=:location_id',
-																 array(':parent_id'=>$form->headquarter_id,':location_id'=>$location->departament_id));
+																 array(':parent_id'=>$form->headquarter_id,':location_id'=>$location->department_id));
 			
 			//Fechaa para diferentes anio
 			$correlativo=$headquarter->correlativo+1;				

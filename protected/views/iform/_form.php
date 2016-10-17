@@ -1,57 +1,49 @@
 <?php
-//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/requirejs/require.2.1.8.min.js');
-//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/app/start.js');
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/OpenLayers/OpenLayers.js');
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/css/style.css');
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/OpenLayers/OpenLayers.js');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/css/style.css');
 ?>
-<script src="http://maps.google.com/maps/api/js?sensor=false&v=3;"></script>
+
 <style>
-	.thing {
-		background: #eee;
-		height: 200px;
-		margin-bottom: 20px;
-	}
-	.map {
-		height: 400px;
-		width: 400px;
-		background: #eee;
-	}
+    .thing {
+	background: #eee;
+	height: 200px;
+	margin-bottom: 20px;
+    }
+    .map {
+	height: 400px;
+	width: 400px;
+	background: #eee;
+    }
 </style>
 <script>
-	
+/*
 jQuery( document ).ready(function( $ ) {
-	
 			new_map = new OpenLayers.Map('map', {
-				theme: null,
-				zoomMethod: null,
-				projection: 'EPSG:3857',
-					layers: [
-						new OpenLayers.Layer.Google(
-						"Google Hybrid",
-						{type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20,  animationEnabled: false}
-						)
-					],
-				center: new OpenLayers.LonLat(10.2, 48.9)
-					.transform('EPSG:4326', 'EPSG:3857'),
-				zoom: 5			
+			    theme: null,
+			    zoomMethod: null,
+			    projection: 'EPSG:3857',
+				layers: [
+				    new OpenLayers.Layer.Google(
+				    "Google Hybrid",
+				    {type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20,  animationEnabled: false}
+				    )
+				],
+			    center: new OpenLayers.LonLat(10.2, 48.9).transform('EPSG:4326', 'EPSG:3857'),
+			    zoom: 5			
 			});
 			vector = new OpenLayers.Layer.Vector('vector');
 			new_map.addLayers([vector]);
-			
 			pointLayer = new OpenLayers.Layer.Vector("Point Layer",
-				{
-               styleMap: new OpenLayers.StyleMap({
-						pointRadius: 6, // based on feature.attributes.type
-                  fillColor: "#ff0000"
-               }),														  
+			{
+			    styleMap: new OpenLayers.StyleMap({
+				pointRadius: 6, // based on feature.attributes.type
+				fillColor: "#ff0000"
+			    }),														  
 			});
 			new_map.addLayers([pointLayer]);
-			
 			point = new OpenLayers.Control.DrawFeature(
 				pointLayer,
-            OpenLayers.Handler.Point);
-			
-			
+				OpenLayers.Handler.Point);
 			point.featureAdded = function(e) {
 				pointLayer.removeAllFeatures();
 				pointLayer.drawFeature(e)
@@ -63,145 +55,102 @@ jQuery( document ).ready(function( $ ) {
 			}
 			new_map.addControl(point);
 	
-	
-	$('#crop_id').change(function(){		
-		if($('#crop_id').val()==15){			
-			$('#Iform_category').html('<option value="5">Basica 1</option>'+
-						  '<option value="6">Basica 2</option>'+
-						  '<option value="7">Registrada 1</option>'+
-						  '<option value="8">Registrada 2</option>'+
-						  '<option value="9">Certificada</option>'+
-						  '<option value="10">Autorizada</option>'
-						  );
-		}
-		else
-		{
-			return $('#Iform_category').html('<option value="1">Basica</option>'+
-							'<option value="2">Registrada</option>'+
-							'<option value="3">Certificada</option>'+
-							'<option value="4">Autorizada</option>');
-		}
-	})
-});
+});*/
 </script>
 
 <?php
 $ambitos = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5');
 $heard = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5'); //:model()->findAll('parent_id is null');
 $headquarters = CHtml::listData($heard,'id','name');
-			
-			
-		  
-		  
+$cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status=1'));
 ?>
 <div class="form">
-<?php /* $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'form-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-));*/
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-    'id'=>'form-form',
-    'htmlOptions'=>array('class'=>'well'),
-    'enableClientValidation'=>true,
-	 'clientOptions'=>array('validateOnSubmit'=>true),
-)); ?>
+<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm'); ?>
 	<p class="note">Campos <span class="required">*</span> requeridos.</p>
 	<?php echo $form->errorSummary($model); ?>
-	<h2>Semilla a Producir</h2>	
-		<?php
-			echo "Cultivo</br>";
-			$crop = Crop::model()->findAll(array('condition'=>'parent is null and status=1'));
-			 
-			$list = CHtml::listData($crop,'id','name');
-					 
-			echo 	CHtml::dropDownList('crop_id',$model, $list,array('empty'=>'Seleccionar..',
-				'ajax' => array(
-				'type'=>'POST', //request type
-				'url'=>CController::createUrl('crop/variedad'), //url to call.
-				//'update'=>'#Iform_variety_id',
-				'success' => 'function(data)
-				{
-				$("#Iform_variety_id").find("option").each(function(){
-				$(this).remove();
-				});																
-				$("#Iform_variety_id").append(data);											
-				console.log($("Iform_variety_id"));													
-				}'))); 
-		?>
-		<?php echo $form->dropDownListRow($model,'variety_id', array(),array()); ?>
-		<br>
-		<?php
-			$cropa = Crop::model()->findAll(array('condition'=>'parent is null and status=1'));
-			$listaa = CHtml::listData($cropa,'id','name');
-			echo "Cultivo anterior</br>";
-			echo 	CHtml::dropDownList('crop_before_id',$model, $listaa,array('empty'=>'Seleccionar..',
-				'ajax' => array(
-				'type'=>'POST', //request type
-				'url'=>CController::createUrl('crop/variedadanterior'), //url to call.
-				//'update'=>'#Iform_variety_id',
-				'success' => 'function(data)
-				{
-				$("#Iform_variety_before_id").find("option").each(function(){
-				$(this).remove();
-				});																
-				$("#Iform_variety_before_id").append(data);											
-				console.log($("aaa"));													
-				}'))); 
-		?>
-		<?php echo $form->dropDownListRow($model,'variety_before_id', array(),array()); ?>
-		
-		<?php	echo $form->dropDownListRow($model, 'category', array(), array('empty'=>'Seleccionar..')); ?>
-	<h2>Fuente de Origen</h2>	 			
-			<table align="center" style="width:150px !important;">				
-				<thead>
-					<tr>
-						<th>N° Control</th>
-						<th>N° Etiqueta</th>
-						<th>Cant.(kg)</th>
-						<th>Documento</th>
-						<th>Producido por</th>
-						<th width="22">&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td ><input id="Iform_source_control_0" name="Iform[source_control_0]" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>
-						<td ><input id="Iform_source_etiqueta_0" name="Iform[source_etiqueta_0]" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>
-						<td ><input id="Iform_source_cantidad_0" name="Iform[source_cantidad_0]" style="width:50px !important;" type="text" class="clsAnchoTotal"></td>
-						<td ><input id="Iform_document_reference_0" name="Iform[document_reference_0]" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>
-						<td ><input id="Iform_productor_0" name="Iform[productor_0]" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>
-						<td align="right" ><input style="width:30px !important;" type="button" value="-" class="clsEliminarFila"></td>
-					</tr>
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="4" align="right">
-							<input type="button" value="Agregar una fila" class="clsAgregarFila">							
-						</td>
-					</tr>
-				</tfoot>
-			</table>
+	<h2>Semilla a Producir</h2>
+	    <div class="row-fluid">
+		<div class="span12">
+		    <label class="required">Cultivo<span class="required">*</span></label>
+		    <select name="Iform[crop_id]" id="crop_id" onchange="Cultivo($(this).val())">
+			<option value>seleccionar</option>
+			<?php foreach($cultivos as $cultivo){ ?>
+			    <option value="<?= $cultivo->id ?>"><?= $cultivo->name ?></option>
+			<?php } ?>
+		    </select>
+		    <div class="help-block error" id="Iform_crop_id_em_" style="display:none">Cultivo no es correcto.</div>
+		</div>
+	    </div>
+	    
+	    <div class="row-fluid">
+		<div class="span12">
+		    <label class="required">Cultivar<span class="required">*</span></label>
+		    <select name="Iform[variety_id]" id="Iform_variety_id">
+			<option value>seleccionar</option>
+		    </select>
+		    <div class="help-block error" id="Iform_variety_id_em_" style="display:none">Cultivar no es correcto.</div>
+		</div>
+	    </div>
+	    
+	    <div class="row-fluid">
+		<div class="span12">
+		    <label class="required">Cultivo anterior<span class="required">*</span></label>
+		    <select name="Iform[crop_before_id]" id="crop_before_id" onchange="CultivoAnterior($(this).val())">
+			<option value>seleccionar</option>
+			<?php foreach($cultivos as $cultivo){ ?>
+			    <option value="<?= $cultivo->id ?>"><?= $cultivo->name ?></option>
+			<?php } ?>
+		    </select>
+		    <div class="help-block error" id="Iform_crop_before_id_em_" style="display:none">Cultivo anterior no es correcto.</div>
+		</div>
+	    </div>
+	    
+	    <div class="row-fluid">
+		<div class="span12">
+		    <label class="required">Cultivar anterior<span class="required">*</span></label>
+		    <select name="Iform[variety_before_id]" id="variety_before_id">
+			<option value>seleccionar</option>
+		    </select>
+		    <div class="help-block error" id="Iform_variety_before_id_em_" style="display:none">Cultivar anterior no es correcto.</div>
+		</div>
+	    </div>
+	    
+	    <div class="row-fluid">
+		<div class="span12">
+		    <label class="required">Categoria<span class="required">*</span></label>
+		    <select name="Iform[category]" id="Iform_category">
+			<option value>seleccionar</option>
+		    </select>
+		    <div class="help-block error" id="Iform_category_em_" style="display:none">Categoria no es correcto.</div>
+		</div>
+	    </div>
+	    
+	    
+	    <h2>Fuente de Origen</h2>
+	    <button type="button" id="agregar_fuente" class="btn btn-primary">Agregar fuente de origen</button><br><br>
+	    <table class="table borderless table-hover" id="detalle_tabla_fuente" border="0">
+		<thead>
+		    <tr>
+			<th>N° Control</th>
+			<th>N° Etiqueta</th>
+			<th>Cant.(kg)</th>
+			<th>Nro de documento</th>
+			<th>Producido por</th>
+			<th width="22">&nbsp;</th>
+		    </tr>
+		</thead>
+		<tbody>
+		    <tr id='fuente_addr_1'></tr>
+		</tbody>
+	    </table>
+	    <div id="error_fuente_origen" style="color: red"></div>
+	
 		
 	<h2>Campo de Multiplicacion</h2>
-	<?php
-		$departments = Location::model()->findAll(array(
-				'select'   => 't.id, t.department, t.department_id',
-				'group'    => 't.id,t.department',
-				'order'	  => 't.department',
-				'distinct' => true
-			)); 
-		$list = CHtml::listData($departments,'department_id','department');
-	?>
-	
 	<ul class="nav nav-tabs">
 	    <li class="active"><a data-toggle="tab" href="#home">Ubicación</a></li>
 	    <li><a data-toggle="tab" href="#menu1">Datos</a></li>
-	</ul>
-	  
+	</ul>  
 	<div class="tab-content">
 	    <div id="home" class="tab-pane fade in active">
 		<div class="row-fluid">
@@ -213,6 +162,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				<option value="<?= $ambito->id ?>"><?= $ambito->name ?></option>
 			    <?php } ?>
 			</select>
+			<div class="help-block error" id="Iform_headquarter_id_em_" style="display:none">Organismo Certificador no es correcto.</div>
 		    </div>
 		</div>
 		<div class="row-fluid">
@@ -260,33 +210,33 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	    <div id="menu1" class="tab-pane fade">
 		<div class="row-fluid">
 		    <div class="span8">
-			<label for="Iform_location_annex" class="required">Nombre de Campo <span class="required">*</span></label>
+			<label for="Iform_location_name" class="required">Nombre de Campo <span class="required">*</span></label>
 			<input name="Iform[location_name]" id="Iform_location_name" type="text" maxlength="100">
-			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Nombre de Campo no es correcto.</div>
+			<div class="help-block error" id="Iform_location_name_em_" style="display:none">Nombre de Campo no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
 		</div>
 		<div class="row-fluid">
 		    <div class="span8">
-			<label for="Iform_location_annex" class="required">Area (ha) <span class="required">*</span></label>
+			<label for="Iform_area" class="required">Area (ha) <span class="required">*</span></label>
 			<input size="18" maxlength="18" class="solicitud" name="Iform[area]" id="Iform_area" type="text">
-			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Area (ha) no es correcto.</div>
+			<div class="help-block error" id="Iform_area_em_" style="display:none">Area (ha) no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
 		</div>
 		<div class="row-fluid">
 		    <div class="span8">
-			<label for="Iform_location_annex" class="required">Fecha Estimada de Siembra <span class="required">*</span></label>
+			<label for="Iform_seed_date" class="required">Fecha Estimada de Siembra <span class="required">*</span></label>
 			<input type="date"  name="Iform[seed_date]" id="Iform_seed_date">
-			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Fecha Estimada de Siembra no es correcto.</div>
+			<div class="help-block error" id="Iform_seed_date_em_" style="display:none">Fecha Estimada de Siembra no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
 		</div>
 		<div class="row-fluid">
 		    <div class="span8">
-			<label for="Iform_location_annex" class="required">Estimado de Cosecha (kg) <span class="required">*</span></label>
+			<label for="Iform_sow_estimate_quantity" class="required">Estimado de Cosecha (kg) <span class="required">*</span></label>
 			<input class="solicitud" name="Iform[sow_estimate_quantity]" id="Iform_sow_estimate_quantity" type="text" maxlength="18">
-			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Estimado de Cosecha (kg) no es correcto.</div>
+			<div class="help-block error" id="Iform_sow_estimate_quantity_em_" style="display:none">Estimado de Cosecha (kg) no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
 		</div>
@@ -395,194 +345,415 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<?php echo CHtml::hiddenField('location_lon'); ?>
 	<?php echo CHtml::hiddenField('location_lat'); ?>
 	
-	<!--<input id="location_lon" />
-	<input id="location_lat" />-->
-	
 	<h2>Agricultor Multiplicador</h2>
-	
-			<table align="center" style="width:150px !important;">
-				
-				<thead>
-					<tr>
-						<th>Nombre / Razón Social</th>
-						<!--<th>Apellidos</th>-->
-						<th>N° de Documento</th>
-						<th width="22">&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td ><input id="Iform_farmers_nombre_0" name="Iform[farmers_nombre_0]" style="width:350px !important;" type="text" class="clsAnchoTotal"></td>
-						<!--<td ><input id="Iform_farmers_apellidos_0]" name="Iform[farmers_apellidos_0]" style="width:170px !important;" type="text" class="clsAnchoTotal"></td>-->
-						<td ><input id="Iform_farmers_dni_0]" name="Iform[farmers_dni_0]" style="width:120px !important;" type="text" class="clsAnchoTotal"></td>
-						<td align="right" ><input style="width:50px !important;" type="button" value="-" class="clsEliminarFila"></td>
-					</tr>
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="4" align="right">
-							<input type="button" value="Agregar una fila" class="clsAgregarFilaagricultor">
-							<!--<input type="button" value="Clonar la tabla" class="clsClonarTabla">
-							<input type="button" value="Eliminar la tabla" class="clsEliminarTabla">-->
-						</td>
-					</tr>
-				</tfoot>
-			</table>
-
+	<button type="button" id="agregar_agricultor" class="btn btn-primary">Agregar agricultor</button><br><br>
+	<table class="table borderless table-hover" id="detalle_tabla_agricultor" border="0">
+	    <thead>
+		<tr>
+		    <th>Nombre / Razón Social</th>
+		    <th>Nro de Documento</th>
+		    <th width="22">&nbsp;</th>
+		</tr>
+	    </thead>
+	    <tbody>
+		<tr id='agricultor_addr_1'></tr>
+	    </tbody>
+	</table>
+	<div id="error_agricultor" style="color: red"></div>
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array('type'=>'success','buttonType'=>'submit', 'label'=>$model->isNewRecord ? 'Crear' : 'Guardar','htmlOptions'=>array('class'=>'span2 offset8',))); ?>
-		<?php $this->widget('bootstrap.widgets.TbButton', array('type'=>'danger','buttonType'=>'link','url'=>array('index'), 'label'=>'Cancelar','htmlOptions'=>array('class'=>'span2',))); ?>
+	    <button class="btn btn-success" id="yw2" type="submit" name="yt0">Crear</button>
+	    <button class="btn btn-danger" id="yw3" type="submit" name="yt1">Cancelar</button>
 	</div>
 <?php $this->endWidget(); ?>
-</div><!-- form -->
-
+</div>
 <?php
 $provincias=CController::createUrl('location/provinces');
 $distritos=CController::createUrl('location/districts');
 $filtrardep=CController::createUrl('location/filtrardep');
+$cultivares=CController::createUrl('crop/variedad');
+$cultivaresant=CController::createUrl('crop/variedadanterior');
 ?>
 <script>
-	function Region(valor) {
-	    $.get( "<?= $filtrardep ?>?ambito="+valor, function( data ) {$( "#Iform_department_id" ).html( data );});
+    agr=1;
+    $("#agregar_agricultor").click(function(){
+	var detalles_agricultores=$('input[name=\'Iform[farmers_nombres][]\']').length;
+	
+	var error = '';
+	for (i=1;i<=detalles_agricultores;i++) {
+	    if ($.trim($('#farmers_nombres_'+i).val())=='') {
+		error=error+'Debe ingresar el Nombre / Razón Social del registro n° '+i+'<br>';
+	    }
+	    
+	    if ($.trim($('#farmers_dnis_'+i).val())=='') {
+		error=error+'Debe ingresar el Nro de Documento del registro n° '+i+'';
+	    }
 	}
 	
-	function Provincias(valor) {
-	    $.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Iform_province_id" ).html( data );});
-	    $("#Iform_province_id").find("option").remove().end().append("<option value></option>").val("");
-	    $("#Iform_location_id").find("option").remove().end().append("<option value></option>").val("");
+	if (error != '') {
+	    $("#error_agricultor").html(error);
+            return false;
+	}
+	else
+        {
+	    var option = null;
+            $('#agricultor_addr_'+agr).html(
+					    '<td>'+
+                                                '<input type="text" name="Iform[farmers_nombres][]" id="farmers_nombres_'+agr+'">'+
+					    '</td>'+
+                                            '<td>'+
+                                                '<input type="text" name="Iform[farmers_dnis][]" id="farmers_dnis_'+agr+'">'+
+					    '</td>'+
+					    '<td>'+
+						'<span class="eliminar icon-minus-sign" >'+
+						'</span>'+
+					    '</td>');
+            $('#detalle_tabla_agricultor').append('<tr id="agricultor_addr_'+(agr+1)+'"></tr>');
+            agr++;
+            return true;
+        }
+    });
+    
+    
+    fuente=1;
+    $("#agregar_fuente").click(function(){
+	var detalles_fuentes=$('input[name=\'Iform[sources_controls][]\']').length;
+	
+	var error = '';
+	
+	for (i=1;i<=detalles_fuentes;i++) {
+	    if ($.trim($('#sources_controls_'+i).val())=='') {
+		error=error+'Debe ingresar el N° Control del registro n° '+i+'<br>';
+	    }
+	    
+	    if ($.trim($('#sources_etiquetas_'+i).val())=='') {
+		error=error+'Debe ingresar el N° Etiqueta del registro n° '+i+'<br>';
+	    }
+	    
+	    if ($.trim($('#sources_cantidades_'+i).val())=='') {
+		error=error+'Debe ingresar la Cant.(kg) en el registro n° '+i+'<br>';
+	    }
+	    
+	    if ($.trim($('#documents_references_'+i).val())=='') {
+		error=error+'Debe ingresar el Nro de Documento en el registro n° '+i+'<br>';
+	    }
+	    
+	    if ($.trim($('#productors_'+i).val())=='') {
+		error=error+'Debe ingresar Producido por en el registro n° '+i+'<br>';
+	    }
 	}
 	
-	function Distritos(valor) {
-	    $.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Iform_location_id" ).html( data );});
-	    $("#Iform_location_id").find("option").remove().end().append("<option value></option>").val("");
+	if (error != '') {
+	    $("#error_fuente_origen").html(error);
+            return false;
 	}
-	$('.solicitud').on('blur', function(){
-		$('#Iform_area').val(numeral($('#Iform_area').val()).format('0,0.00'));
-		$('#Iform_sow_estimate_quantity').val(numeral($('#Iform_sow_estimate_quantity').val()).format('0,0.00'));
+	else
+        {
+	    var option = null;
+            $('#fuente_addr_'+fuente).html(
+					    '<td>'+
+                                                '<input type="text" style="width:100px !important;" name="Iform[sources_controls][]" id="sources_controls_'+fuente+'">'+
+					    '</td>'+
+                                            '<td>'+
+                                                '<input type="text" style="width:100px !important;" name="Iform[sources_etiquetas][]" id="sources_etiquetas_'+fuente+'">'+
+					    '</td>'+
+					    '<td>'+
+                                                '<input type="text" style="width:100px !important;" name="Iform[sources_cantidades][]" id="sources_cantidades_'+fuente+'">'+
+					    '</td>'+
+					    '<td>'+
+                                                '<input type="text" style="width:100px !important;" name="Iform[documents_references][]" id="documents_references_'+fuente+'">'+
+					    '</td>'+
+					    '<td>'+
+                                                '<input type="text" style="width:100px !important;" name="Iform[productors][]" id="productors_'+fuente+'">'+
+					    '</td>'+
+					    '<td>'+
+						'<span class="eliminar icon-minus-sign" >'+
+						'</span>'+
+					    '</td>');
+            $('#detalle_tabla_fuente').append('<tr id="fuente_addr_'+(fuente+1)+'"></tr>');
+            fuente++;
+            return true;
+        }
+    });
+    
+    $("#detalle_tabla_fuente").on('click','.eliminar',function(){
+        var r = confirm("Estas seguro de Eliminar?");
+        var mensaje = '';
+        if (r == true) {
+            id=$(this).children().val();
+            if (id) {
+                
+                $(this).parent().parent().remove();
+            }
+            else
+            {
+                $(this).parent().parent().remove();    
+            }   
+            mensaje = "Se elimino el Registro Correctamente";
+        } 
+    });
+    
+    $("#detalle_tabla_agricultor").on('click','.eliminar',function(){
+        var r = confirm("Estas seguro de Eliminar?");
+        var mensaje = '';
+        if (r == true) {
+            id=$(this).children().val();
+            if (id) {
+                
+                $(this).parent().parent().remove();
+            }
+            else
+            {
+                $(this).parent().parent().remove();    
+            }   
+            mensaje = "Se elimino el Registro Correctamente";
+        } 
+    });
+    
+    $('#yw2').click(function(){
+	var error='';
+	
+	if ($.trim($('#crop_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_crop_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_crop_id_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_variety_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_variety_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_variety_id_em_').hide();
+	}
+	
+	if ($.trim($('#crop_before_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_crop_before_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_crop_before_id_em_').hide();
+	}
+	
+	if ($.trim($('#variety_before_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_variety_before_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_variety_before_id_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_category').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_category_em_').show();
+	}
+	else
+	{
+	    $('#Iform_category_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_headquarter_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_headquarter_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_headquarter_id_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_department_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_department_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_department_id_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_province_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_province_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_province_id_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_location_id').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_location_id_em_').show();
+	}
+	else
+	{
+	    $('#Iform_location_id_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_location_annex').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_location_annex_em_').show();
+	}
+	else
+	{
+	    $('#Iform_location_annex_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_location_name').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_location_name_em_').show();
+	}
+	else
+	{
+	    $('#Iform_location_name_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_area').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_area_em_').show();
+	}
+	else
+	{
+	    $('#Iform_area_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_seed_date').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_seed_date_em_').show();
+	}
+	else
+	{
+	    $('#Iform_seed_date_em_').hide();
+	}
+	
+	if ($.trim($('#Iform_sow_estimate_quantity').val())=='') {
+	    error=error+'Solicitud';
+	    $('#Iform_sow_estimate_quantity_em_').show();
+	}
+	else
+	{
+	    $('#Iform_sow_estimate_quantity_em_').hide();
+	}
+	
+	
+	if (error!='')
+        {
+            return false;
+        }
+        else
+        {
+           return true; 
+        }
+    });
+    
+    
+    function Cultivo(valor) {
+	$.get( "<?= $cultivares ?>?crop="+valor, function( data ) {															
+	    $("#Iform_variety_id").append(data);	
 	});
-	$(document).ready(function(){
-	//
-	
-	
+	if($('#crop_id').val()==15){			
+		$('#Iform_category').html('<option>seleccionar</option>'+
+					  '<option value="5">Basica 1</option>'+
+					  '<option value="6">Basica 2</option>'+
+					  '<option value="7">Registrada 1</option>'+
+					  '<option value="8">Registrada 2</option>'+
+					  '<option value="9">Certificada</option>'+
+					  '<option value="10">Autorizada</option>'
+					  );
+	}
+	else
+	{
+	    return $('#Iform_category').html('<option>seleccionar</option>'+
+					    '<option value="1">Basica</option>'+
+					    '<option value="2">Registrada</option>'+
+					    '<option value="3">Certificada</option>'+
+					    '<option value="4">Autorizada</option>');
+	}
+    }
+    
+    function CultivoAnterior(valor) {
+	$.get( "<?= $cultivaresant ?>?crop="+valor, function( data ) {															
+	    $("#variety_before_id").append(data);	
+	});
+    }
+    
+    function Region(valor) {
+	$.get( "<?= $filtrardep ?>?ambito="+valor, function( data ) {$( "#Iform_department_id" ).html( data );});
+    }
+    
+    function Provincias(valor) {
+	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Iform_province_id" ).html( data );});
+	$("#Iform_province_id").find("option").remove().end().append("<option value></option>").val("");
+	$("#Iform_location_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+    
+    function Distritos(valor) {
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Iform_location_id" ).html( data );});
+	$("#Iform_location_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+    $('.solicitud').on('blur', function(){
+	    $('#Iform_area').val(numeral($('#Iform_area').val()).format('0,0.00'));
+	    $('#Iform_sow_estimate_quantity').val(numeral($('#Iform_sow_estimate_quantity').val()).format('0,0.00'));
+    });
+    
+    $(document).ready(function(){
 	
 	$(document).on('click','caption',function(){
-		//obtener la tabla que contiene el caption clickeado
-		var objTabla=$(this).parent();
-			//el cuerpo de la tabla esta visible?
-			//lo siguiente es unicamente para cambiar el icono del caption
-			if(objTabla.find('tbody').is(':visible')){
-				//eliminamos la clase clsContraer
-				$(this).removeClass('clsContraer');
-				//agregamos la clase clsExpandir
-				$(this).addClass('clsExpandir');
-			}else{
-				//eliminamos la clase clsExpadir
-				$(this).removeClass('clsExpandir');
-				//agregamos la clase clsContraer
-				$(this).addClass('clsContraer');
-			}
-			//mostramos u ocultamos el cuerpo de la tabla
-			objTabla.find('tbody').toggle();
+	    var objTabla=$(this).parent();
+	    if(objTabla.find('tbody').is(':visible')){
+		$(this).removeClass('clsContraer');
+		$(this).addClass('clsExpandir');
+	    }else{
+		$(this).removeClass('clsExpandir');
+		$(this).addClass('clsContraer');
+	    }
+	    objTabla.find('tbody').toggle();
 	});
-	
-	var a=1;	
-	//evento que se dispara al hacer clic en el boton para agregar una nueva fila
+	var a=1;
 	$(document).on('click','.clsAgregarFila',function(){
-		//almacenamos en una variable todo el contenido de la nueva fila que deseamos
-		//agregar. pueden incluirse id's, nombres y cualquier tag... sigue siendo html
-		var strNueva_Fila='<tr>'+
-			'<td><input id="Iform_source_control_'+a+'" name="Iform[source_control_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td><input id="Iform_source_etiqueta_'+a+'" name="Iform[source_etiqueta_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td><input id="Iform_source_cantidad_'+a+']" name="Iform[source_cantidad_'+a+']" style="width:50px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td><input id="Iform_document_reference_'+a+']" name="Iform[document_reference_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td><input id="Iform_productor_'+a+']" name="Iform[productor_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td align="right"><input style="width:30px !important;" type="button" value="-" class="clsEliminarFila"></td>'+
-		'</tr>';
-				
-		/*obtenemos el padre del boton presionado (en este caso queremos la tabla, por eso
-		utilizamos get(3)
-			table -> padre 3
-				tfoot -> padre 2
-					tr -> padre 1
-						td -> padre 0
-		nosotros queremos utilizar el padre 3 para agregarle en la etiqueta
-		tbody una nueva fila*/
-		var objTabla=$(this).parents().get(3);
-				
-		//agregamos la nueva fila a la tabla
-		$(objTabla).find('tbody').append(strNueva_Fila);
-				
-		//si el cuerpo la tabla esta oculto (al agregar una nueva fila) lo mostramos
-		if(!$(objTabla).find('tbody').is(':visible')){
-			//le hacemos clic al titulo de la tabla, para mostrar el contenido
-			$(objTabla).find('caption').click();
-		}
-		a++;
+	    var strNueva_Fila=	'<tr>'+
+				    '<td><input id="Iform_source_control_'+a+'" name="Iform[source_control_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
+				    '<td><input id="Iform_source_etiqueta_'+a+'" name="Iform[source_etiqueta_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
+				    '<td><input id="Iform_source_cantidad_'+a+']" name="Iform[source_cantidad_'+a+']" style="width:50px !important;" type="text" class="clsAnchoTotal"></td>'+
+				    '<td><input id="Iform_document_reference_'+a+']" name="Iform[document_reference_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
+				    '<td><input id="Iform_productor_'+a+']" name="Iform[productor_'+a+']" style="width:100px !important;" type="text" class="clsAnchoTotal"></td>'+
+				    '<td align="right"><input style="width:30px !important;" type="button" value="-" class="clsEliminarFila"></td>'+
+				'</tr>';
+	    var objTabla=$(this).parents().get(3);
+	    $(objTabla).find('tbody').append(strNueva_Fila);
+	    if(!$(objTabla).find('tbody').is(':visible')){
+		$(objTabla).find('caption').click();
+	    }
+	    a++;
 	});
 	var b=1;
 	$(document).on('click','.clsAgregarFilaagricultor',function(){
-		//almacenamos en una variable todo el contenido de la nueva fila que deseamos
-		//agregar. pueden incluirse id's, nombres y cualquier tag... sigue siendo html
-		var strNueva_Fila='<tr>'+
-			'<td><input id="Iform_farmers_nombre_'+b+'" name="Iform[farmers_nombre_'+b+']" style="width:350px !important;" type="text" class="clsAnchoTotal"></td>'+
-			//'<td><input id="Iform_farmers_apellidos_'+b+'" name="Iform[farmers_apellidos_'+b+']" style="width:170px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td><input id="Iform_farmers_dni_'+b+'" name="Iform[farmers_dni_'+b+']" style="width:120px !important;" type="text" class="clsAnchoTotal"></td>'+
-			'<td align="right"><input style="width:50px !important;" type="button" value="-" class="clsEliminarFila"></td>'+
-		'</tr>';
-				
-		/*obtenemos el padre del boton presionado (en este caso queremos la tabla, por eso
-		utilizamos get(3)
-			table -> padre 3
-				tfoot -> padre 2
-					tr -> padre 1
-						td -> padre 0
-		nosotros queremos utilizar el padre 3 para agregarle en la etiqueta
-		tbody una nueva fila*/
-		var objTabla=$(this).parents().get(3);
-				
-		//agregamos la nueva fila a la tabla
-		$(objTabla).find('tbody').append(strNueva_Fila);
-				
-		//si el cuerpo la tabla esta oculto (al agregar una nueva fila) lo mostramos
-		if(!$(objTabla).find('tbody').is(':visible')){
-			//le hacemos clic al titulo de la tabla, para mostrar el contenido
-			$(objTabla).find('caption').click();
-		}
-		b++;
+	    var strNueva_Fila='<tr>'+
+				'<td><input id="Iform_farmers_nombre_'+b+'" name="Iform[farmers_nombre_'+b+']" style="width:350px !important;" type="text" class="clsAnchoTotal"></td>'+
+				'<td><input id="Iform_farmers_dni_'+b+'" name="Iform[farmers_dni_'+b+']" style="width:120px !important;" type="text" class="clsAnchoTotal"></td>'+
+				'<td align="right"><input style="width:50px !important;" type="button" value="-" class="clsEliminarFila"></td>'+
+			    '</tr>';
+	    var objTabla=$(this).parents().get(3);
+	    $(objTabla).find('tbody').append(strNueva_Fila);
+	    if(!$(objTabla).find('tbody').is(':visible')){
+		$(objTabla).find('caption').click();
+	    }
+	    b++;
 	});
-	//cuando se haga clic en cualquier clase .clsEliminarFila se dispara el evento
 	$(document).on('click','.clsEliminarFila',function(){
-		/*obtener el cuerpo de la tabla; contamos cuantas filas (tr) tiene
-		si queda solamente una fila le preguntamos al usuario si desea eliminarla*/
-		var objCuerpo=$(this).parents().get(2);
-			if($(objCuerpo).find('tr').length==1){
-				if(!confirm('Esta es el Ãºnica fila de la lista Â¿Desea eliminarla?')){
-					return;
-				}
-			}
-					
-		/*obtenemos el padre (tr) del td que contiene a nuestro boton de eliminar
-		que quede claro: estamos obteniendo dos padres
-					
-		el asunto de los padres e hijos funciona exactamente como en la vida real
-		es una jergarquia. imagine un arbol genealogico y tendra todo claro ;)
-				
-			tr	--> padre del td que contiene el boton
-				td	--> hijo de tr y padre del boton
-					boton --> hijo directo de td (y nieto de tr? si!)
-		*/
-		var objFila=$(this).parents().get(1);
-			/*eliminamos el tr que contiene los datos del contacto (se elimina todo el
-			contenido (en este caso los td, los text y logicamente, el boton */
-			$(objFila).remove();
-	});
-	
-	
-	
-			
+	    var objCuerpo=$(this).parents().get(2);
+	    if($(objCuerpo).find('tr').length==1){
+		if(!confirm('Esta es el Ãºnica fila de la lista Â¿Desea eliminarla?')){
+		    return;
+		}
+	    }
+	    var objFila=$(this).parents().get(1);
+	    $(objFila).remove();
+	});			
 });
-	
-	
 </script>
 
 

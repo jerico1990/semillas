@@ -18,7 +18,7 @@ $this->widget('ext.dropzone.EDropzone', array(
 <?php
 $files = Files::model()->findAll('form_id =' . $model->id . ' AND url = \'1\'');
 foreach ($files as $file) {
-   echo '<div class="file-item"><a href="http://127.0.0.1/peas/files/' . $file->name_file . '">' .  $file->name_file . '</a></div>'; 
+   echo '<div class="file-item"><a href="http://127.0.0.1/semillas/files/' . $file->name_file . '">' .  $file->name_file . '</a></div>'; 
 }
 ?>
 </div>
@@ -43,7 +43,7 @@ $this->widget('ext.dropzone.EDropzone', array(
 <?php
 $files = Files::model()->findAll('form_id =' . $model->id . ' AND url = \'2\'');
 foreach ($files as $file) {
-   echo '<div class="file-item"><a href="http://127.0.0.1/peas/files/' . $file->name_file . '">' .  $file->name_file . '</a></div>'; 
+   echo '<div class="file-item"><a href="http://127.0.0.1/semillas/files/' . $file->name_file . '">' .  $file->name_file . '</a></div>'; 
 }
 ?>
 </div>

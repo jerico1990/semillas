@@ -130,7 +130,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 											'papa_observacion'=>'js:$("#Acondicionamiento_observacion").val()',											 
 											'id'=>$model->id,										
 											),
-								'success' => 'function(data){	location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());}'
+								'success' => 'function(data){	location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
 								),
 								
 								'htmlOptions'=>array('data-dismiss'=>'modal','class'=>'span12',
@@ -158,7 +158,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 																		'type'=>'POST',
 																		'data' => 'js:$("#acondicionamiento-form").serialize()',
 																		'success' =>'function( data ){
-																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
+																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
 																		}'
 																		),													
 											'htmlOptions'=>array('class'=>'span12',

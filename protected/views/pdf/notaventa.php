@@ -151,7 +151,7 @@ Telefax (042)-52228881 | email:corese_sm@speedy.com.pe
         </div>
 	<table class="smallfont" width="100%" cellpadding="2">
    <tr>
-      <td width="76%" rowspan="2"><img src="http://localhost/peas/images/form_header.png" width="437" height="40"  alt=""/>
+      <td width="76%" rowspan="2"><img src="'.Yii::app()->getBaseUrl(true).'/images/form_header.png" width="437" height="40"  alt=""/>
         </td>   
 
     <td width="25%">Nota de Venta Nro:</td>

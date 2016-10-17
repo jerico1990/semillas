@@ -2,9 +2,6 @@
 
 
 <?php
-//Todos los inbox
-//$inboxs=Inbox::model()->findAll('form_id=:form_id', array(':form_id'=>$model->id));
-//Inbox
 $criteria0=new CDbCriteria;
 $criteria0->condition='form_id=:form_id';
 $criteria0->order='id ASC';
@@ -33,17 +30,12 @@ $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$model->headquarte
 $step="";
 
 
-$solicitud=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
-										  array(':form_id'=>$model->id,':status_id'=>1));
-$campo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
-										  array(':form_id'=>$model->id,':status_id'=>4));
-$acondicionamiento=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
-										  array(':form_id'=>$model->id,':status_id'=>12));
+$solicitud=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>1));
+$campo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>4));
+$acondicionamiento=Inbox::model()->find('form_id=:form_id and status_id=:status_id', array(':form_id'=>$model->id,':status_id'=>12));
 if($headquarter->tipo_empresa=="1"){
-$muestreo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
-										  array(':form_id'=>$model->id,':status_id'=>12));
-$etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
-										  array(':form_id'=>$model->id,':status_id'=>12));
+$muestreo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>12));
+$etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>12));
 }
 else if ($headquarter->tipo_empresa=="2") {
 	
@@ -79,72 +71,65 @@ $(function(){
 });
 </script>
 <br>
-	 <div class="row-fluid span12">
-				 <div class="span12">
-					 <!-- WIZARD -->
-					 <?php
-						
-						  if($solicitud!==null )
-						  {
-							  $step='<li style="background: #8DC641;" class="active"><span class="badge"></span>'.CHtml::link("Solicitud",array('vsolicitud', 'id'=>$model->id)).'<span class="chevron"></span></li>';
-						  }
-						 
-						  if($campo!==null)
-						  {
-							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Campo",array('vcampo', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-						  }
-						  
-						  if($acondicionamiento!==null)
-						  {
-							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Acondicionamiento",array('vacondicionamiento', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-						  }
-						  if($muestreo!==null)
-						  {
-							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Muestreo",array('vmuestreo', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-						  }							
-						  if($etiquetado!==null)
-						  {
-							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Etiquetado",array('vetiquetado', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-						  }						
-						
-							//$step1.=$step;
-						
-						
-							//Imprime Step
-						 echo
-						 '<div class="fuelux">
-							 <div id="MyWizard" class="wizard">
-								 <ul class="steps">
-									  '.$step.'													 
-								 </ul>										
-							 </div>
-						 </div>
-						 ';
-					 ?>
-				 </div>
-			</div>
+<div class="row-fluid span12">
+    <div class="span12">
+	<!-- WIZARD -->
+	<?php
+	       
+	    if($solicitud!==null )
+	    {
+		$step='<li style="background: #8DC641;" class="active"><span class="badge"></span>'.CHtml::link("Solicitud",array('vsolicitud', 'id'=>$model->id)).'<span class="chevron"></span></li>';
+	    }
+	    
+	    if($campo!==null)
+	    {
+		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Campo",array('vcampo', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+	    }
+	    
+	    if($acondicionamiento!==null)
+	    {
+		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Acondicionamiento",array('vacondicionamiento', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+	    }
+	    
+	    if($muestreo!==null)
+	    {
+		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Muestreo",array('vmuestreo', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+	    }							
+	    
+	    if($etiquetado!==null)
+	    {
+		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Etiquetado",array('vetiquetado', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+	    }
+	    
+	    echo
+	    '<div class="fuelux">
+		<div id="MyWizard" class="wizard">
+		    <ul class="steps">
+			'.$step.'													 
+		    </ul>										
+		</div>
+	    </div>
+	    ';
+	?>
+    </div>
+</div>
 <div class="row-fluid span12 well">		  
 		<div class="span12">
-		
 			<!--Fin Detalle de Solicitud-->
 			</br>
 			<!--1° Fila de la Solicutd-->
 			<div class="row-fluid">
 				<div class="span2">
-					<?php
-					foreach($inboxs as $inbox)
-					{
-						if($inbox->status_id==1)
-						{
-							echo date("d-m-Y", strtotime($inbox->date));
-						}
-					}
-					?>
+				    <?php foreach($inboxs as $inbox) { ?>
+					<?php if($inbox->status_id==1){ ?>
+					    <?php echo date("d-m-Y", strtotime($inbox->date)); ?>
+					<?php } ?>
+				    <?php } ?>
 				</div>
 				<div class="span8">
 					<div class="row-fluid">										  
 						<div class="span7">							
-							<?php echo CHtml::link('<b>Sol. de Insc. de Campo Semillero</b>',array('pdf/solicitud','id'=>$model->id)); ?>
+						    <?php echo CHtml::link('<b>Sol. de Insc. de Campo Semillero</b>',array('pdf/solicitud','id'=>$model->id)); ?>
 						</div>
 						<div class="span5">
 						  <?php								
@@ -185,98 +170,81 @@ $(function(){
 					</div>
 				</div>
 				
-				<div class="span2">
-					 <?php echo CHtml::link('<b>Archivos</b>',array('iform/files','id'=>$model->id)); ?>
-				</div>
-		  </div>
-		  <!--Fin de 1° Fila de la Solicutd-->
+			<div class="span2">
+			    <?php echo CHtml::link('<b>Archivos</b>',array('iform/files','id'=>$model->id)); ?>
+			</div>
+		    </div>
+		    <!--Fin de 1° Fila de la Solicutd-->
 		  
-		  <div class="row-fluid">
-				<div class="span2">
-					 <?php
-					 foreach($inboxs as $inbox)
-					 {
-						  if($inbox->status_id==3)
-						  {
-								echo date("d-m-Y", strtotime($inbox->date));
-						  }
-					 }
-					 ?>
-				</div>
-				<div class="span10">
-					 <?php
-					 foreach($inboxs as $inbox)
-					 {
-						  if($inbox->status_id==3)
-						  {
-								echo "<b>Inspector(a) :</b>".$inbox->to0->fullname;
-						  }
-					 }
-					 ?>
-				</div>
-				
-		  </div>
-		  <!--Documento Aprobado-->
-		  <?php
-					 foreach($inboxs as $inbox)
-					 {
-					 if($inbox->status_id==4)
-					 { ?>
-		  <div class="row-fluid">
-					 <div class="span2">
-								<?php   echo date("d-m-Y", strtotime($inbox->date));
-								?>
-					 </div>
-					 <div class="span10">
-						  <div class="row-fluid">										  
-								<div class="span12">													 
-									 <?php echo CHtml::link('<b>Notificacion de inscripción de campo semillero</b>',array('pdf/notificacion','id'=>$model->id,'identificador'=>1)); ?>
-								</div>										  
-						  </div>
-					 </div>
-		  </div>
-		  <?php }} ?>		  
-		  <!--Documento Desaprobado-->
-		   <?php
-					 foreach($inboxs as $inbox)
-					 {
-					 if($inbox->status_id==5 and $inbox->estado==1 )
-					 { ?>
-		  <div class="row-fluid">
-				<div class="span2">
-						  <?php   echo date("d-m-Y", strtotime($inbox->date));
-						  ?>
-				</div>
-				<div class="span10">
-					 <div class="row-fluid">										  
-						  <div class="span12">
-								<?php echo CHtml::link('<b>Notificacion de inscripción de campo semillero(Rechazado)</b>',array('pdf/notificacion','id'=>$model->id,'identificador'=>2)); ?>
-						  </div>
-					 </div>
-				</div>
-		  </div>
-		  <?php }} ?>
-		  <!--Documento Observado-->
-		  <?php
-		  foreach($inboxs as $inbox)
-		  {
-				if($inbox->status_id==6 and $inbox->estado==1 )
-				{ ?>
-					 <div class="row-fluid">
-						  <div class="span2">
-								<?php   echo date("d-m-Y", strtotime($inbox->date));?>
-						  </div>
-						  <div class="span10">
-								<div class="row-fluid">										  
-									 <div class="span12">
-										  <?php echo CHtml::link('<b>Notificacion de inscripción de campo semillero (Observado)</b>',array('pdf/aprobacion','id'=>$model->id)); ?>
-									 </div>							
-								</div>
-						  </div>
-					 </div>
-		  <?php
+		    <div class="row-fluid">
+			<div class="span2">
+			    <?php foreach($inboxs as $inbox){
+				    if($inbox->status_id==3)
+				    {
+					echo date("d-m-Y", strtotime($inbox->date));
+				    }
 				}
-		  } ?>
+			    ?>
+			</div>
+			<div class="span10">
+			    <?php foreach($inboxs as $inbox) { ?>
+				<?php if($inbox->status_id==3) { ?>
+				    <b>Inspector(a) :</b><?php echo $inbox->to0->fullname; ?>
+				<?php } ?>
+			    <?php } ?>
+			</div>
+				
+		    </div>
+		    <!--Documento Aprobado-->
+		    <?php foreach($inboxs as $inbox) { ?>
+			<?php if($inbox->status_id==4) { ?>
+			    <div class="row-fluid">
+				  <div class="span2">
+				      <?php   echo date("d-m-Y", strtotime($inbox->date)); ?>
+				  </div>
+				  <div class="span10">
+				      <div class="row-fluid">										  
+					  <div class="span12">													 
+					      <?php echo CHtml::link('<b>Notificacion de inscripción de campo semillero</b>',array('pdf/notificacion','id'=>$model->id,'identificador'=>1)); ?>
+					  </div>										  
+				      </div>
+				  </div>
+			    </div>
+			<?php } ?>
+		    <?php } ?>	
+		  <!--Documento Desaprobado-->
+		    <?php foreach($inboxs as $inbox){ ?>
+			<?php if($inbox->status_id==5 and $inbox->estado==1 ) { ?>
+			    <div class="row-fluid">
+				<div class="span2">
+				    <?php echo date("d-m-Y", strtotime($inbox->date)); ?>
+				</div>
+				<div class="span10">
+				    <div class="row-fluid">										  
+					<div class="span12">
+					    <?php echo CHtml::link('<b>Notificacion de inscripción de campo semillero(Rechazado)</b>',array('pdf/notificacion','id'=>$model->id,'identificador'=>2)); ?>
+					</div>
+				    </div>
+				</div>
+			    </div>
+			<?php } ?>
+		    <?php } ?>
+		    <?php foreach($inboxs as $inbox) { ?>
+			<?php if($inbox->status_id==6 and $inbox->estado==1 ){ ?>
+			    <div class="row-fluid">
+				<div class="span2">
+				    <?php	echo date("d-m-Y", strtotime($inbox->date));?>
+				</div>
+				<div class="span10">
+				    <div class="row-fluid">										  
+					<div class="span12">
+					    <?php echo CHtml::link('<b>Notificacion de inscripción de campo semillero (Observado)</b>',array('pdf/aprobacion','id'=>$model->id)); ?>
+					</div>							
+				    </div>
+				</div>
+			    </div>
+			<?php } ?>
+		    <?php } ?>
 		</div>
 </div>
 

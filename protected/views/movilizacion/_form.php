@@ -44,13 +44,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 ?>
 <?php echo CHtml::hiddenField('form_id',$id); ?>
    <?php
-		$departments = Location::model()->findAll(array(
-				'select'   => 't.id, t.department, t.departament_id',
-				'group'    => 't.id,t.department',
-				'order'	  => 't.department',
-				'distinct' => true
-			)); 
-		$list = CHtml::listData($departments,'departament_id','department');
+		$departamentos = Location::model()->findAll(array(
+			  'select'   => 't.department, t.department_id',
+			  'group'    => 't.department',
+			  'order'    => 't.department ASC',
+			  'distinct' => true
+		     ));
+		//$list = CHtml::listData($departments,'department_id','department');
 	?>
 
    <div class="row-fluid">
@@ -89,6 +89,33 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="row-fluid">
       <div class="span12"><?php echo $form->textFieldRow($model,'origen_nombre_predio',array('class'=>'span6')); ?></div>
 	</div>
+	<div class="row-fluid">
+	    <div class="span4">
+		<label for="Movilizacion_odepartment_id">Departamento</label>
+		<select name="Movilizacion[odepartment_id]" id="Movilizacion_odepartment_id" onchange="Provincias($(this).val(),1)">
+		    <option value="">Seleccionar</option>
+		    <?php foreach($departamentos as $departamento){ ?>
+		    <option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+		    <?php } ?>
+		</select>
+		<div class="help-block error" id="Movilizacion_odepartment_id_em_" style="display:none">Departamento no es correcto.</div>
+	    </div>
+	    <div class="span4">
+		<label for="Movilizacion_oprovince_id">Provincia</label>
+		<select name="Movilizacion[oprovince_id]" id="Movilizacion_oprovince_id" onchange="Distritos($(this).val(),1)">
+		    <option value="">Seleccionar</option>
+		</select>
+		<div class="help-block error" id="Movilizacion_oprovince_id_em_" style="display:none">Provincia no es correcto.</div>
+	    </div>
+	    <div class="span4">
+		<label for="Movilizacion_origen_district_id" class="required">Distrito <span class="required">*</span></label>
+		<select name="Movilizacion[origen_district_id]" id="Movilizacion_origen_district_id">
+		    <option value="">Seleccionar</option>
+		</select>
+		<div class="help-block error" id="Movilizacion_origen_district_id_em_" style="display:none">Distrito no es correcto.</div>
+	    </div>
+	</div>
+    <?php /*
    <div class="row-fluid">     
       <div class="span4">Región<?php echo CHtml::dropDownList('odepartment_id','', $list,
 																		  array(
@@ -109,7 +136,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									'data'   => 'js:$("#oprovince_id").val()'
 									)));?></div>
       <div class="span4"><?php echo $form->dropDownListRow($model,'origen_district_id',array(), array('class'=>'span12',));?></div>
-	</div> 
+	</div>
+	*/ ?>
    <div class="row-fluid">
 					 <div class="span12"><h4>Destino de la movilización</h4></div>      
 	</div>
@@ -148,6 +176,33 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
                  ?>
 		</div>
 	</div>
+	<div class="row-fluid">
+	    <div class="span4">
+		<label for="Movilizacion_ddepartment_id">Departamento</label>
+		<select name="Movilizacion[ddepartment_id]" id="Movilizacion_ddepartment_id" onchange="Provincias($(this).val(),2)">
+		    <option value="">Seleccionar</option>
+		    <?php foreach($departamentos as $departamento){ ?>
+		    <option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+		    <?php } ?>
+		</select>
+		<div class="help-block error" id="Movilizacion_ddepartment_id_em_" style="display:none">Departamento no es correcto.</div>
+	    </div>
+	    <div class="span4">
+		<label for="Movilizacion_dprovince_id">Provincia</label>
+		<select name="Movilizacion[dprovince_id]" id="Movilizacion_dprovince_id" onchange="Distritos($(this).val(),2)">
+		    <option value="">Seleccionar</option>
+		</select>
+		<div class="help-block error" id="Movilizacion_dprovince_id_em_" style="display:none">Provincia no es correcto.</div>
+	    </div>
+	    <div class="span4">
+		<label for="Movilizacion_destino_district_id" class="required">Distrito <span class="required">*</span></label>
+		<select name="Movilizacion[destino_district_id]" id="Movilizacion_destino_district_id">
+		    <option value="">Seleccionar</option>
+		</select>
+		<div class="help-block error" id="Movilizacion_destino_district_id_em_" style="display:none">Distrito no es correcto.</div>
+	    </div>
+	</div>
+    <?php /*
    <div class="row-fluid">     
       <div class="span4">Departamento<?php echo CHtml::dropDownList('ddepartment_id','', $list,
 																		  array(
@@ -167,7 +222,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									'update' => '#Movilizacion_destino_district_id',
 									'data'   => 'js:$("#dprovince_id").val()'
 									)));?></div>
-      <div  class="span4"><?php echo $form->dropDownListRow($model,'destino_district_id',array(), array('class'=>'span12',));?></div>
+      <div  class="span4"><?php echo $form->dropDownListRow($model,'destino_district_id',array(), array('class'=>'span12',));?></div>-->
+	*/ ?>
 	<?php echo CHtml::hiddenField('id_acondicionamiento',$model->id); ?>
 	<?php echo CHtml::hiddenField('formu',$model->form_id); ?>
 	</div>
@@ -196,16 +252,55 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-
+<?php
+$provincias=CController::createUrl('location/provinces');
+$distritos=CController::createUrl('location/districts');
+?>
 
 
 <script>
-	$('.movilizacion').on('blur', function(){
-		$('#Movilizacion_cantidad_envases').val(numeral($('#Movilizacion_cantidad_envases').val()).format('0,0.00'));
-		$('#Movilizacion_capacidad_envases').val(numeral($('#Movilizacion_capacidad_envases').val()).format('0,0.00'));
-		$('#Movilizacion_cantidad_movilizar').val(numeral($('#Movilizacion_cantidad_movilizar').val()).format('0,0.00'));
-	
+    function Provincias(valor,tipo) {
+	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {
+	    if (tipo==1) {
+		$( "#Movilizacion_oprovince_id" ).html( data );
+	    }
+	    else if (tipo==2) {
+		$( "#Movilizacion_dprovince_id" ).html( data );
+	    }
 	});
+	if (tipo==1) {
+	    $("#Movilizacion_oprovince_id").find("option").remove().end().append("<option value></option>").val("");
+	    $("#Movilizacion_origen_district_id").find("option").remove().end().append("<option value></option>").val("");
+	}
+	else if (tipo==2) {
+	    $("#Movilizacion_dprovince_id").find("option").remove().end().append("<option value></option>").val("");
+	    $("#Movilizacion_destino_district_id").find("option").remove().end().append("<option value></option>").val("");
+	}
+    }
+    
+    function Distritos(valor,tipo) {
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {
+	    if (tipo==1) {
+		$( "#Movilizacion_origen_district_id" ).html( data );
+	    }
+	    else if (tipo==2) {
+		$( "#Movilizacion_destino_district_id" ).html( data );
+	    }
+	    
+	});
+	if (tipo==1) {
+	    $("#Movilizacion_origen_district_id").find("option").remove().end().append("<option value></option>").val("");
+	}
+	else if (tipo==2) {
+	    $("#Movilizacion_destino_district_id").find("option").remove().end().append("<option value></option>").val("");
+	}
+    }
+    
+    $('.movilizacion').on('blur', function(){
+	$('#Movilizacion_cantidad_envases').val(numeral($('#Movilizacion_cantidad_envases').val()).format('0,0.00'));
+	$('#Movilizacion_capacidad_envases').val(numeral($('#Movilizacion_capacidad_envases').val()).format('0,0.00'));
+	$('#Movilizacion_cantidad_movilizar').val(numeral($('#Movilizacion_cantidad_movilizar').val()).format('0,0.00'));
+    });
 	
 	
 	

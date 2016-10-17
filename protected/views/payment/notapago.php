@@ -37,7 +37,6 @@
 				</div>
 				<div class="span3">
 					<?php $this->widget('bootstrap.widgets.TbButton', array( 'type'=>'success','buttonType'=>'submit','label'=>'Registrar','htmlOptions' => array('name'=>'yt0','value'=>'registrar'),)); ?>
-							
 				</div>
 			</div>			
 		</div>	
