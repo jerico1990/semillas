@@ -62,12 +62,22 @@ class SolicitudController extends Controller
    {
       if(isset($_POST['ruc']) && $_POST['ruc']!='')
       {
+	 $bandera=0;
 	 $ruc=$_POST['ruc'];
-	 $usuario=User::model()->find('ruc=:ruc', array(':ruc'=>$ruc));
-	 if($usuario)
+	 $producer=Producer::model()->find('document_number=:document_number',array(':document_number'=>$ruc));
+	 if($producer)
 	 {
-	    echo 1;
+	    $usuario=User::model()->find('ruc=:ruc', array(':ruc'=>$ruc));
+	    if($usuario)
+	    {
+	       $bandera=1;
+	    }
 	 }
+	 else
+	 {
+	    $bandera=2;
+	 }
+	 echo $bandera;
       }
    }
    
@@ -75,13 +85,40 @@ class SolicitudController extends Controller
    {
       if(isset($_POST['registro']) && $_POST['registro']!='')
       {
+	 $bandera=0;
 	 $registro=$_POST['registro'];
-	 $usuario=User::model()->find('registry=:ruc', array(':registry'=>$registro));
-	 if($usuario)
+	 $producer=Producer::model()->find('registry=:registry',array(':registry'=>$registro));
+	 if($producer)
 	 {
-	    echo 1;
+	    $usuario=User::model()->find('registry=:registry', array(':registry'=>$registro));
+	    if($usuario)
+	    {
+	       $bandera=1;
+	    }
 	 }
+	 else
+	 {
+	    $bandera=2;
+	 }
+	 echo $bandera;
       }
+   }
+   
+   public function actionNroregistroruc()
+   {
+      if(isset($_POST['registro']) && $_POST['registro']!='' && isset($_POST['ruc']) && $_POST['ruc']!='')
+      {
+	 $registro=$_POST['registro'];
+	 $ruc=$_POST['ruc'];
+	 $bandera=0;
+	 $producer=Producer::model()->find('registry=:registry and document_number=:document_number',array(':registry'=>$registro,':document_number'=>$ruc));
+	 if(!$producer)
+	 {
+	    $bandera=1;
+	 }
+	 echo $bandera;
+      }
+      
    }
    
    public function actionDni()

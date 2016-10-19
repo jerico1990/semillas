@@ -276,121 +276,89 @@ class UserController extends Controller
 	public function actionCuentaupdate($id)
 	{
 		$this->pageTitle = "Actualizar Productor";
-		$model=$this->loadModel($id);				
-		
+		$model=$this->loadModel($id);
 		if(isset($_POST['User']))
 		{
-			$model->attributes=$_POST['User'];					
-			if($_POST['User']['status']=='1')
-			{		
-				$cruge=Cruge::model()->find('username=:username', array(':username'=>$_POST['User']['ruc']));
-				if($cruge==null)
-				{					
-					$model->search_estado="Inactivo";
-					if($model->save())
-					$this->redirect(array('cuenta'));					
-				}
-				else
-				{				
-					$cruge->state=0;
-					//$model->ruc=$_POST['User']['ruc'];
-					//$model->email=$_POST['User']['email'];
-					//$model->address=$_POST['User']['address'];
-					$model->search_estado="Inactivo";
-					$model->status=1;
-					if($model->save())			
-					{	
-						$cruge->save();			
-						$this->redirect(array('cuenta'));
-					}	
-				}					
-			}
-			else if($_POST['User']['status']=='2')
-			{					 
-				$cruge=Cruge::model()->find('username=:username', array(':username'=>$_POST['User']['ruc']));
-				
-				if($cruge==null)
-				{
-					$user=new Cruge;					
-					
-					if($model->type_id==2)
-					{
-					    $user->username=$model->tipo_estacion_experimental.'_'.$_POST['User']['ruc'];
-					}
-					else
-					{
-					    $user->username=$_POST['User']['ruc'];
-					}
-					$user->password=$this->passwordGenerator();
-					$user->email=$_POST['User']['email'];
-					$user->state=1;	
-					$model->status=2;
-					$model->name=$_POST['User']['ruc'];
-					$model->search_estado="Activo";
-					if($model->save())			
-					{								
-						if($user->save())
-						{
-							$rol=new CrugeAuthassignment;					
-							//$anexar=Cruge::model()->findByPk($id);      ->find('username=:username', array(':username'=>$_POST['User']['ruc']));
-							$usuario=User::model()->find('ruc=:ruc', array(':ruc'=>$_POST['User']['ruc']));
-							$usuario->cruge_user_id=$user->iduser;						
-							$rol->userid=$user->iduser;
-							$rol->itemname='productor';
-							$rol->data='N;';
-							$rol->save();
-							$usuario->save();
-							$mensaje=$this->mensaje($user->username,'1');							
-							$this->redirect(array('cuenta'));
-						}					
-					}
-				}
-				else
-				{					
-					if($_POST['User']['email']!=$cruge->email)
-					{
-						$cruge->email=$_POST['User']['email'];
-						$model->email=$_POST['User']['email'];
-						$model->save();
-						$cruge->save();
-						$mensaje=$this->mensaje($model->ruc,'1');
-					}	
-					$cruge->state=1;			
-					$model->attributes=$_POST['User'];
-					$model->status=2;
-					$model->search_estado="Activo";
-					if($model->save())			
-					{	
-						$cruge->save();			
-						$this->redirect(array('cuenta'));
-					}
-				}				
-			}
-			else if($_POST['User']['status']=='3')
+		    $model->attributes=$_POST['User'];
+		    $cruge=Cruge::model()->find('iduser=:iduser', array(':iduser'=>$model->cruge_user_id));
+		    
+		    if(!$cruge)
+		    {			
+			if($model->status==1)
 			{
-				$cruge=Cruge::model()->find('username=:username', array(':username'=>$_POST['User']['ruc']));
-				
-				if($cruge==null)
-				{
-					$model->attributes=$_POST['User'];
-					$model->status=1;
-					$model->search_estado="Inactivo";
-					if($model->save())
-					$this->redirect(array('cuenta'));
-				}
-				else
-				{
-					$cruge->state=2;			
-					$model->attributes=$_POST['User'];
-					$model->status=3;
-					$model->search_estado="Suspendido";
-					if($model->save())			
-					{	
-						$cruge->save();			
-						$this->redirect(array('cuenta'));
-					}					
-				}
+			    $model->search_estado=="Inactivo";
+			    $model->save();    
 			}
+			elseif($model->status==2)
+			{
+			    $cruge=new Cruge;
+			    if($model->type_id==2)
+			    {
+				$cruge->username=$model->tipo_estacion_experimental.'_'.$model->ruc;
+			    }
+			    else
+			    {
+				$cruge->username=$model->ruc;
+			    }
+			    $cruge->password=$this->passwordGenerator();
+			    $cruge->email=$model->email;
+			    $cruge->state=1;
+			    $cruge->save();
+			    
+			    $model->status=2;
+			    $model->name=$model->ruc;
+			    $model->search_estado="Activo";
+			    $model->cruge_user_id=$cruge->iduser;
+			    $model->save();
+			    
+			    $rol=new CrugeAuthassignment;
+			    $rol->userid=$cruge->iduser;
+			    $rol->itemname='productor';
+			    $rol->data='N;';
+			    $rol->save();
+			    $mensaje=$this->mensaje($id,'1');
+			}
+			elseif($model->status==3)
+			{
+			    $model->status=1;
+			    $model->search_estado="Inactivo";
+			    $model->save();
+			}
+		    }
+		    else
+		    {
+			if($model->status==1)
+			{
+			    $cruge->state=0;
+			    $cruge->save();
+			    $model->search_estado="Inactivo";
+			    $model->status=1;
+			    $model->save();
+			}
+			elseif($model->status==2)
+			{
+			    if($model->email!=$cruge->email)
+			    {
+				$cruge->email=$model->email;
+				$mensaje=$this->mensaje($id,'1');
+			    }	
+			    $cruge->state=1;			
+			    $cruge->save();
+			    $model->attributes=$_POST['User'];
+			    $model->status=2;
+			    $model->search_estado="Activo";
+			    $model->save();
+			}
+			elseif($model->status==3)
+			{
+			    $cruge->state=2;
+			    $cruge->save();
+			    $model->status=3;
+			    $model->search_estado="Suspendido";
+			    $model->save();
+			}
+		    }
+		    $this->redirect(array('cuenta'));
 		}
 		$this->render('cuentaupdate',array(
 			'model'=>$model,
@@ -407,46 +375,38 @@ class UserController extends Controller
 	
 	public function mensaje_d($email)
 	{
-		$smt=Yii::app()->Smtpmail;
-		  $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
-		  $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';
-		  $smt->MsgHTML("<br />".
-					 "<br />".
-					 "Su inscripción ha sido denegada del INIA,porfavor verificar:".
-					 "<br />".
-					 "Nro de Registro <br />".
-					 "RUC ".
-					 "<br />".
-					 "Para mas información contactar con el INIA".
-					 "<br />".
-					 "Atentamente,<br />".
-					 "Administrador del INIA<br />"
-					 );
-		  $smt->AddAddress($email, "");
-		  if(!$smt->Send())
-		  {
-					 $error="Mailer Error: " . $smt->ErrorInfo;
-		  }
-		  else
-		  {
-					 $error="Message sent!";
-		  }
-		
-			
-		  return $error;
+	    $smt=Yii::app()->Smtpmail;
+	    $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
+	    $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';
+	    $smt->MsgHTML("<br />".
+				   "<br />".
+				   "Su inscripción ha sido denegada del INIA,porfavor verificar:".
+				   "<br />".
+				   "Nro de Registro <br />".
+				   "RUC ".
+				   "<br />".
+				   "Para mas información contactar con el INIA".
+				   "<br />".
+				   "Atentamente,<br />".
+				   "Administrador del INIA<br />"
+				   );
+	    $smt->AddAddress($email, "");
+	    if(!$smt->Send())
+	    {
+		$error="Mailer Error: " . $smt->ErrorInfo;
+	    }
+	    else
+	    {
+		$error="Message sent!";
+	    } 
+	    return $error;
 	}
-	public function mensaje($usern,$id)
+	
+	public function mensaje($iduser,$tipo)
 	{
-	    if($id==1)
-	    {
-		$cruge=Cruge::model()->find('username=:username', array(':username'=>$usern));
-		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>$cruge->iduser));
-	    }
-	    if($id==2)
-	    {
-		$cruge=Cruge::model()->find('username=:username', array(':username'=>$usern));
-		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>$cruge->iduser));
-	    }
+	    $user=User::model()->find('id=:id', array(':id'=>$iduser));
+	    $cruge=Cruge::model()->find('iduser=:iduser', array(':iduser'=>$user->cruge_user_id));
+	    
 	    $smt=Yii::app()->Smtpmail;
 	    $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
 	    $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';

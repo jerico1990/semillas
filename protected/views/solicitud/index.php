@@ -35,6 +35,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	<div class="span4">
 	    <label for="Solicitud_var_registro" class="required">Nro de Registro <span class="required">*</span></label>
 	    <input class="span12" size="30" maxlength="30" name="Solicitud[var_registro]" id="Solicitud_var_registro" type="text">
+	    <div class="help-block error" id="Solicitud_var_registro_em_no" style="display: none">Nro de Registro no se encuentra en las bases de inia</div>
 	    <div class="help-block error" id="Solicitud_var_registro_em_" style="display: none">Nro de Registro no es correcto.</div>
 	    <div class="help-block error" id="Solicitud_var_registro_em_duplicado" style="display: none">Nro de Registro ya se encuentra registrado.</div>
 	</div>
@@ -46,8 +47,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
 	<div class="span4">
 	    <label class="required" for="Solicitud_var_ruc">RUC <span class="required">*</span></label>
 	    <input class="span12 numerico" size="11" maxlength="11" name="Solicitud[var_ruc]" id="Solicitud_var_ruc" type="text">
+	    <div class="help-block error" id="Solicitud_var_ruc_em_no" style="display: none">RUC no se encuentra en las bases de inia.</div>
 	    <div class="help-block error" id="Solicitud_var_ruc_em_" style="display: none">RUC no es correcto.</div>
 	    <div class="help-block error" id="Solicitud_var_ruc_em_duplicado" style="display: none">RUC ya se encuentra registrado.</div>
+	    <div class="help-block error" id="Solicitud_var_ruc_em_no_pertenece" style="display: none">RUC no le corresponde al nro registro.</div>
+	    
 	</div>
 	<div class="span8">
 	    <label class="required" for="Solicitud_var_razon_social">Nombre / Razón Social <span class="required">*</span></label>
@@ -197,6 +201,7 @@ $distritos=CController::createUrl('location/districts');
 //$distritos=CController::createUrl('location/districts');
 $nroregistro=CController::createUrl('solicitud/nroregistro');
 $nroruc=CController::createUrl('solicitud/nroruc');
+$nroregistroruc=CController::createUrl('solicitud/nroregistroruc');
 $documento=CController::createUrl('solicitud/dni');
 $email=CController::createUrl('solicitud/email');
 ?>
@@ -232,6 +237,15 @@ $email=CController::createUrl('solicitud/email');
 	    $('#Solicitud_var_registro_em_duplicado').hide();
 	}
 	
+	if (nroregistro.responseText=='2') {
+	    error=error+'Solicitud';
+	    $('#Solicitud_var_registro_em_no').show();
+        }
+	else
+	{
+	    $('#Solicitud_var_registro_em_no').hide();
+	}
+	
 	var nroruc=$.ajax({
             url: '<?= $nroruc ?>',
             type: 'POST',
@@ -250,6 +264,38 @@ $email=CController::createUrl('solicitud/email');
 	{
 	    $('#Solicitud_var_ruc_em_duplicado').hide();
 	}
+	
+	if (nroruc.responseText=='2') {
+	    error=error+'Solicitud';
+            $('#Solicitud_var_ruc_em_no').show();
+        }
+	else
+	{
+	    $('#Solicitud_var_ruc_em_no').hide();
+	}
+	
+	if (nroregistro.responseText=='0' && nroruc.responseText=='0') {
+	    var nroregistroruc=$.ajax({
+		url: '<?= $nroregistroruc ?>',
+		type: 'POST',
+		async: false,
+		data: {ruc:$('#Solicitud_var_ruc').val(),registro:$('#Solicitud_var_registro').val()},
+		success: function(data){
+		    
+		}
+	    });
+	    
+	    if (nroregistroruc.responseText=='1') {
+		error=error+'Solicitud';
+		$('#Solicitud_var_ruc_em_no_pertenece').show();
+	    }
+	    else
+	    {
+		$('#Solicitud_var_ruc_em_no_pertenece').hide();
+	    }
+	}
+	
+	
 	
 	
 	var nrodocumento=$.ajax({
