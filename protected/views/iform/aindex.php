@@ -6,8 +6,7 @@
 		'filter'=>$model,
 		'template'=>"{items}\n{pager}",
 		'columns'=>array(
-			 array('name'=>'crop_id','value'=>'$data->crop->name',),		
-			//'location_id',
+			array('name'=>'crop_id','value'=>'$data->crop->name',),
 			'form_number',
 			array('name'=>'user_id','value'=>'$data->usera->fullname',),
 			array(

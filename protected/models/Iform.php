@@ -190,8 +190,6 @@ class Iform extends CActiveRecord
 		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));               
       
 		$criteria=new CDbCriteria;
-		
-		
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('crop.name',$this->crop_id);		
 		$criteria->compare('location_id',$this->location_id);		
@@ -199,7 +197,6 @@ class Iform extends CActiveRecord
 		$criteria->with = array('crop', 'usera','inboxes');
 		$criteria->together = true;
 		$criteria->addCondition("inboxes.status_id=2 and inboxes.to=".$user->id);
-		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

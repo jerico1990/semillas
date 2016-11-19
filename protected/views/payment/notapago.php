@@ -33,7 +33,8 @@
 				<div class="span4">Ingrese código de voucher:</div>
 				<div class="span5">
 					<?php echo CHtml::hiddenField('code',$payment->code); ?>
-					<?php echo CHtml::textField('data'); ?>
+					<input type="text" name="data" id="data" maxlength="20">
+					<?php //echo CHtml::textField('data'); ?>
 				</div>
 				<div class="span3">
 					<?php $this->widget('bootstrap.widgets.TbButton', array( 'type'=>'success','buttonType'=>'submit','label'=>'Registrar','htmlOptions' => array('name'=>'yt0','value'=>'registrar'),)); ?>

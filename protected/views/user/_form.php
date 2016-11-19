@@ -1,6 +1,6 @@
 <?php
 	$departments = Location::model()->findAll(array(
-			  'select'   => 't.id, t.department, t.departament_id',
+			  'select'   => 't.id, t.department, t.department_id',
 			  'group'    => 't.id,t.department',
 			  'order'    => 't.department ASC',
 			  'distinct' => true

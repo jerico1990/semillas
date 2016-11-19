@@ -59,7 +59,7 @@ jQuery( document ).ready(function( $ ) {
 </script>
 
 <?php
-$ambitos = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5');
+$ambitos = Headquarter::model()->findAll('t.parent_id is null and t.location_id like ("'.$ubigeo->department_id.'%")');
 $heard = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5'); //:model()->findAll('parent_id is null');
 $headquarters = CHtml::listData($heard,'id','name');
 $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status=1'));
@@ -70,7 +70,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 	<?php echo $form->errorSummary($model); ?>
 	<h2>Semilla a Producir</h2>
 	    <div class="row-fluid">
-		<div class="span12">
+		<div class="span6">
 		    <label class="required">Cultivo<span class="required">*</span></label>
 		    <select name="Iform[crop_id]" id="crop_id" onchange="Cultivo($(this).val())">
 			<option value>seleccionar</option>
@@ -80,10 +80,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    </select>
 		    <div class="help-block error" id="Iform_crop_id_em_" style="display:none">Cultivo no es correcto.</div>
 		</div>
-	    </div>
-	    
-	    <div class="row-fluid">
-		<div class="span12">
+		<div class="span6">
 		    <label class="required">Cultivar<span class="required">*</span></label>
 		    <select name="Iform[variety_id]" id="Iform_variety_id">
 			<option value>seleccionar</option>
@@ -91,9 +88,8 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    <div class="help-block error" id="Iform_variety_id_em_" style="display:none">Cultivar no es correcto.</div>
 		</div>
 	    </div>
-	    
 	    <div class="row-fluid">
-		<div class="span12">
+		<div class="span6">
 		    <label class="required">Cultivo anterior<span class="required">*</span></label>
 		    <select name="Iform[crop_before_id]" id="crop_before_id" onchange="CultivoAnterior($(this).val())">
 			<option value>seleccionar</option>
@@ -103,10 +99,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    </select>
 		    <div class="help-block error" id="Iform_crop_before_id_em_" style="display:none">Cultivo anterior no es correcto.</div>
 		</div>
-	    </div>
-	    
-	    <div class="row-fluid">
-		<div class="span12">
+		<div class="span6">
 		    <label class="required">Cultivar anterior<span class="required">*</span></label>
 		    <select name="Iform[variety_before_id]" id="variety_before_id">
 			<option value>seleccionar</option>
@@ -114,7 +107,6 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    <div class="help-block error" id="Iform_variety_before_id_em_" style="display:none">Cultivar anterior no es correcto.</div>
 		</div>
 	    </div>
-	    
 	    <div class="row-fluid">
 		<div class="span12">
 		    <label class="required">Categoria<span class="required">*</span></label>
@@ -421,14 +413,14 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
 	var error = '';
 	
 	for (i=1;i<=detalles_fuentes;i++) {
-	    if ($.trim($('#sources_controls_'+i).val())=='') {
+	    /*if ($.trim($('#sources_controls_'+i).val())=='') {
 		error=error+'Debe ingresar el N° Control del registro n° '+i+'<br>';
 	    }
 	    
 	    if ($.trim($('#sources_etiquetas_'+i).val())=='') {
 		error=error+'Debe ingresar el N° Etiqueta del registro n° '+i+'<br>';
 	    }
-	    
+	    */
 	    if ($.trim($('#sources_cantidades_'+i).val())=='') {
 		error=error+'Debe ingresar la Cant.(kg) en el registro n° '+i+'<br>';
 	    }
@@ -652,7 +644,7 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
     
     function Cultivo(valor) {
 	$.get( "<?= $cultivares ?>?crop="+valor, function( data ) {															
-	    $("#Iform_variety_id").append(data);	
+	    $("#Iform_variety_id").html(data);	
 	});
 	if($('#crop_id').val()==15){			
 		$('#Iform_category').html('<option>seleccionar</option>'+
@@ -676,7 +668,7 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
     
     function CultivoAnterior(valor) {
 	$.get( "<?= $cultivaresant ?>?crop="+valor, function( data ) {															
-	    $("#variety_before_id").append(data);	
+	    $("#variety_before_id").html(data);	
 	});
     }
     

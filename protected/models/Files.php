@@ -15,6 +15,9 @@ class Files extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public $archivos;
+	public $nombres_archivos;
+	public $ids;
 	public function tableName()
 	{
 		return 'files';
@@ -28,11 +31,13 @@ class Files extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('form_id, user_id', 'numerical', 'integerOnly'=>true),
+			array('form_id, user_id, estado,ids', 'numerical', 'integerOnly'=>true),
 			array('url, name_file', 'length', 'max'=>300),
+			array('name,nombres_archivos', 'length', 'max'=>100),
+			array('archivos', 'file'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, form_id, user_id, url, name_file', 'safe', 'on'=>'search'),
+			array('id, form_id, user_id, url,nombres_archivos ', 'safe', 'on'=>'search'),
 		);
 	}
 

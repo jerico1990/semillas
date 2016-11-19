@@ -95,37 +95,4 @@ $contador=0;
 		  </div>
 		  	  
 </div>
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	<?php
-	//$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'link','size'=>'small','type'=>'primary', 'label'=>'ver','url'=>array('view', 'id'=>$data->id))); 
-	/*
-	foreach($inboxers as $datas)
-	{
-		if($datas->status_id===1 && $datas->estado==1)
-		{
-			//$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'link', 'size'=>'small','type'=>'primary', 'label'=>'editar','url'=>array('update', 'id'=>$data->id)));
-			//$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'link', 'size'=>'small','type'=>'primary', 'label'=>'enviar','url'=>Yii::app()->createUrl('inbox/mensaje',array('id'=>$inbox->id))));
-		}
-		
-		if($datas->status_id===6 && $datas->estado==1)
-		{
-			//$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'link', 'size'=>'small','type'=>'primary', 'label'=>'editar','url'=>array('update', 'id'=>$data->id)));
-			//$this->widget('bootstrap.widgets.TbButton', array('buttonType'=>'link', 'size'=>'small','type'=>'primary', 'label'=>'enviar','url'=>Yii::app()->createUrl('inbox/mensaje',array('id'=>$inbox->id))));
-		}
-		
-		
-	}*/
-	
-	
-	
-	?>
 </div>

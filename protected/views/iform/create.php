@@ -15,4 +15,4 @@ $this->menu=array(
 
 <h1>Solicitud de Inscripción de campo semillero</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'ubigeo'=>$ubigeo)); ?>

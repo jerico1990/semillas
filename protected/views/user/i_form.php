@@ -92,12 +92,13 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </div>
 <div class="row-fluid">		  
 	<div class="span12"><h3>Cuenta</h3></div>
-</div>		
-<?php /*<div class="row-fluid">
-	<div class="span4"><?php echo $form->textFieldRow($model,'username',array('class'=>'span12','size'=>30,'maxlength'=>30)); ?></div>
-	<div class="span8"></div>
 </div>
-*/ ?>
+<div class="row-fluid">
+    <div class="span6">
+	<label>Cuenta</label>
+	<input class="span12" size="50" maxlength="150" type="text" disabled value="<?= $model->username ?>">
+    </div>
+</div>
 <div class="row-fluid">
     <div class="span4">
 	<label for="User_email">Correo Electrónico</label>
@@ -105,7 +106,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<div class="help-block error" id="User_email_em_" style="display:none">El email no es correcto.</div>
 	<div class="help-block error" id="User_email_em_incorrecto" style="display:none">No es un correo electrónico.</div>
 	<div class="help-block error" id="User_email_em_duplicado" style="display:none">El correo electrónico ya se encuentra registrado.</div>
-    
     </div>
     <div class="span8">
 	<label for="User_tipo_estacion_experimental">Estación Experimental</label>

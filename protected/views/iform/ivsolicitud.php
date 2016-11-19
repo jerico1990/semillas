@@ -92,28 +92,19 @@ $(function(){
 	$('#Inspection_proposed_time').clockface();
 	$('#Inspection_real_time').clockface();
 	$('#Inspection_subsanacion_real_time').clockface();
-	
-	
 	$("#inbox-form input:checkbox").on('click', (function(){
-		if ($(this).is(':checked')) {
-			console.log('yes');
-			$('#yw1').prop('disabled', false);
-			$('#yw2').prop('disabled', false);
-		}
-		else
-		{
-			console.log('no');
-			$('#yw1').prop('disabled', true);
-			$('#yw2').prop('disabled', true);
-		}	
+	    if ($(this).is(':checked')) {
+		$('#yw1').prop('disabled', false);
+		$('#yw2').prop('disabled', false);
+		$('#aprobar').prop('disabled', false);
+	    }
+	    else
+	    {
+		$('#yw1').prop('disabled', true);
+		$('#yw2').prop('disabled', true);
+		$('#aprobar').prop('disabled', true);
+	    }	
 	}));
-	
-	
-	$("#yw4").on('click', (function(){
-		
-	}));
-	
-	
 });
 </script>
 <br>
@@ -168,22 +159,25 @@ $(function(){
 			<!--1° Fila de la Solicutd-->
 			<div class="row-fluid">
 				<div class="span2">
-					<?php
-					foreach($inboxs as $inbox)
+				    <?php
+				    foreach($inboxs as $inbox)
+				    {
+					if($inbox->status_id==1)
 					{
-						if($inbox->status_id==1)
-						{
-							echo date("d-m-Y", strtotime($inbox->date));
-						}
+					    echo date("d-m-Y", strtotime($inbox->date));
 					}
-					?>
+				    }
+				    ?>
 				</div>
-				<div class="span10">
-					<div class="row-fluid">										  
-						<div class="span12">
-								<?php echo CHtml::link("<b>Sol. de Insc. de Campo Semillero</b>",array('pdf/solicitud','id'=>$model->id)); ?>
-						</div>						
-					</div>
+				<div class="span8">
+				    <div class="row-fluid">										  
+					<div class="span12">
+					    <?php echo CHtml::link("<b>Sol. de Insc. de Campo Semillero</b>",array('pdf/solicitud','id'=>$model->id)); ?>
+					</div>						
+				    </div>
+				</div>
+				<div class="span2">
+				    <?php echo CHtml::link('<b>Archivos</b>',array('iform/files','id'=>$model->id)); ?>
 				</div>
 			</div>
 		  <!--Fin de 1° Fila de la Solicutd-->
@@ -311,91 +305,98 @@ $(function(){
 								));						
 								?>					
 									<?php echo $form->textAreaRow($model, 'observacion', array('id'=>'observacion','rows'=>9,'class'=>'span12')); ?>
-								
-									<?php echo $form->datepickerRow($model,'fecha_visita',
-									  array(
-										'options'=>array( 'format' => 'dd-mm-yyyy', 
-										'weekStart'=> 1,
-										'showButtonPanel' => true,
-										'showAnim'=>'fold',))); ?>
+									<?php echo $form->datepickerRow($model,'fecha_visita',array('options'=>array( 'format' => 'dd-mm-yyyy', 'weekStart'=> 1,'showButtonPanel' => true,'showAnim'=>'fold',))); ?>
 									<?php echo $form->checkboxRow($model, 'validainsp'); ?>	
-										
 								<?php $this->endWidget(); ?>				
 							</div><!-- form -->
 							 </p>
 						  </div>
 						  <div class="modal-footer">
-								<?php $this->widget('bootstrap.widgets.TbButton', array(	
-								  'type'=>'success',
-								  'label'=>'Aprobar',						
-								  'buttonType'=>'ajaxButton',
-								  'url'=>Yii::app()->createUrl( 'iform/observacion' ),
-								  'ajaxOptions'=>array(			     
+								<button id="aprobar" class="btn btn-success" disabled=true>Aprobar</button>
+								<button id="rechazar" class="btn btn-danger">Rechazar</button>
+								<?php /*$this->widget('bootstrap.widgets.TbButton', array(	
+								    'type'=>'success',
+								    'label'=>'Aprobar',						
+								    'buttonType'=>'ajaxButton',
+								    'url'=>Yii::app()->createUrl( 'iform/observacion' ),
+								    'ajaxOptions'=>array(			     
 											'type'=>'POST',	
 											'data' => array( 'id'=>'1','form'=>$model->id,'observacion' => 'js:$("#observacion").val()' ,
 																'fecha_visita' => 'js:$("#Iform_fecha_visita").val()' , 'pago'=>'js:$("#Iform_validainsp").val()','hora'=>'js:$("#t1").val()' ),
 											'success' => "function(data){location.reload();}",
 											),
 										// 'url'=>'#',
-								  'htmlOptions'=>array('data-dismiss'=>'modal',
-															  'disabled'=>true,
-												 'url' => Yii::app()->createUrl( 'iform/observacion' ),
-												 ),
-									)); ?>				    
-									<?php /*$this->widget('bootstrap.widgets.TbButton', array(
-								  'type'=>'primary',
-								  'label'=>'Observar',				
-								  'buttonType'=>'ajaxButton',
-								  'url'=>Yii::app()->createUrl( 'iform/observacion' ),
-								  'ajaxOptions'=>array(			     
-											  'type'=>'POST',							
-											  'data' => array( 'id'=>'2','form'=>$model->id,'observacion' => 'js:$("#observacion").val()' ),
-											  'success' => "function( data ){ location.reload();}"
-										  ),
-								  'htmlOptions'=>array('data-dismiss'=>'modal','disabled'=>true,
-													'url' => Yii::app()->createUrl( 'iform/observacion' ),
-												 ),				
-									));*/ ?>				    
-									 <?php $this->widget('bootstrap.widgets.TbButton', array(
-								  'type'=>'danger',
-								  'label'=>'Rechazar',				
-								  'buttonType'=>'ajaxButton',
-								  'url'=>Yii::app()->createUrl( 'iform/observacion' ),
-								  'ajaxOptions'=>array(			     
+								    'htmlOptions'=>array('data-dismiss'=>'modal','disabled'=>true,'url' => Yii::app()->createUrl( 'iform/observacion' ),),
+									));*/ ?>
+									
+								<?php /*$this->widget('bootstrap.widgets.TbButton', array(
+								    'type'=>'danger',
+								    'label'=>'Rechazar',				
+								    'buttonType'=>'ajaxButton',
+								    'url'=>Yii::app()->createUrl( 'iform/observacion' ),
+								    'ajaxOptions'=>array(			     
 												'type'=>'POST',							
 												'data' => array( 'id'=>'3','form'=>$model->id,'observacion' => 'js:$("#observacion").val()' ),
 												'success' => "function(data){location.reload();}"
 											),
-								  'htmlOptions'=>array('data-dismiss'=>'modal',
+								    'htmlOptions'=>array('data-dismiss'=>'modal',
 													'url' => Yii::app()->createUrl( 'iform/observacion' ),
 											),				
-									)); ?>
+									));*/ ?>
 						  </div>
 	</div>
 <!--Fin de Revision de Dcoument-->
-
-
-
-
-
-
+<?php 
+$aprobar=CController::createUrl('iform/observacion');
+$rechazar=CController::createUrl('iform/observacion');
+?>
 <script>
-	$('#myModal_doc').modal('hide');
-	$('#myModal_toggle').on('click', function(){$('#myModal_doc').modal('show');})
-	
-	$('#myModal_notificar').modal('hide');
-	$('#myModal_btnnotif').on('click', function(){$('#myModal_notificar').modal('show');})
-	
-	$('#myModal_notificar_acond').modal('hide');
-	$('#myModal_btnnotifacon').on('click', function(){$('#myModal_notificar_acond').modal('show');})
-	
+    $('#myModal_doc').modal('hide');
+    $('#myModal_toggle').on('click', function(){$('#myModal_doc').modal('show');})
+    $('#myModal_notificar').modal('hide');
+    $('#myModal_btnnotif').on('click', function(){$('#myModal_notificar').modal('show');})
+    $('#myModal_notificar_acond').modal('hide');
+    $('#myModal_btnnotifacon').on('click', function(){$('#myModal_notificar_acond').modal('show');})
+    $('#aprobar').click(function(){
+	var error='';
+	if ($('#observacion').val()=='') {
+	    error=error+'Debe ingresar la observación\n';
+	}
+	if ($('#Iform_fecha_visita').val()=='') {
+	    error=error+'Debe ingresar la fecha visita';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
+	$.ajax({
+            url: '<?= $aprobar ?>',
+            type: 'POST',
+            data: {'id':'1','form':<?= $model->id ?>,'observacion':$("#observacion").val(),'fecha_visita':$("#Iform_fecha_visita").val() , 'pago':$("#Iform_validainsp").val(),'hora':$("#t1").val()},
+            success: function(data){
+                location.reload();
+            }
+        });
+	return true;
+    });
+    $('#rechazar').click(function(){
+	var error='';
+	if ($('#observacion').val()=='') {
+	    error=error+'Debe ingresar la observación\n';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
+	$.ajax({
+            url: '<?= $rechazar ?>',
+            type: 'POST',
+            data: {'id':'3','form':<?= $model->id ?>,'observacion':$("#observacion").val()},
+            success: function(data){
+                location.reload();
+            }
+        });
+	return true;
+    });
+    
 </script>
-		  
-
-
-
-
-
-
-
-

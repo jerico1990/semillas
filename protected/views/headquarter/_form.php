@@ -12,31 +12,31 @@
     */
     if(isset($_REQUEST['id']))
     {
-	    $provinces = Location::model()->findAll(array(
-	    'select'    => 't.id, t.province, t.province_id, t.department_id',
-	    'condition' => 'department_id = "' . $model->department_id.'"',
-	    'group'    	=> 't.id,t.province',			
-	    'order'	=>	't.province',
-	    'distinct' 	=> true
-	    ));
-	   // $listprovinces = CHtml::listData($provinces,'province_id','province');
-	    /*
-	    $districts = Location::model()->findAll(array(
-	    'select'    => 't.id, t.district, t.district_id, t.province_id',
-	    'condition' => 'department_id = ' . $model->department_id.' and province_id='.$model->province_id,
-	    'group'    => 't.id,t.district',			
-	    'order'		=>	't.district',
-	    'distinct' => true
-	    ));
-	    $listdistricts = CHtml::listData($districts,'district_id','district');
-	    
-	    $arrayp=$listprovinces;
-	    $arrayd=$listdistricts;*/
+	$provinces = Location::model()->findAll(array(
+	'select'    => 't.id, t.province, t.province_id, t.department_id',
+	'condition' => 'department_id = "' . $model->department_id.'"',
+	'group'    	=> 't.id,t.province',			
+	'order'	=>	't.province',
+	'distinct' 	=> true
+	));
+       // $listprovinces = CHtml::listData($provinces,'province_id','province');
+	/*
+	$districts = Location::model()->findAll(array(
+	'select'    => 't.id, t.district, t.district_id, t.province_id',
+	'condition' => 'department_id = ' . $model->department_id.' and province_id='.$model->province_id,
+	'group'    => 't.id,t.district',			
+	'order'		=>	't.district',
+	'distinct' => true
+	));
+	$listdistricts = CHtml::listData($districts,'district_id','district');
+	
+	$arrayp=$listprovinces;
+	$arrayd=$listdistricts;*/
     }
     else
     {
-	    $arrayp=array();
-	    $arrayd=array();
+	$arrayp=array();
+	$arrayd=array();
     }
 /*Direccion*/
     $heard = Headquarter::model()->findAll('parent_id is null');
@@ -48,36 +48,27 @@
 	    
     if($model->id!==null)
     {
-	    $user=User::model()->find('type_id=5 and headquarter_id=:headquarter',array(':headquarter'=>$model->id));				
-	    $cruge=Cruge::model()->find('iduser=:cruge_user_id',array(':cruge_user_id'=>$user->cruge_user_id));
+	$user=User::model()->find('type_id=5 and headquarter_id=:headquarter',array(':headquarter'=>$model->id));				
+	$cruge=Cruge::model()->find('iduser=:cruge_user_id',array(':cruge_user_id'=>$user->cruge_user_id));
     }
     else
     {
-	    $user=null;
-	    $cruge=null;
+	$user=null;
+	$cruge=null;
     }
 ?>
 
 
 <div class="form well span12">
 
-<?php 
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	'id'=>'users-form',
-	'enableClientValidation'=>true,
-	'clientOptions'=>array('validateOnSubmit'=>true),
-	//'htmlOptions'=>array('class'=>'well'),
-   
-));
-
-?>
+<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm'); ?>
 <?php echo $form->errorSummary($model); ?>
 
 <?php
 if($cruge!==null)
 {		
-	echo CHtml::hiddenField('username_ant',$cruge->username);
-	echo CHtml::hiddenField('email_ant',$cruge->email);
+    echo CHtml::hiddenField('username_ant',$cruge->username);
+    echo CHtml::hiddenField('email_ant',$cruge->email);
 }		 
 ?>  
 
@@ -89,7 +80,8 @@ if($cruge!==null)
     <div class="span4">
 	<label for="Headquarter_ruc" class="required">Ruc <span class="required">*</span></label>
 	<input size="11" maxlength="11" class="span12 numerico" name="Headquarter[ruc]" id="Headquarter_ruc" type="text" value="<?= $model->ruc ?>">
-	    <div class="help-block error" id="Headquarter_ruc_em_" style="display:none">RUC no es correcto.</div>
+	<div class="help-block error" id="Headquarter_ruc_em_" style="display:none">RUC no es correcto.</div>
+	<div class="help-block error" id="Headquarter_ruc_em_duplicado" style="display:none">RUC ya se encuentra registrado.</div>
     </div>
     <div class="span8"></div>
 </div>
@@ -109,7 +101,7 @@ if($cruge!==null)
     <div class="span9">
 	<label for="Headquarter_legal_name">Razon Social</label>
 	<input size="12" maxlength="150" class="span12" name="Headquarter[legal_name]" id="Headquarter_legal_name" type="text" value="<?= $model->legal_name ?>">
-	<div class="help-block error" id="Headquarter_legal_name_em_" style="display:none">Razon Social no es correcto.</div>		  
+	<div class="help-block error" id="Headquarter_legal_name_em_" style="display:none">Razon Social no es correcto.</div>
     </div>
     
     <div class="span3"></div>
@@ -274,6 +266,7 @@ if($cruge!==null)
 	<label for="Headquarter_document_number">N° de Documento</label>
 	<input size="8" maxlength="8" class="span12 numerico" name="Headquarter[document_number]" id="Headquarter_document_number" type="text" value="<?= $model->document_number ?>">
 	<div class="help-block error" id="Headquarter_document_number_em_" style="display:none">N° de Documento no es correcto.</div>
+	<div class="help-block error" id="Headquarter_document_number_em_duplicado" style="display:none">N° de Documento ya se encuentra registrado.</div>
     </div>
     <?php /*
 	<div class="span4">
@@ -345,6 +338,7 @@ if($cruge!==null)
 	<label for="Headquarter_username">Usuario</label>
 	<input size="30" maxlength="40" class="span12" name="Headquarter[username]" id="Headquarter_username" type="text" value="<?= $model->username ?>">
 	<div class="help-block error" id="Headquarter_username_em_" style="display:none">Usuario no es correcto.</div>
+	<div class="help-block error" id="Headquarter_username_em_duplicado" style="display:none">Nombre de usuario ya se encuentra registrado.</div>
     </div>
     <?php /*
 		  <div class="span4">
@@ -368,6 +362,7 @@ if($cruge!==null)
 	<label for="Headquarter_email">Correo electrónico</label>
 	<input size="30" maxlength="30" class="span12" name="Headquarter[email]" id="Headquarter_email" type="text" value="<?= $model->email ?>">
 	<div class="help-block error" id="Headquarter_email_em_" style="display:none">Correo electrónico no es correcto.</div>
+	<div class="help-block error" id="Headquarter_email_em_duplicado" style="display:none">Correo electrónico ya se encuentra registrado.</div>
     </div>
     <?php /*
 		  <div class="span8">
@@ -407,10 +402,92 @@ if($cruge!==null)
 <?php
 $province_ids=CController::createUrl('location/provinces');
 $distritos=CController::createUrl('location/districts');
+$nroruc=CController::createUrl('user/nroruc');
+$documento=CController::createUrl('user/dni');
+$email=CController::createUrl('user/email');
+$username=CController::createUrl('user/username');
 ?>
 <script>
     $('#registrar').click(function(){
 	var error='';
+	var username=$.ajax({
+            url: '<?= $username ?>',
+            type: 'POST',
+            async: false,
+            data: {ruc:$('#Headquarter_username').val()},
+            success: function(data){
+                
+            }
+        });
+	
+        if (username.responseText=='1') {
+	    error=error+'Username';
+            $('#Headquarter_username_em_duplicado').show();
+        }
+	else
+	{
+	    $('#Headquarter_username_em_duplicado').hide();
+	}
+	
+	var nroruc=$.ajax({
+            url: '<?= $nroruc ?>',
+            type: 'POST',
+            async: false,
+            data: {ruc:$('#Headquarter_ruc').val()},
+            success: function(data){
+                
+            }
+        });
+	
+        if (nroruc.responseText=='1') {
+	    error=error+'RUC';
+            $('#Headquarter_ruc_em_duplicado').show();
+        }
+	else
+	{
+	    $('#Headquarter_ruc_em_duplicado').hide();
+	}
+	
+	var nrodocumento=$.ajax({
+            url: '<?= $documento ?>',
+            type: 'POST',
+            async: false,
+            data: {documento:$('#Headquarter_document_number').val()},
+            success: function(data){
+                
+            }
+        });
+	
+        if (nrodocumento.responseText=='1') {
+	    error=error+'dni';
+            $('#Headquarter_document_number_em_duplicado').show();
+        }
+	else
+	{
+	    $('#Headquarter_document_number_em_duplicado').hide();
+	}
+	
+	
+	var correo=$.ajax({
+            url: '<?= $email ?>',
+            type: 'POST',
+            async: false,
+            data: {email:$('#Headquarter_email').val()},
+            success: function(data){
+                
+            }
+        });
+	
+        if (correo.responseText=='1') {
+	    error=error+'email';
+            $('#Headquarter_email_em_duplicado').show();
+        }
+	else
+	{
+	    $('#Headquarter_email_em_duplicado').hide();
+	}
+	
+	
 	
 	if ($.trim($('#Headquarter_ruc').val())=='') {
 	    error=error+'RUC';

@@ -205,7 +205,7 @@ class CropController extends Controller
 		$criteria->params=array(':parent'=>$crop);
 		
 		$cultivar = Crop::model()->findAll($criteria); // $params no es necesario
-		$options="";
+		$options="<option value></option>";
 		foreach ($cultivar as $data) {
 			$options=$options."<option value='$data->id'>$data->name</option>";		
 		}
@@ -220,7 +220,7 @@ class CropController extends Controller
 		$criteria->params=array(':parent'=>$crop);
 		
 		$cultivar = Crop::model()->findAll($criteria); // $params no es necesario
-		$options="";
+		$options="<option value></option>";
 		foreach ($cultivar as $data) {
 			$options=$options."<option value='$data->id'>$data->name</option>";				
 		}

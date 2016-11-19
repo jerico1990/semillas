@@ -72,8 +72,7 @@ $payment=Payment::model()->find('form_id=:form_id and concept_id=:concept_id',ar
 
 $(function(){
     $('#Inspection_proposed_time').clockface();
-	 $('#Acondicionamiento_proposed_time').clockface();
-
+    $('#Acondicionamiento_proposed_time').clockface();
 });
 </script>
 <br>
@@ -194,32 +193,14 @@ $(function(){
 			));
 			?>	
 			<div class="row-fluid">
-				<div class="span2">
-					
+				<div class="span2"></div>
+				<div class="span8">
+				    <b>Asignar Inspector:</b>
+				    <?php echo $form->dropDownListRow($model,'inspector_id', $list, array('id'=>'inspector','empty'=>'Seleccionar'));?>
 				</div>
-				<div class="span10">
-				   <div class="span10">
-						<b>Asignar Inspector:</b>
-						<?php echo $form->dropDownListRow($model,
-										'inspector_id', $list, array(
-										'id'=>'inspector',
-										'empty'=>'Seleccionar..'));?>
-					</div>
-					<div class="span2">
-								<?php	echo CHtml::ajaxLink(
-											"Asignar",
-											Yii::app()->createUrl( 'iform/asignarinsp' ),
-											array( // ajaxOptions
-												'type' => 'POST',
-												'success' => "function( data )
-															{location.reload();}",
-												'data' => array( 'form' => $model->id, 'inspector' => 'js:$("#inspector").val()' )
-											),
-											array( //htmlOptions
-												'href' => Yii::app()->createUrl( 'iform/asignarinsp' )					 
-											));?>
-					</div>
-				</div>				
+				<div class="span2">
+				    <button id="asignar" class="btn btn-success">Asignar</button>
+				</div>
 			 </div>
 			<?php $this->endWidget(); ?>
 			<?php } else { ?>
@@ -320,16 +301,29 @@ $(function(){
 
 
 
-
-
+<?php 
+$asignar=CController::createUrl('iform/asignarinsp');
+?>
 <script>
-	//Inspeccion
-	$('#myModal_inspeccion').modal('hide');
-	$('#myModal_btninsp').on('click', function(){$('#myModal_inspeccion').modal('show');})
-	//Acondicionamiento
-	
-	
-
-	
+    //Inspeccion
+    $('#myModal_inspeccion').modal('hide');
+    $('#myModal_btninsp').on('click', function(){$('#myModal_inspeccion').modal('show');})
+    //Acondicionamiento
+    
+    $('#asignar').click(function(){
+	if ($('#inspector').val()=='') {
+	    alert('Debe seleccionar un inspector');
+	    return false;
+	}
+	$.ajax({
+            url: '<?= $asignar ?>',
+            type: 'POST',
+            data: {'form':<?= $model->id ?>, 'inspector':$('#inspector').val()},
+            success: function(data){
+                
+            }
+        });
+	return true;
+    });
 </script>
 

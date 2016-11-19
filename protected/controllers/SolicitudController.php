@@ -117,8 +117,7 @@ class SolicitudController extends Controller
 	    $bandera=1;
 	 }
 	 echo $bandera;
-      }
-      
+      }      
    }
    
    public function actionDni()

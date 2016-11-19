@@ -116,10 +116,11 @@ class IformController extends Controller
 		$this->pageTitle = "Generar Solicitud";
 		$model=new Iform;
 		$inbox=new Inbox;
-		
+		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+		$ubigeo=Location::model()->find('district_id=:district_id',array(':district_id'=>$user->district_id));
 		if(isset($_POST['Iform']))
 		{	
-		    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));			
+		    
 		    $model->attributes=$_POST['Iform'];                        
 		    $model->user_id=$user->id;
 		    /*
@@ -244,6 +245,7 @@ class IformController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
+			'ubigeo'=>$ubigeo
 		));
 	}
 
@@ -403,31 +405,18 @@ class IformController extends Controller
 	
 	
 	public function actionAindex()
-	{		  
-		/*if(Yii::app()->user->checkAccess('estacion'))
-		{
-		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));               
-                $dataProvider=new CActiveDataProvider('Iform', array(
-			'criteria' => array(
-			'condition'=>'status_id=2',
-			'join' => 'INNER JOIN inbox  ON inbox.form_id=t.id and inbox.to='.$user->id,
-			'order'=>'inbox.form_id DESC',
-			)
-			));
-		$this->render('aindex',array(
-		'dataProvider'=>$dataProvider,		
-		));
-		}
-		else
-		throw new CHttpException(404,'The requested page does not exist.'); */
-		$this->pageTitle = "Administrar Expedientes";
-		$model=new Iform('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Iform']))
-			$model->attributes=$_GET['Iform'];
-		$this->render('aindex',array(
-			'model'=>$model
-		));
+	{	
+	    $this->pageTitle = "Administrar Expedientes";
+	    $model=new Iform('search');
+	    $model->unsetAttributes();  // clear any default values
+	    if(isset($_GET['Iform']))
+	    {
+		$model->attributes=$_GET['Iform'];
+	    }
+	    
+	    $this->render('aindex',array(
+		    'model'=>$model
+	    ));
 	}
 	
 	public function actionAview($id)
@@ -475,17 +464,16 @@ class IformController extends Controller
 	}
 	public function actionAsignarinsp()
 	{
-			$inspector=$_REQUEST['inspector'];			
-			$form=$_REQUEST['form'];
-			$inbox=new Inbox;		
-			$inbox->date=date('Y-m-d');
-			$inbox->form_id=$form;
-			$inbox->to=$inspector;
-			$inbox->status_id=3;
-			$inbox->estado=1;
-			$inbox->save();
-			
-			
+	    //var_dump($_POST);die;   
+	    $inspector=$_REQUEST['inspector'];			
+	    $form=$_REQUEST['form'];
+	    $inbox=new Inbox;		
+	    $inbox->date=date('Y-m-d');
+	    $inbox->form_id=$form;
+	    $inbox->to=$inspector;
+	    $inbox->status_id=3;
+	    $inbox->estado=1;
+	    $inbox->save();
 	}
 	
 	public function actionIindex()
@@ -1027,8 +1015,28 @@ class IformController extends Controller
 	
 	public function actionFiles($id)
 	{
-		$form=Iform::model()->find('id=:id',array(':id'=>$id));
-		$this->render('files',array('model'=>$form));
+	    //$model=new Files;
+	    $form=Iform::model()->find('id=:id',array(':id'=>$id));
+	    $files=Files::model()->findAll('form_id=:form_id',array(':form_id'=>$id));
+	    if(isset($_FILES['Files']))
+	    {
+		$model=new Files;
+		//$count=count();
+		$model->archivos=CUploadedFile::getInstances($model,'archivos');
+		//var_dump($model->archivos);die;//
+		foreach ($model->archivos as $file) {
+		    $doc=new Files;
+		    $doc->form_id=$id;
+		    $doc->name=$file->name;
+		    $doc->estado=1;
+		    $doc->insert();
+		    $file->saveAs('files/'.$doc->id.'.pdf');
+		    $doc->name_file=$doc->id.'.pdf';
+		    $doc->update();
+		}
+		$this->refresh();	
+	    }
+	    $this->render('files',array('model'=>$form,'files'=>$files));
 	}
 	
 	public function actionUpdateMuestreo($id)

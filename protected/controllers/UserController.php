@@ -522,28 +522,9 @@ class UserController extends Controller
 	{
 		$this->pageTitle = "Actualizar";
 		$model=$this->loadModel($id);
-		/*
-		$distritos = Location::model()->findAll(array(
-		      'select'   => 't.district, t._district_id',
-		      'where'	 => 't._district_id="'..'"',
-		      'group'    => 't.district',
-		      'order'    => 't.district ASC',
-		      'distinct' => true
-		));
-		
-		$provincias = Location::model()->findAll(array(
-		      'select'   => 't.province, t._province_id',
-		      'where'	 => 't._department_id="'.$mode.'"',
-		      'group'    => 't.province',
-		      'order'    => 't.province ASC',
-		      'distinct' => true
-		));*/
-		/*$region = Location::model()->findOne(array(
-		      'select'   => 't.department_id,t.province_id,t.district, t.district_id',
-		      'condition'=> 't.district_id='.$model->district_id.'',
-		      'order'    => 't.district ASC',
-		      'distinct' => true
-		));*/
+		$cruge=Cruge::model()->find('iduser=:iduser',[':iduser'=>$model->cruge_user_id]);
+		$model->username=$cruge->username;
+		//var_dump($model->username);die;
 		$region=Location::model()->find('district_id=:district_id', array(':district_id'=>$model->district_id));	
 		$model->department_id=$region->department_id;
 		$model->province_id=$region->province_id;
@@ -582,9 +563,9 @@ class UserController extends Controller
 
 		if(isset($_POST['User']))
 		{
-			$model->attributes=$_POST['User'];
-			if($model->save())
-				$this->redirect(array('iadmin'));
+		    $model->attributes=$_POST['User'];
+		    if($model->save())
+			    $this->redirect(array('iadmin'));
 		}
 
 		$this->render('iupdate',array(
@@ -709,5 +690,65 @@ class UserController extends Controller
 		$this->render('create',array(
 			'model'=>$model,'tipo'=>'inspector'
 		));
-	}	
+	}
+    
+    public function actionNroruc()
+    {
+	if(isset($_POST['ruc']) && $_POST['ruc']!='')
+	{
+	    $ruc=$_POST['ruc'];
+	    $bandera=0;
+	    $user=User::model()->find('ruc=:ruc',array(':ruc'=>$ruc));
+	    if($user)
+	    {
+	       $bandera=1;
+	    }
+	    echo $bandera;
+	}
+    }
+    
+    public function actionDni()
+    {
+	if(isset($_POST['dni']) && $_POST['dni']!='')
+	{
+	    $dni=$_POST['dni'];
+	    $bandera=0;
+	    $user=User::model()->find('document_number=:document_number',array(':document_number'=>$dni));
+	    if($user)
+	    {
+	       $bandera=1;
+	    }
+	    echo $bandera;
+	}
+    }
+    
+    public function actionEmail()
+    {
+	if(isset($_POST['email']) && $_POST['email']!='')
+	{
+	    $email=$_POST['email'];
+	    $bandera=0;
+	    $user=User::model()->find('email=:email',array(':email'=>$email));
+	    if($user)
+	    {
+	       $bandera=1;
+	    }
+	    echo $bandera;
+	}
+    }
+    
+    public function actionUsername()
+    {
+	if(isset($_POST['username']) && $_POST['username']!='')
+	{
+	    $username=$_POST['username'];
+	    $bandera=0;
+	    $user=Cruge::model()->find('username=:username',array(':username'=>$username));
+	    if($user)
+	    {
+	       $bandera=1;
+	    }
+	    echo $bandera;
+	}
+    }
 }

@@ -23,6 +23,4 @@ $this->menu=array(
 	'dataProvider'=>$dataProvider,
 	//'template'=>'{items} {pager}',
 	'itemView'=>'_view',
-	
-	
 )); ?>

@@ -185,7 +185,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');
     </div>
     <div class="row-fluid">
 	<div class="span12">
-	    <input type="submit" class="btn btn-success" id="registrar" value="Enviar">
+	    <input type="submit" class="btn btn-success pull-right" id="registrar" value="Enviar">
+	    <?php echo CHtml::link('Regresar',array('cruge/ui/login'),array('class'=>'btn pull-left btn-success')); ?>	
 		<?php //$this->widget('bootstrap.widgets.TbButton', array( 'type'=>'success','buttonType'=>'submit','label'=>'Enviar' ,'htmlOptions' => array(),)); ?>
 	</div>
     </div>
@@ -294,9 +295,6 @@ $email=CController::createUrl('solicitud/email');
 		$('#Solicitud_var_ruc_em_no_pertenece').hide();
 	    }
 	}
-	
-	
-	
 	
 	var nrodocumento=$.ajax({
             url: '<?= $documento ?>',

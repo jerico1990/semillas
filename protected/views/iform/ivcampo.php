@@ -305,7 +305,8 @@ foreach($inspections as $inspection)
 										</p>
 									</div>
 									<div class="modal-footer">
-											  <?php $this->widget('bootstrap.widgets.TbButton', array(
+											    <button id="aceptar_solicitud_inspeccion" class="btn btn-primary">Aceptar</button>
+											  <?php /*$this->widget('bootstrap.widgets.TbButton', array(
 																 'type'=>'primary',
 																 'label'=>'Aceptar',
 																 'buttonType'=>'ajaxButton',
@@ -322,7 +323,7 @@ foreach($inspections as $inspection)
 																							 ),
 																 'htmlOptions'=>array('data-dismiss'=>'modal',
 																							 'url' => Yii::app()->createUrl( 'iform/observacion' ),
-																							 ),)); ?>
+																							 ),));*/ ?>
 									</div>
 							</div>
 						<!--Fin de Notificar Visita-->
@@ -676,31 +677,37 @@ foreach($inspections as $inspection)
 						  </div>
 	</div>
 <!--Fin de Revision de Dcoument-->
-
-
-
-
-
-
-
-
+<?php 
+$aceptar=CController::createUrl('iform/observacion');
+?>
 <script>
-	$('#myModal_doc').modal('hide');
-	$('#myModal_toggle').on('click', function(){$('#myModal_doc').modal('show');})
-	
-	$('#myModal_notificar').modal('hide');
-	$('#myModal_btnnotif').on('click', function(){$('#myModal_notificar').modal('show');})
-	
-	$('#myModal_notificar_acond').modal('hide');
-	$('#myModal_btnnotifacon').on('click', function(){$('#myModal_notificar_acond').modal('show');})
-	
+    $('#myModal_doc').modal('hide');
+    $('#myModal_toggle').on('click', function(){$('#myModal_doc').modal('show');})
+    $('#myModal_notificar').modal('hide');
+    $('#myModal_btnnotif').on('click', function(){$('#myModal_notificar').modal('show');})
+    $('#myModal_notificar_acond').modal('hide');
+    $('#myModal_btnnotifacon').on('click', function(){$('#myModal_notificar_acond').modal('show');})
+    
+    $('#aceptar_solicitud_inspeccion').click(function(){
+	var error='';
+	if ($('#Inspection_real_date').val()=='') {
+	    error=error+'Debe ingresar la fecha programada\n';
+	}
+	if ($('#Inspection_real_time').val()=='') {
+	    error=error+'Debe ingresar la hora programada';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
+	$.ajax({
+            url: '<?= $aceptar ?>',
+            type: 'POST',
+            data: {'ninspeccion':<?= $inspection->inspection_number ?>,'id':8,'form':<?= $inbox->form_id ?>,'hora':$("#Inspection_real_time").val(),'observacion':'observacion','fecha':$("#Inspection_real_date").val()},
+            success: function(data){
+                location.reload();
+            }
+        });
+	return true;
+    });
 </script>
-		  
-
-
-
-
-
-
-
-
