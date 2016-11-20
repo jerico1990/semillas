@@ -246,8 +246,9 @@ $(function(){
 																			</div><!-- form -->													  
 																		 </p>
 																	  </div>
-																	  <div class="modal-footer">
-																			<?php $this->widget('bootstrap.widgets.TbButton', array(	
+																	    <div class="modal-footer">
+																		<button id="aceptar" class="btn btn-primary">Aceptar</button>
+																			<?php /*$this->widget('bootstrap.widgets.TbButton', array(	
 																					  'type'=>'primary',
 																					  'label'=>'Aceptar',
 																					  'buttonType'=>'ajaxButton',
@@ -264,7 +265,7 @@ $(function(){
 																					  ),
 																					  'htmlOptions'=>array('data-dismiss'=>'modal',
 																					  'url' => Yii::app()->createUrl( 'iform/observacion' ),
-																					  ),));
+																					  ),));*/
 																					  ?>							
 																	  </div>
 												</div>
@@ -521,28 +522,40 @@ $(function(){
 </div>
 
 <!--Finnnnnnnnnnnn-->
-
-
-
-
-
-
-
-
+<?php 
+$aceptar=CController::createUrl('iform/observacion');
+?>
 <script>
-	//Inspeccion
-	$('#myModal_inspeccion').modal('hide');
-	$('#myModal_btninsp').on('click', function(){$('#myModal_inspeccion').modal('show');})
-	//Acondicionamiento
-	$('#myModal_acondicionamiento').modal('hide');
-	$('#myModal_btnacond').on('click', function(){$('#myModal_acondicionamiento').modal('show');})
-	
-	$('#myModal_inspec_subs').modal('hide');
-	$('#myModal_btn_subs').on('click', function(){$('#myModal_inspec_subs').modal('show');})
-	
-	$('#myModal_acond_subs_acond').modal('hide');
-	$('#myModal_btn_subs_acond').on('click', function(){$('#myModal_acond_subs_acond').modal('show');})
-
-	
+    //Inspeccion
+    $('#myModal_inspeccion').modal('hide');
+    $('#myModal_btninsp').on('click', function(){$('#myModal_inspeccion').modal('show');})
+    //Acondicionamiento
+    $('#myModal_acondicionamiento').modal('hide');
+    $('#myModal_btnacond').on('click', function(){$('#myModal_acondicionamiento').modal('show');})
+    $('#myModal_inspec_subs').modal('hide');
+    $('#myModal_btn_subs').on('click', function(){$('#myModal_inspec_subs').modal('show');})
+    $('#myModal_acond_subs_acond').modal('hide');
+    $('#myModal_btn_subs_acond').on('click', function(){$('#myModal_acond_subs_acond').modal('show');})
+    $('#aceptar').click(function(){
+	var error='';
+	if ($('#Inspection_proposed_date').val()=='') {
+	    error=error+'Debe ingresar la fecha propuesta\n';
+	}
+	if ($('#Inspection_proposed_time').val()=='') {
+	    error=error+'Debe ingresar la hora propuesta';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
+	$.ajax({
+            url: '<?= $aceptar ?>',
+            type: 'POST',
+            data: {'id':7,'inspeccion':<?= $inspection->inspection_number ?>,'hora':$("#Inspection_proposed_time").val(),'form':<?= $inbox->form_id ?>,'observacion':'observacion','fecha':$("#Inspection_proposed_date").val()},
+            success: function(data){
+                location.reload();
+            }
+        });
+	return true;
+    });
 </script>
-

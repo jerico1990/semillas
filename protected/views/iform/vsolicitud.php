@@ -249,12 +249,10 @@ $(function(){
 </div>
 
 <!--Finnnnnnnnnnnn-->
-
-
 <script>
-	//Inspeccion
-	$('#myModal_inspeccion').modal('hide');
-	$('#myModal_btninsp').on('click', function(){$('#myModal_inspeccion').modal('show');})
-	//Acondicionamiento
+    //Inspeccion
+    $('#myModal_inspeccion').modal('hide');
+    $('#myModal_btninsp').on('click', function(){$('#myModal_inspeccion').modal('show');})
+    //Acondicionamiento
 </script>
 

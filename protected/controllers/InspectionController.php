@@ -529,141 +529,139 @@ class InspectionController extends Controller
 	
 	public function actionRechazado()
 	{
-		$inspection=Inspection::model()->find('id=:id',array(':id'=>$_REQUEST['condicional_inspection_id']));
-		$form=Iform::model()->find('id=:id',array(':id'=>$_REQUEST['formu']));
-		
-		if($form->crop_id==1)//Arroz
-		{
-			$inspection->arz_siembra_directa=$_REQUEST['Inspection']['arz_siembra_directa'];
-			$inspection->arz_transplante=$_REQUEST['Inspection']['arz_transplante'];
-			$inspection->arz_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['arz_fecha_siembra']));
-			$inspection->arz_fecha_almacigo=date("Y-m-d", strtotime($_REQUEST['Inspection']['arz_fecha_almacigo']));
-			$inspection->arz_fecha_transplante=date("Y-m-d", strtotime($_REQUEST['Inspection']['arz_fecha_transplante']));
-			$inspection->arz_area_instalada=str_replace(',','',$_REQUEST['Inspection']['arz_area_instalada']);
-			$inspection->arz_aislamiento=str_replace(',','',$_REQUEST['Inspection']['arz_aislamiento']);
-			$inspection->arz_fuera_tipo=$_REQUEST['Inspection']['arz_fuera_tipo'];
-			$inspection->arz_rojo=$_REQUEST['Inspection']['arz_rojo'];
-			$inspection->arz_plantas_sintomas=$_REQUEST['Inspection']['arz_plantas_sintomas'];
-			$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
-			$inspection->rechazado=1;
-			$inspection->save();
-		}
-		if($form->crop_id==2)//Algodon
-		{
-			$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
-			$inspection->alg_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['alg_fecha_siembra']));
-			$inspection->alg_deshije=date("Y-m-d", strtotime($_REQUEST['Inspection']['alg_deshije']));
-			$inspection->alg_floracion=str_replace(',','',$_REQUEST['Inspection']['alg_floracion']);
-			$inspection->alg_bellotas=str_replace(',','',$_REQUEST['Inspection']['alg_bellotas']);
-			$inspection->alg_surcos=str_replace(',','',$_REQUEST['Inspection']['alg_surcos']);
-			$inspection->alg_mata=str_replace(',','',$_REQUEST['Inspection']['alg_mata']);
-			$inspection->alg_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['alg_campo_comercial']);
-			$inspection->alg_otra_especie=str_replace(',','',$_REQUEST['Inspection']['alg_otra_especie']);
-			$inspection->alg_otra_cultivar=str_replace(',','',$_REQUEST['Inspection']['alg_otra_cultivar']);
-			$inspection->alg_plantas_otra_especie=$_REQUEST['Inspection']['alg_plantas_otra_especie'];
-			$inspection->alg_plantas_fuera_tipo=$_REQUEST['Inspection']['alg_plantas_fuera_tipo'];
-			$inspection->alg_malvacearum=$_REQUEST['Inspection']['alg_malvacearum'];
-			
-			$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
-			$inspection->rechazado=1;
-			$inspection->save();
-		}
-		
-		if($form->crop_id==3 || $form->crop_id==4 || $form->crop_id==5)//cereales
-		{
-			$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
-			$inspection->cer_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['cer_fecha_siembra']));
-			$inspection->cer_floracion=str_replace(',','',$_REQUEST['Inspection']['cer_floracion']);
-			$inspection->cer_maduracion=str_replace(',','',$_REQUEST['Inspection']['cer_maduracion']);
-			$inspection->cer_cantidad_semilla=str_replace(',','',$_REQUEST['Inspection']['cer_cantidad_semilla']);
-			$inspection->cer_inflorecencias_otros_cultivares=$_REQUEST['Inspection']['cer_inflorecencias_otros_cultivares'];
-			$inspection->cer_inflorecencias_otros_cultivares_menores=$_REQUEST['Inspection']['cer_inflorecencias_otros_cultivares_menores'];
-			$inspection->cer_carbon_apestoso=$_REQUEST['Inspection']['cer_carbon_apestoso'];
-			$inspection->cer_carbon_cubierto=$_REQUEST['Inspection']['cer_carbon_cubierto'];
-			$inspection->cer_carbon_volador=$_REQUEST['Inspection']['cer_carbon_volador'];
-			$inspection->cer_cornezuelo=$_REQUEST['Inspection']['cer_cornezuelo'];
-			$inspection->cer_mancha_foliar=$_REQUEST['Inspection']['cer_mancha_foliar'];
-			$inspection->cer_escaldadura=$_REQUEST['Inspection']['cer_escaldadura'];
-			$inspection->cer_presencia_maleza_nocivas=$_REQUEST['Inspection']['cer_presencia_maleza_nocivas'];
-			$inspection->cer_aspecto_general_poblacion=$_REQUEST['Inspection']['cer_aspecto_general_poblacion'];
-			$inspection->cer_plagas=$_REQUEST['Inspection']['cer_plagas'];
-			$inspection->cer_aislamiento=str_replace(',','',$_REQUEST['Inspection']['cer_aislamiento']);
-			$inspection->cer_otra_cultivar=str_replace(',','',$_REQUEST['Inspection']['cer_otra_cultivar']);
-			$inspection->cer_otra_categoria=str_replace(',','',$_REQUEST['Inspection']['cer_otra_categoria']);
-			$inspection->cer_plantas_fuera_tipo=str_replace(',','',$_REQUEST['cer_plantas_fuera_tipo']);
-			$inspection->cer_otras_especies=str_replace(',','',$_REQUEST['cer_otras_especies']);
-			$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
-			$inspection->rechazado=1;
-			$inspection->save();
-		}//Fin cereales
-		
-		if($form->crop_id==6 || $form->crop_id==7 || $form->crop_id==8 || $form->crop_id==9 || $form->crop_id==10 ||$form->crop_id==11 ||$form->crop_id==12)//Frijol,haba,pallar,lenteja,caupi,soya, leguminosas
-		{
-			
-			$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
-			$inspection->leg_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_fecha_siembra']));
-			$inspection->leg_emergencia_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_emergencia_fecha']));
-			$inspection->leg_floracion=str_replace(',','',$_REQUEST['Inspection']['leg_floracion']);
-			$inspection->leg_floracion_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_floracion_fecha']));
-			$inspection->leg_llenado_grano=str_replace(',','',$_REQUEST['Inspection']['leg_llenado_grano']);
-			$inspection->leg_fecha_cosecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_fecha_cosecha']));
-			$inspection->leg_distanciamiento_surcos=str_replace(',','',$_REQUEST['Inspection']['leg_distanciamiento_surcos']);
-			$inspection->leg_mata=str_replace(',','',$_REQUEST['Inspection']['leg_mata']);
-			$inspection->leg_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['leg_campo_comercial']);
-			$inspection->leg_otra_especie=str_replace(',','',$_REQUEST['Inspection']['leg_otra_especie']);
-			$inspection->leg_otro_cultivar=str_replace(',','',$_REQUEST['Inspection']['leg_otro_cultivar']);
-			$inspection->leg_presencia_maleza=$_REQUEST['Inspection']['leg_presencia_maleza'];
-			$inspection->leg_presencia_plagas=$_REQUEST['Inspection']['leg_presencia_plagas'];
-			$inspection->leg_plantas_otras_especies=$_REQUEST['Inspection']['leg_plantas_otras_especies'];
-			$inspection->leg_plantas_fuera_tipo=$_REQUEST['Inspection']['leg_plantas_fuera_tipo'];			
-			$inspection->leg_mosaicos=str_replace(',','',$_REQUEST['Inspection']['leg_mosaicos']);
-			$inspection->leg_moteado=str_replace(',','',$_REQUEST['Inspection']['leg_moteado']);
-			$inspection->leg_bacteriosis=str_replace(',','',$_REQUEST['Inspection']['leg_bacteriosis']);
-			$inspection->leg_mancha_angular=str_replace(',','',$_REQUEST['Inspection']['leg_mancha_angular']);
-			$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
-			$inspection->rechazado=1;
-			$inspection->save();
-		}//Fin Leguminosas
-		
-		if($form->crop_id==13)//Maiz
-		{			
-			$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
-			$inspection->maiz_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_fecha_siembra']));
-			$inspection->maiz_emergencia_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_emergencia_fecha']));
-			$inspection->maiz_floracion=str_replace(',','',$_REQUEST['Inspection']['maiz_floracion']);
-			$inspection->maiz_floracion_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_floracion_fecha']));
-			$inspection->maiz_llenado_grano=str_replace(',','',$_REQUEST['Inspection']['maiz_llenado_grano']);
-			$inspection->maiz_fecha_cosecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_fecha_cosecha']));
-			$inspection->maiz_distanciamiento_surcos=str_replace(',','',$_REQUEST['Inspection']['maiz_distanciamiento_surcos']);
-			$inspection->maiz_mata=str_replace(',','',$_REQUEST['Inspection']['maiz_mata']);
-			$inspection->maiz_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['maiz_campo_comercial']);
-			$inspection->maiz_otra_especie=str_replace(',','',$_REQUEST['Inspection']['maiz_otra_especie']);
-			$inspection->maiz_otro_cultivar=str_replace(',','',$_REQUEST['Inspection']['maiz_otro_cultivar']);
-			$inspection->maiz_presencia_maleza=$_REQUEST['Inspection']['maiz_presencia_maleza'];
-			$inspection->maiz_presencia_plagas=$_REQUEST['Inspection']['maiz_presencia_plagas'];
-			$inspection->maiz_plantas_otras_especies=$_REQUEST['Inspection']['maiz_plantas_otras_especies'];
-			$inspection->maiz_plantas_fuera_tipo=$_REQUEST['Inspection']['maiz_plantas_fuera_tipo'];
-			$inspection->maiz_tolerancias=$_REQUEST['Inspection']['maiz_tolerancias'];
-			$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
-			$inspection->rechazado=1;
-			$inspection->save();
-		}//Fin Maiz
-			if($form->crop_id==15 )//Papa
-		{			
-			$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
-			$inspection->papa_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['papa_fecha_siembra']));
-			$inspection->papa_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['papa_campo_comercial']);
-			$inspection->papa_otra_especie=str_replace(',','',$_REQUEST['Inspection']['papa_otra_especie']);
-			$inspection->papa_otro_cultivar=str_replace(',','',$_REQUEST['Inspection']['papa_otro_cultivar']);
-			$inspection->afectadas_enrollamiento=str_replace(',','',$_REQUEST['Inspection']['afectadas_enrollamiento']);
-			$inspection->afectadas_mozaico=str_replace(',','',$_REQUEST['Inspection']['afectadas_mozaico']);
-			$inspection->afectadas_otros_virus=str_replace(',','',$_REQUEST['Inspection']['afectadas_otros_virus']);
-			$inspection->afectadas_erwinia=str_replace(',','',$_REQUEST['Inspection']['afectadas_erwinia']);
-			$inspection->afectadas_mezclas=str_replace(',','',$_REQUEST['Inspection']['afectadas_mezclas']);
-			$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
-			$inspection->rechazado=1;
-			$inspection->save();
-		}//Fin Papa
+	    $inspection=Inspection::model()->find('id=:id',array(':id'=>$_REQUEST['condicional_inspection_id']));
+	    $form=Iform::model()->find('id=:id',array(':id'=>$_REQUEST['formu']));
+	    
+	    if($form->crop_id==1)//Arroz
+	    {
+		$inspection->arz_siembra_directa=$_REQUEST['Inspection']['arz_siembra_directa'];
+		$inspection->arz_transplante=$_REQUEST['Inspection']['arz_transplante'];
+		$inspection->arz_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['arz_fecha_siembra']));
+		$inspection->arz_fecha_almacigo=date("Y-m-d", strtotime($_REQUEST['Inspection']['arz_fecha_almacigo']));
+		$inspection->arz_fecha_transplante=date("Y-m-d", strtotime($_REQUEST['Inspection']['arz_fecha_transplante']));
+		$inspection->arz_area_instalada=str_replace(',','',$_REQUEST['Inspection']['arz_area_instalada']);
+		$inspection->arz_aislamiento=str_replace(',','',$_REQUEST['Inspection']['arz_aislamiento']);
+		$inspection->arz_fuera_tipo=$_REQUEST['Inspection']['arz_fuera_tipo'];
+		$inspection->arz_rojo=$_REQUEST['Inspection']['arz_rojo'];
+		$inspection->arz_plantas_sintomas=$_REQUEST['Inspection']['arz_plantas_sintomas'];
+		$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
+		$inspection->rechazado=1;
+		$inspection->save();
+	    }
+	    if($form->crop_id==2)//Algodon
+	    {
+		$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
+		$inspection->alg_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['alg_fecha_siembra']));
+		$inspection->alg_deshije=date("Y-m-d", strtotime($_REQUEST['Inspection']['alg_deshije']));
+		$inspection->alg_floracion=str_replace(',','',$_REQUEST['Inspection']['alg_floracion']);
+		$inspection->alg_bellotas=str_replace(',','',$_REQUEST['Inspection']['alg_bellotas']);
+		$inspection->alg_surcos=str_replace(',','',$_REQUEST['Inspection']['alg_surcos']);
+		$inspection->alg_mata=str_replace(',','',$_REQUEST['Inspection']['alg_mata']);
+		$inspection->alg_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['alg_campo_comercial']);
+		$inspection->alg_otra_especie=str_replace(',','',$_REQUEST['Inspection']['alg_otra_especie']);
+		$inspection->alg_otra_cultivar=str_replace(',','',$_REQUEST['Inspection']['alg_otra_cultivar']);
+		$inspection->alg_plantas_otra_especie=$_REQUEST['Inspection']['alg_plantas_otra_especie'];
+		$inspection->alg_plantas_fuera_tipo=$_REQUEST['Inspection']['alg_plantas_fuera_tipo'];
+		$inspection->alg_malvacearum=$_REQUEST['Inspection']['alg_malvacearum'];
+		$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
+		$inspection->rechazado=1;
+		$inspection->save();
+	    }
+	    
+	    if($form->crop_id==3 || $form->crop_id==4 || $form->crop_id==5)//cereales
+	    {
+		$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
+		$inspection->cer_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['cer_fecha_siembra']));
+		$inspection->cer_floracion=str_replace(',','',$_REQUEST['Inspection']['cer_floracion']);
+		$inspection->cer_maduracion=str_replace(',','',$_REQUEST['Inspection']['cer_maduracion']);
+		$inspection->cer_cantidad_semilla=str_replace(',','',$_REQUEST['Inspection']['cer_cantidad_semilla']);
+		$inspection->cer_inflorecencias_otros_cultivares=$_REQUEST['Inspection']['cer_inflorecencias_otros_cultivares'];
+		$inspection->cer_inflorecencias_otros_cultivares_menores=$_REQUEST['Inspection']['cer_inflorecencias_otros_cultivares_menores'];
+		$inspection->cer_carbon_apestoso=$_REQUEST['Inspection']['cer_carbon_apestoso'];
+		$inspection->cer_carbon_cubierto=$_REQUEST['Inspection']['cer_carbon_cubierto'];
+		$inspection->cer_carbon_volador=$_REQUEST['Inspection']['cer_carbon_volador'];
+		$inspection->cer_cornezuelo=$_REQUEST['Inspection']['cer_cornezuelo'];
+		$inspection->cer_mancha_foliar=$_REQUEST['Inspection']['cer_mancha_foliar'];
+		$inspection->cer_escaldadura=$_REQUEST['Inspection']['cer_escaldadura'];
+		$inspection->cer_presencia_maleza_nocivas=$_REQUEST['Inspection']['cer_presencia_maleza_nocivas'];
+		$inspection->cer_aspecto_general_poblacion=$_REQUEST['Inspection']['cer_aspecto_general_poblacion'];
+		$inspection->cer_plagas=$_REQUEST['Inspection']['cer_plagas'];
+		$inspection->cer_aislamiento=str_replace(',','',$_REQUEST['Inspection']['cer_aislamiento']);
+		$inspection->cer_otra_cultivar=str_replace(',','',$_REQUEST['Inspection']['cer_otra_cultivar']);
+		$inspection->cer_otra_categoria=str_replace(',','',$_REQUEST['Inspection']['cer_otra_categoria']);
+		$inspection->cer_plantas_fuera_tipo=str_replace(',','',$_REQUEST['cer_plantas_fuera_tipo']);
+		$inspection->cer_otras_especies=str_replace(',','',$_REQUEST['cer_otras_especies']);
+		$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
+		$inspection->rechazado=1;
+		$inspection->save();
+	    }//Fin cereales
+	    
+	    if($form->crop_id==6 || $form->crop_id==7 || $form->crop_id==8 || $form->crop_id==9 || $form->crop_id==10 ||$form->crop_id==11 ||$form->crop_id==12)//Frijol,haba,pallar,lenteja,caupi,soya, leguminosas
+	    {
+		$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
+		$inspection->leg_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_fecha_siembra']));
+		$inspection->leg_emergencia_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_emergencia_fecha']));
+		$inspection->leg_floracion=str_replace(',','',$_REQUEST['Inspection']['leg_floracion']);
+		$inspection->leg_floracion_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_floracion_fecha']));
+		$inspection->leg_llenado_grano=str_replace(',','',$_REQUEST['Inspection']['leg_llenado_grano']);
+		$inspection->leg_fecha_cosecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['leg_fecha_cosecha']));
+		$inspection->leg_distanciamiento_surcos=str_replace(',','',$_REQUEST['Inspection']['leg_distanciamiento_surcos']);
+		$inspection->leg_mata=str_replace(',','',$_REQUEST['Inspection']['leg_mata']);
+		$inspection->leg_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['leg_campo_comercial']);
+		$inspection->leg_otra_especie=str_replace(',','',$_REQUEST['Inspection']['leg_otra_especie']);
+		$inspection->leg_otro_cultivar=str_replace(',','',$_REQUEST['Inspection']['leg_otro_cultivar']);
+		$inspection->leg_presencia_maleza=$_REQUEST['Inspection']['leg_presencia_maleza'];
+		$inspection->leg_presencia_plagas=$_REQUEST['Inspection']['leg_presencia_plagas'];
+		$inspection->leg_plantas_otras_especies=$_REQUEST['Inspection']['leg_plantas_otras_especies'];
+		$inspection->leg_plantas_fuera_tipo=$_REQUEST['Inspection']['leg_plantas_fuera_tipo'];			
+		$inspection->leg_mosaicos=str_replace(',','',$_REQUEST['Inspection']['leg_mosaicos']);
+		$inspection->leg_moteado=str_replace(',','',$_REQUEST['Inspection']['leg_moteado']);
+		$inspection->leg_bacteriosis=str_replace(',','',$_REQUEST['Inspection']['leg_bacteriosis']);
+		$inspection->leg_mancha_angular=str_replace(',','',$_REQUEST['Inspection']['leg_mancha_angular']);
+		$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
+		$inspection->rechazado=1;
+		$inspection->save();
+	    }//Fin Leguminosas
+	    
+	    if($form->crop_id==13)//Maiz
+	    {			
+		$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
+		$inspection->maiz_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_fecha_siembra']));
+		$inspection->maiz_emergencia_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_emergencia_fecha']));
+		$inspection->maiz_floracion=str_replace(',','',$_REQUEST['Inspection']['maiz_floracion']);
+		$inspection->maiz_floracion_fecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_floracion_fecha']));
+		$inspection->maiz_llenado_grano=str_replace(',','',$_REQUEST['Inspection']['maiz_llenado_grano']);
+		$inspection->maiz_fecha_cosecha=date("Y-m-d", strtotime($_REQUEST['Inspection']['maiz_fecha_cosecha']));
+		$inspection->maiz_distanciamiento_surcos=str_replace(',','',$_REQUEST['Inspection']['maiz_distanciamiento_surcos']);
+		$inspection->maiz_mata=str_replace(',','',$_REQUEST['Inspection']['maiz_mata']);
+		$inspection->maiz_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['maiz_campo_comercial']);
+		$inspection->maiz_otra_especie=str_replace(',','',$_REQUEST['Inspection']['maiz_otra_especie']);
+		$inspection->maiz_otro_cultivar=str_replace(',','',$_REQUEST['Inspection']['maiz_otro_cultivar']);
+		$inspection->maiz_presencia_maleza=$_REQUEST['Inspection']['maiz_presencia_maleza'];
+		$inspection->maiz_presencia_plagas=$_REQUEST['Inspection']['maiz_presencia_plagas'];
+		$inspection->maiz_plantas_otras_especies=$_REQUEST['Inspection']['maiz_plantas_otras_especies'];
+		$inspection->maiz_plantas_fuera_tipo=$_REQUEST['Inspection']['maiz_plantas_fuera_tipo'];
+		$inspection->maiz_tolerancias=$_REQUEST['Inspection']['maiz_tolerancias'];
+		$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
+		$inspection->rechazado=1;
+		$inspection->save();
+	    }//Fin Maiz
+	    if($form->crop_id==15 )//Papa
+	    {			
+		$inspection->size=str_replace(',','',$_REQUEST['Inspection']['size']);
+		$inspection->papa_fecha_siembra=date("Y-m-d", strtotime($_REQUEST['Inspection']['papa_fecha_siembra']));
+		$inspection->papa_campo_comercial=str_replace(',','',$_REQUEST['Inspection']['papa_campo_comercial']);
+		$inspection->papa_otra_especie=str_replace(',','',$_REQUEST['Inspection']['papa_otra_especie']);
+		$inspection->papa_otro_cultivar=str_replace(',','',$_REQUEST['Inspection']['papa_otro_cultivar']);
+		$inspection->afectadas_enrollamiento=str_replace(',','',$_REQUEST['Inspection']['afectadas_enrollamiento']);
+		$inspection->afectadas_mozaico=str_replace(',','',$_REQUEST['Inspection']['afectadas_mozaico']);
+		$inspection->afectadas_otros_virus=str_replace(',','',$_REQUEST['Inspection']['afectadas_otros_virus']);
+		$inspection->afectadas_erwinia=str_replace(',','',$_REQUEST['Inspection']['afectadas_erwinia']);
+		$inspection->afectadas_mezclas=str_replace(',','',$_REQUEST['Inspection']['afectadas_mezclas']);
+		$inspection->observaciones=$_REQUEST['Inspection']['observaciones'];
+		$inspection->rechazado=1;
+		$inspection->save();
+	    }//Fin Papa
 	}
 	
 	public function Inspeccion($max,$fecha,$usuario,$formulario,$headquarter_id)

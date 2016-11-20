@@ -9,17 +9,17 @@
 if(isset($_REQUEST['id']))
 {
 	$departments = Location::model()->findAll(array(
-				'select'   => 't.id, t.department, t.departament_id',
+				'select'   => 't.id, t.department, t.department_id',
 				//'condition' => 'departament_id = ' .$model->departamento,
 				'group'    => 't.id,t.department',
 				'order'    => 't.department ASC',
 				'distinct' => true
 			)); 
-	$dpts = CHtml::listData($departments,'departament_id','department');
+	$dpts = CHtml::listData($departments,'department_id','department');
 			
 	$provinces = Location::model()->findAll(array(
 	'select'    => 't.id, t.province, t.province_id',
-	'condition' => 'departament_id = ' . $model->departamento,
+	'condition' => 'department_id = ' . $model->departamento,
 	'group'    => 't.id,t.province',			
 	'order'		=>	't.province ASC',
 	'distinct' => true
@@ -29,7 +29,7 @@ if(isset($_REQUEST['id']))
 	
 	$districts = Location::model()->findAll(array(
 	'select'    => 't.id, t.district, t.district_id',
-	'condition' => 'departament_id = ' . $model->departamento.' and province_id='. $model->provincia,
+	'condition' => 'department_id = ' . $model->departamento.' and province_id='. $model->provincia,
 	'group'    => 't.id,t.district',			
 	'order'		=>	't.district ASC',
 	'distinct' => true
@@ -39,12 +39,12 @@ if(isset($_REQUEST['id']))
 else
 {
 	$departments = Location::model()->findAll(array(
-				'select'   => 't.id, t.department, t.departament_id',
+				'select'   => 't.id, t.department, t.department_id',
 				'group'    => 't.id,t.department',
 				'order'    => 't.department ASC',
 				'distinct' => true
 	)); 
-	$dpts = CHtml::listData($departments,'departament_id','department');	
+	$dpts = CHtml::listData($departments,'department_id','department');	
 	$prvs=array();
 	$dsts=array();
 }
