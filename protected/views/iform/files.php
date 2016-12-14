@@ -4,9 +4,10 @@ $contador=1;
 <div class="files">
     <div id="error_archivos" style="color: red"></div>
     
-    <?php if(Yii::app()->user->checkAccess('laboratorio')) { ?>
+    <?php if(Yii::app()->user->checkAccess('productor')) { ?>
     <h2>Documentos</h2>
     <form method="post" enctype="multipart/form-data">
+    <div style="color: red">Nota: Subir en formato .pdf, .jpg, .png con un tamaño maximo de 2MB.</div>
     <button type="button" id="agregar_archivo" class="btn btn-primary">Agregar documento</button><br><br>
     <table class="table borderless table-hover" id="detalle_tabla_archivo" border="0">
         <thead>

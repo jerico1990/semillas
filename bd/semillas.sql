@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-09-2016 a las 10:15:07
+-- Tiempo de generación: 14-12-2016 a las 09:54:43
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -72,7 +72,15 @@ CREATE TABLE IF NOT EXISTS `acondicionamiento` (
   `observado` tinyint(4) DEFAULT NULL,
   `rechazado` tinyint(4) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `acondicionamiento`
+--
+
+INSERT INTO `acondicionamiento` (`id`, `user_id`, `form_id`, `inspection_id`, `number_envases`, `capacidad_envases`, `peso_estimado`, `descripcion_secado`, `peso_ingreso`, `peso_salida`, `cantidad_lotes`, `cantidad_envases`, `tipo_envase`, `disponibilidad`, `descripcion`, `operatividad`, `limpieza`, `number_acondicionamiento`, `district_id`, `province_id`, `departament_id`, `address`, `fecha_cosecha`, `observacion`, `afectadas_erwinia`, `afectadas_fusarium`, `afectadas_rhizoctoniasis`, `afectadas_mezcla_varietal`, `afectadas_fuera_tamano`, `registro_planta`, `identificacion_lote_semilla`, `proposed_date`, `proposed_time`, `real_date`, `real_time`, `acondicionamiento_number`, `subsanacion`, `subsanacion_time`, `subsanacion_date`, `subsanacion_real_date`, `subsanacion_real_time`, `aprobado`, `observado`, `rechazado`, `parent_id`) VALUES
+(1, 89, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-10-16', '19:12:00', '2016-10-18', '19:10:00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1),
+(2, 89, 3, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'sdjfsjdf', '34.00', '4.00', '5.00', '5.00', '5.00', NULL, NULL, '2016-10-17', '19:12:00', '2016-10-14', '19:10:00', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -119,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `concept` (
 INSERT INTO `concept` (`id`, `concept`, `price`, `status_id`, `short_name`, `unidad`) VALUES
 (1, 'Inscripción de campo de multiplicación para el proceso de certificación de semillas', '62.04', 1, 'Inscripción de campo de multiplicación', 'Por campo'),
 (2, 'Inspección de campo de multiplicación en proceso de certificación de semillas', '59.94', 7, 'Inspección de campo de multiplicación', 'Por hectárea o fracción'),
-(3, 'Inspecci?n de lotes de semillas en acondicionamiento', '31.55', NULL, 'Inspección de acondicionamiento', 'Por lote'),
+(3, 'Inspeccion de lotes de semillas en acondicionamiento', '31.55', NULL, 'Inspección de acondicionamiento', 'Por lote'),
 (4, 'Muestreo de Lote de Semillas', '50.11', NULL, 'Muestreo de Lote de Semillas', 'Por lote'),
 (5, 'Expedición de Etiquetas Oficiales de Certificación', '100.84', NULL, 'Expedición de Etiquetas', 'Millar'),
 (6, 'Verificación de envasado y etiquetado de lote de semillas en proceso de certificación', '60.50', NULL, 'Verificación de envasado y etiquetado', 'Por millar');
@@ -167,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `crop` (
 
 INSERT INTO `crop` (`id`, `name`, `nombre_cientifico`, `parent`, `register`, `applicant`, `date`, `location_id`, `status`, `search_estado`) VALUES
 (1, 'Arroz', '', NULL, NULL, NULL, '2013-12-06', NULL, 1, ''),
-(2, 'Algod?n', '', NULL, NULL, NULL, '2013-12-06', NULL, 1, ''),
+(2, 'Algodón', '', NULL, NULL, NULL, '2013-12-06', NULL, 1, ''),
 (3, 'Cereales | Trigo', '', NULL, NULL, NULL, '2013-12-06', '', 1, ''),
 (4, 'Cereales | Cebada', '', NULL, NULL, NULL, '2013-12-06', '', 1, ''),
 (5, 'Cereales | Avena', '', NULL, NULL, NULL, '2013-12-06', '', 1, ''),
@@ -208,14 +216,14 @@ INSERT INTO `crop` (`id`, `name`, `nombre_cientifico`, `parent`, `register`, `ap
 (40, 'INIA 505 - ECOARROZ', '', 1, '02/2006-AG-SENASA-DIAIA', 'INIEA', '2006-06-26', '1', 1, ''),
 (41, 'INIA 507- La Conquista', '', 1, '03/2006-AG-SENASA-DIAIA', 'INIEA', '2006-09-05', '1', 1, ''),
 (42, 'INIA 508 - Tinajones', '', 1, '01-2007-AG-SENASA', 'INIA', '2007-11-22', '1', 1, ''),
-(43, 'POMPEYO', '', 1, '01-2008-AG-SENASA', 'Compa??a Arrocera del Per? S.A.C.', '2008-09-09', '1', 1, ''),
-(44, 'GAL?N', '', 1, '02-2008-AG-SENASA', 'Compa??a Arrocera del Per? S.A.C.', '2008-09-09', '1', 1, ''),
+(43, 'POMPEYO', '', 1, '01-2008-AG-SENASA', 'Compania Arrocera del Peru S.A.C.', '2008-09-09', '1', 1, ''),
+(44, 'GAL?N', '', 1, '02-2008-AG-SENASA', 'Compania Arrocera del Peru S.A.C.', '2008-09-09', '1', 1, ''),
 (45, 'IDAL 115-COLOSAL', '', 1, '002-2009-INIA', 'Instituto de Desarrollo Agrario de Lambayeque - IDAL', '2009-08-11', '1', 1, ''),
 (46, 'IDAL 186-FORTALEZA', '', 1, '003-2009-INIA', 'Instituto de Desarrollo Agrario de Lambayeque - IDAL', '2009-08-12', '1', 1, ''),
 (47, 'INIA 509 - LA ESPERANZA', '', 1, '001-2010-INIA', 'INIA', '2010-03-08', '1', 1, ''),
 (48, 'INIA 510 - MALLARES', '', 1, '001-2011-INIA', 'INIA', '2011-01-27', '1', 1, ''),
 (49, 'QM1003', '', 1, '001-2012-INIA', 'BAYER S.A.', '2012-09-19', '1', 1, ''),
-(50, 'LMG-1-72', '', 2, '1', 'Sucesi?n Luis Massaro Gatman', '1983-03-25', '1', 1, ''),
+(50, 'LMG-1-72', '', 2, '1', 'Sucesion Luis Massaro Gatman', '1983-03-25', '1', 1, ''),
 (51, 'UNA N? 1', '', 2, '3', 'FUNDEAL', '1983-03-25', '1', 1, ''),
 (52, 'C?-W-362-67', '', 2, '4', 'Augusto Garland A.', '1983-11-16', '1', 1, ''),
 (53, 'C?-W-339-67', '', 2, '7', 'Augusto Garland A.', '1983-11-16', '1', 1, ''),
@@ -240,16 +248,16 @@ INSERT INTO `crop` (`id`, `name`, `nombre_cientifico`, `parent`, `register`, `ap
 (72, 'P-37-DSV-UNP', '', 2, '59', 'Universidad Nacional de Piura', '1989-09-14', '1', 1, ''),
 (73, 'L-60-DSV-UNP', '', 2, '60', 'Universidad Nacional de Piura', '1989-09-14', '1', 1, ''),
 (74, 'CH-H-49-82', '', 2, '62', 'Fondo de Fomento Agropecuario de Chincha', '1992-10-05', '1', 1, ''),
-(75, 'Pima AG-N90', '', 2, '63', 'Ra?l Nieves Camacho', '1993-02-12', '1', 1, ''),
-(76, 'Pima AG-N92', '', 2, '64', 'Ra?l Nieves Camacho', '1993-02-12', '1', 1, ''),
-(77, 'Pima AG-N93', '', 2, '65', 'Ra?l Nieves Camacho', '1993-02-12', '1', 1, ''),
-(78, 'N6-RI-135', '', 2, '66', 'Ra?l Nieves Camacho', '1993-02-12', '1', 1, ''),
-(79, 'HRC-4 (RNC-4)', '', 2, '67', 'Ra?l Nieves Camacho', '1993-02-12', '1', 1, ''),
-(80, 'Ica-183-81', '', 2, '68', 'Asociaci?n de Agricultores de Ica', '1994-04-29', '1', 1, ''),
+(75, 'Pima AG-N90', '', 2, '63', 'Raul Nieves Camacho', '1993-02-12', '1', 1, ''),
+(76, 'Pima AG-N92', '', 2, '64', 'Raul Nieves Camacho', '1993-02-12', '1', 1, ''),
+(77, 'Pima AG-N93', '', 2, '65', 'Raul Nieves Camacho', '1993-02-12', '1', 1, ''),
+(78, 'N6-RI-135', '', 2, '66', 'Raul Nieves Camacho', '1993-02-12', '1', 1, ''),
+(79, 'HRC-4 (RNC-4)', '', 2, '67', 'Raul Nieves Camacho', '1993-02-12', '1', 1, ''),
+(80, 'Ica-183-81', '', 2, '68', 'Asociacion de Agricultores de Ica', '1994-04-29', '1', 1, ''),
 (81, 'Fundeal 5 (F ? 5)', '', 2, '69', 'FUNDEAL', '1994-04-29', '1', 1, ''),
 (82, 'Fundeal 6 (F ? 6)', '', 2, '70', 'FUNDEAL', '1994-04-29', '1', 1, ''),
 (83, 'Fundeal 7 (F ? 7)', '', 2, '71', 'FUNDEAL', '1994-04-29', '1', 1, ''),
-(84, 'C?-CPR-208-83', '', 2, '01/97-AG-SENASA-DGSV', 'Asociaci?n de Agricultores de Ca?ete', '1997-04-09', '1', 1, ''),
+(84, 'C?-CPR-208-83', '', 2, '01/97-AG-SENASA-DGSV', 'Asociacion de Agricultores de Cañete', '1997-04-09', '1', 1, ''),
 (85, 'Lotus 26', '', 2, '02/97-AG-SENASA-DGSV ', 'Angel Delgado Miranda', '1997-07-31', '1', 1, ''),
 (86, 'HA-1512 Etna', '', 2, '01/99-AG-SENASA-DGSV', 'Consorcio Norte Sur S.A.', '1999-10-11', '1', 1, ''),
 (87, 'HA-1952 Acalpi', '', 2, '02/99-AG-SENASA-DGSV', 'Consorcio Norte Sur S.A.', '1999-10-11', '1', 1, ''),
@@ -260,14 +268,14 @@ INSERT INTO `crop` (`id`, `name`, `nombre_cientifico`, `parent`, `register`, `ap
 (92, 'INIA 801-BJA 594', '', 2, '01/2004-AG-SENASA-DGSV', 'INIA', '2004-02-16', '1', 1, ''),
 (93, 'INIA 802-Shanao', '', 2, '02/2004-AG-SENASA-DGSV', 'INIEA', '2004-09-15', '1', 1, ''),
 (94, 'FUNDEAL T-1', '', 2, '01/2005-AG-SENASA-DGSV', 'FUNDEAL', '2004-02-07', '1', 1, ''),
-(95, 'La Floresta', '', 2, '01/2006-AG-SENASA-DIAIA', 'Digarsa Agr?cola S.A.C.', '2006-06-26', '1', 1, ''),
-(96, 'PIMA-IPA-59', '', 2, '01/2007-AG-SENASA', 'Instituto Peruano del Algod?n - IPA', '2007-01-18', '1', 1, ''),
+(95, 'La Floresta', '', 2, '01/2006-AG-SENASA-DIAIA', 'Digarsa Agricola S.A.C.', '2006-06-26', '1', 1, ''),
+(96, 'PIMA-IPA-59', '', 2, '01/2007-AG-SENASA', 'Instituto Peruano del Algodon - IPA', '2007-01-18', '1', 1, ''),
 (97, 'FIBERMAX 958', '', 2, '01-2008-AG-SENASA', 'BAYER S.A.', '2008-10-07', '1', 1, ''),
 (98, 'SICALA 40 - FIBERMAX 966', '', 2, '02-2008-AG-SENASA', 'BAYER S.A.', '2008-10-07', '1', 1, ''),
-(99, 'PIMA-IPA-09', '', 2, '01-2009-INIA', 'INSTITUTO PERUANO DEL ALGOD?N', '2009-08-25', '1', 1, ''),
+(99, 'PIMA-IPA-09', '', 2, '01-2009-INIA', 'INSTITUTO PERUANO DEL ALGODON', '2009-08-25', '1', 1, ''),
 (100, 'COBALT PIMA', '', 2, '02-2009-INIA', 'BAYER S.A.', '2009-09-01', '1', 1, ''),
 (101, 'L.M.G. 2-95', '', 2, '001-2010-INIA', 'AGRICOLA TECNIFICADA S.R.L.', '2010-04-21', '1', 1, ''),
-(102, 'INIA 803 - Vista Florida', '', 2, '001-2012-INIA', 'INIA (Estaci?n Experimental Agraria Vista Florida', '2012-06-23', '1', 1, ''),
+(102, 'INIA 803 - Vista Florida', '', 2, '001-2012-INIA', 'INIA (Estacion Experimental Agraria Vista Florida', '2012-06-23', '1', 1, ''),
 (103, 'Pachacutec 85', '', 3, '16', 'INIPA', '1986-11-17', '1', 1, ''),
 (104, 'Gavil', '', 3, '17', 'INIPA', '1986-11-17', '1', 1, ''),
 (105, 'Titicaca', '', 3, '19', 'INIPA', '1986-11-17', '1', 1, ''),
@@ -288,13 +296,13 @@ INSERT INTO `crop` (`id`, `name`, `nombre_cientifico`, `parent`, `register`, `ap
 (120, 'Platinum', '', 3, '004/2005-AG-SENASA-DGSV', 'Alicorp S.A.', '2005-04-21', '1', 1, ''),
 (121, 'Bravadur', '', 3, '005/2005-AG-SENASA-DGSV', 'Alicorp S.A.', '2005-04-21', '1', 1, ''),
 (122, 'Centenario', '', 3, '001/2006-AG-SENASA-DIAIA', 'Universidad Nacional Agraria La Molina', '2006-04-10', '1', 1, ''),
-(123, 'INIA 418 El Nazareno', '', 3, '007/2007-AG-SENASA', 'Estaci?n Experimental Agraria CANAAN INIA', '2007-11-05', '1', 1, ''),
-(124, 'INIA - 412 Atahualpa', '', 3, '01-2008-AG-SENASA', 'Estaci?n Experimental Agraria Ba?os del Inca INIA', '2008-05-30', '1', 1, ''),
-(125, 'INIA - 419 San Francisco', '', 3, '03-2008-AG-SENASA', 'Estaci?n Experimental Agraria Andenes INIA', '2008-11-07', '1', 1, ''),
-(126, 'INIA 906 SALKANTAY', '', 3, '002-2009-INIA', 'Estaci?n Experimental Agraria Andenes INIA', '2009-10-21', '1', 1, ''),
-(127, 'INIA 422 ESPIGON', '', 3, '001-2010-INIA', 'Estaci?n Experimental Agraria Ba?os del Inca INIA', '2010-01-20', '1', 1, ''),
-(128, 'INIA 424 VICSE?O', '', 3, '002-2010-INIA', 'Estaci?n Experimental Agraria Santa Ana INIA', '2010-08-19', '1', 1, ''),
-(129, 'INIA 428 SANTA ELENA', '', 3, '001-2013-INIA', 'Estaci?n Experimental Agraria Santa Rita -Arequipa INIA', '2013-03-01', '1', 1, ''),
+(123, 'INIA 418 El Nazareno', '', 3, '007/2007-AG-SENASA', 'Estacion Experimental Agraria CANAAN INIA', '2007-11-05', '1', 1, ''),
+(124, 'INIA - 412 Atahualpa', '', 3, '01-2008-AG-SENASA', 'Estacion Experimental Agraria Baños del Inca INIA', '2008-05-30', '1', 1, ''),
+(125, 'INIA - 419 San Francisco', '', 3, '03-2008-AG-SENASA', 'Estacion Experimental Agraria Andenes INIA', '2008-11-07', '1', 1, ''),
+(126, 'INIA 906 SALKANTAY', '', 3, '002-2009-INIA', 'Estacion Experimental Agraria Andenes INIA', '2009-10-21', '1', 1, ''),
+(127, 'INIA 422 ESPIGON', '', 3, '001-2010-INIA', 'Estacion Experimental Agraria Baños del Inca INIA', '2010-01-20', '1', 1, ''),
+(128, 'INIA 424 VICSE?O', '', 3, '002-2010-INIA', 'Estacion Experimental Agraria Santa Ana INIA', '2010-08-19', '1', 1, ''),
+(129, 'INIA 428 SANTA ELENA', '', 3, '001-2013-INIA', 'Estacion Experimental Agraria Santa Rita -Arequipa INIA', '2013-03-01', '1', 1, ''),
 (130, 'Grignon', '', 4, '24', 'INIPA', '1986-11-17', '1', 1, ''),
 (131, 'UNA 80', '', 4, '25', 'INIPA', '1986-11-17', '1', 1, ''),
 (132, 'Yanamuclo-87', '', 4, '29', 'Universidad Nacional Agraria La Molina', '1988-02-19', '1', 1, ''),
@@ -303,13 +311,13 @@ INSERT INTO `crop` (`id`, `name`, `nombre_cientifico`, `parent`, `register`, `ap
 (135, 'INIA-411 San Cristobal', '', 4, '02/2006-AG-SENASA-DIAIA', 'INIA', '2006-05-03', '1', 1, ''),
 (136, 'Moronera INIA', '', 4, '03/2006-AG-SENASA-DIAIA', 'INIA', '2006-05-03', '1', 1, ''),
 (137, 'Centenario', '', 4, '01/2007-AG-SENASA', 'Universidad Nacional Agraria La Molina', '2007-03-07', '1', 1, ''),
-(138, 'INIA-416 La Milagrosa', '', 4, '001-2009-INIA', 'Estaci?n Experimental Santa Ana Huancayo INIA', '2009-04-15', '1', 1, ''),
-(139, 'INIA 901 Mantaro 15', '', 5, '002/2007-AG-SENASA', 'INIA Estaci?n Experimental Agraria Santa Ana', '2007-04-12', '1', 1, ''),
-(140, 'Tayko', '', 5, '003-2007-AG-SENASA', 'Estaci?n Experimental Illpa Puno INIA', '2007-08-23', '1', 1, ''),
-(141, 'INIA 902 - Africana', '', 5, '004-2007-AG-SENASA', 'Estaci?n Experimental Illpa Puno INIA', '2007-09-04', '1', 1, ''),
-(142, 'INIA 903 Tayko Andenes', '', 5, '005-2007-AG-SENASA', 'Estaci?n Experimental Andenes Cusco INIA', '2007-09-04', '1', 1, ''),
-(143, 'INIA 904 - Vilcanota I', '', 5, '006-2007-AG-SENASA', 'Estaci?n Experimental Andenes Cusco INIA', '2007-11-14', '1', 1, ''),
-(144, 'INIA 905 - La Cajamarquina', '', 5, '02-2008-AG-SENASA', 'Estaci?n Experimental Agraria Ba?os del Inca INIA', '2008-11-04', '1', 1, ''),
+(138, 'INIA-416 La Milagrosa', '', 4, '001-2009-INIA', 'Estacion Experimental  Santa Ana Huancayo INIA', '2009-04-15', '1', 1, ''),
+(139, 'INIA 901 Mantaro 15', '', 5, '002/2007-AG-SENASA', 'INIA Estacion Experimental Agraria Santa Ana', '2007-04-12', '1', 1, ''),
+(140, 'Tayko', '', 5, '003-2007-AG-SENASA', 'Estacion Experimental Illpa Puno INIA', '2007-08-23', '1', 1, ''),
+(141, 'INIA 902 - Africana', '', 5, '004-2007-AG-SENASA', 'Estacion Experimental Illpa Puno INIA', '2007-09-04', '1', 1, ''),
+(142, 'INIA 903 Tayko Andenes', '', 5, '005-2007-AG-SENASA', 'Estacion Experimental Andenes Cusco INIA', '2007-09-04', '1', 1, ''),
+(143, 'INIA 904 - Vilcanota I', '', 5, '006-2007-AG-SENASA', 'Estacion Experimental Andenes Cusco INIA', '2007-11-14', '1', 1, ''),
+(144, 'INIA 905 - La Cajamarquina', '', 5, '02-2008-AG-SENASA', 'Estacion Experimental Agraria Baños del Inca INIA', '2008-11-04', '1', 1, ''),
 (145, 'INIA-103 Remate', '', 6, '04/2003-AG-SENASA-DGSV', 'INIA', '2003-10-14', '1', 1, ''),
 (146, 'INIA-102 USUI', '', 6, '004-2012-INIA', 'INIA (EEA DONOSO KIYOTADA MIYAGAWA)', '2012-08-01', '1', 1, ''),
 (147, 'Blanco Salkantay', '', 7, '1', 'INIPA', '1987-01-13', '1', 1, ''),
@@ -638,10 +646,28 @@ CREATE TABLE IF NOT EXISTS `cruge_authassignment` (
 INSERT INTO `cruge_authassignment` (`userid`, `bizrule`, `data`, `itemname`) VALUES
 (4, NULL, 'N;', 'pagador'),
 (42, NULL, 'N;', 'peas'),
-(213, NULL, 'N;', 'productor'),
-(214, NULL, 'N;', 'productor'),
-(215, NULL, 'N;', 'estacion'),
-(216, NULL, 'N;', 'estacion');
+(217, NULL, 'N;', 'productor'),
+(218, NULL, 'N;', 'productor'),
+(219, NULL, 'N;', 'estacion'),
+(220, NULL, 'N;', 'inspector'),
+(223, NULL, 'N;', 'productor'),
+(224, NULL, 'N;', 'productor'),
+(225, NULL, 'N;', 'estacion'),
+(226, NULL, 'N;', 'estacion'),
+(227, NULL, 'N;', 'inspector'),
+(228, NULL, 'N;', 'estacion'),
+(229, NULL, 'N;', 'estacion'),
+(230, NULL, 'N;', 'estacion'),
+(231, NULL, 'N;', 'estacion'),
+(232, NULL, 'N;', 'estacion'),
+(233, NULL, 'N;', 'estacion'),
+(234, NULL, 'N;', 'estacion'),
+(235, NULL, 'N;', 'estacion'),
+(236, NULL, 'N;', 'estacion'),
+(237, NULL, 'N;', 'estacion'),
+(238, NULL, 'N;', 'estacion'),
+(239, NULL, 'N;', 'productor'),
+(240, NULL, 'N;', 'inspector');
 
 -- --------------------------------------------------------
 
@@ -1117,19 +1143,44 @@ CREATE TABLE IF NOT EXISTS `cruge_session` (
   `lastusage` bigint(20) DEFAULT NULL,
   `logoutdate` bigint(20) DEFAULT NULL,
   `ipaddressout` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=952 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=984 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `cruge_session`
 --
 
 INSERT INTO `cruge_session` (`idsession`, `iduser`, `created`, `expire`, `status`, `ipaddress`, `usagecount`, `lastusage`, `logoutdate`, `ipaddressout`) VALUES
-(946, 42, 1473532480, 1474132420, 0, '::1', 1, 1473532480, 1473532515, '::1'),
-(947, 42, 1473536268, 1474136208, 0, '::1', 1, 1473536268, 1473536507, '::1'),
-(948, 42, 1473536555, 1474136495, 0, '::1', 2, 1473544228, 1473551689, '::1'),
-(949, 42, 1473551889, 1474151829, 0, '::1', 6, 1473711399, 1473713472, '::1'),
-(950, 213, 1473556933, 1474156873, 0, '::1', 1, 1473556933, 1473556937, '::1'),
-(951, 42, 1473714562, 1474314502, 1, '::1', 1, 1473714562, NULL, NULL);
+(953, 42, 1474399058, 1474998998, 1, '::1', 3, 1474417664, NULL, NULL),
+(954, 217, 1474421094, 1475021034, 1, '::1', 3, 1474907101, NULL, NULL),
+(955, 42, 1475844470, 1476444410, 1, '::1', 3, 1476321533, NULL, NULL),
+(956, 217, 1476321579, 1476921519, 1, '::1', 7, 1476705714, NULL, NULL),
+(957, 220, 1476422473, 1477022413, 0, '::1', 1, 1476422473, 1476422498, '::1'),
+(958, 219, 1476422504, 1477022444, 0, '::1', 1, 1476422504, 1476422516, '::1'),
+(959, 220, 1476422532, 1477022472, 0, '::1', 1, 1476422532, 1476422936, '::1'),
+(960, 219, 1476422943, 1477022883, 0, '::1', 1, 1476422943, 1476422951, '::1'),
+(961, 220, 1476422958, 1477022898, 0, '::1', 6, 1476747155, 1476816582, '::1'),
+(962, 219, 1476446197, 1477046137, 0, '::1', 5, 1476747057, 1476747142, '::1'),
+(963, 42, 1476816586, 1477416526, 0, '172.16.1.123', 2, 1476994572, 1476994576, '172.16.1.123'),
+(964, 42, 1476999797, 1477599737, 0, '172.16.1.123', 1, 1476999797, 1476999886, '172.16.1.123'),
+(965, 42, 1476999896, 1477599836, 0, '172.16.1.123', 1, 1476999896, 1477000188, '172.16.1.123'),
+(966, 217, 1477000481, 1477600421, 0, '172.16.1.123', 1, 1477000481, 1477000588, '172.16.1.123'),
+(967, 42, 1477000597, 1477600537, 1, '172.16.1.123', 1, 1477000597, NULL, NULL),
+(968, 224, 1477341095, 1477941035, 1, '172.16.2.32', 1, 1477341095, NULL, NULL),
+(969, 218, 1477683848, 1478283788, 0, '172.16.4.217', 2, 1477684904, 1477686628, '172.16.4.217'),
+(970, 42, 1478295961, 1478895901, 0, '172.16.5.57', 1, 1478295961, 1478297418, '172.16.6.59'),
+(971, 224, 1478297723, 1478897663, 1, '::1', 2, 1478299027, NULL, NULL),
+(972, 225, 1478299277, 1478899217, 0, '172.16.6.59', 1, 1478299277, 1478299306, '172.16.6.59'),
+(973, 42, 1478299315, 1478899255, 0, '172.16.6.59', 1, 1478299315, 1478299823, '172.16.6.59'),
+(974, 225, 1478299888, 1478899828, 0, '172.16.6.59', 1, 1478299888, 1478300405, '172.16.6.59'),
+(975, 227, 1478300426, 1478900366, 1, '172.16.6.59', 1, 1478300426, NULL, NULL),
+(976, 42, 1478791807, 1479391747, 0, '172.16.1.123', 2, 1478795383, NULL, NULL),
+(977, 224, 1481577760, 1482177700, 0, '::1', 4, 1481640886, 1481641021, '::1'),
+(978, 42, 1481641038, 1482240978, 0, '::1', 3, 1481664957, 1481665096, '::1'),
+(979, 224, 1481665123, 1482265063, 0, '::1', 1, 1481665123, 1481665309, '::1'),
+(980, 42, 1481665371, 1482265311, 0, '::1', 1, 1481665371, 1481668781, '::1'),
+(981, 239, 1481666758, 1482266698, 1, '::1', 1, 1481666758, NULL, NULL),
+(982, 232, 1481668320, 1482268260, 1, '::1', 1, 1481668320, NULL, NULL),
+(983, 240, 1481668795, 1482268735, 1, '::1', 1, 1481668795, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1182,7 +1233,7 @@ CREATE TABLE IF NOT EXISTS `cruge_user` (
   `state` int(11) DEFAULT '0',
   `totalsessioncounter` int(11) DEFAULT '0',
   `currentsessioncounter` int(11) DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `cruge_user`
@@ -1192,11 +1243,29 @@ INSERT INTO `cruge_user` (`iduser`, `regdate`, `actdate`, `logondate`, `username
 (1, NULL, NULL, 1472220807, 'admin', 'admin@tucorreo.com', 'admin', NULL, 1, 0, 0),
 (2, NULL, NULL, NULL, 'invitado', 'invitado', 'nopassword', NULL, 1, 0, 0),
 (4, NULL, NULL, 1387249041, 'pagador', 'pagador@hotmail.com', '123456', NULL, 1, 0, 0),
-(42, 1382191600, NULL, 1473714562, 'administrador_inia', 'cesar_10002@hotmail.com', '123456', 'dbc7916e576ac81f894a1f42dc63842c', 1, 0, 0),
-(213, NULL, NULL, 1473556933, '1_20131365994', 'cesar_10002@hotmail.com', 'UWCowUSs62', NULL, 1, 0, 0),
-(214, NULL, NULL, NULL, '2_20131365994', 'cgago@boardperu.com', 'WQWqjxLBvP', NULL, 1, 0, 0),
-(215, NULL, NULL, NULL, 'cc', 'cesar.gago.egochea3a@gmail.com', '25573', NULL, 1, 0, 0),
-(216, NULL, NULL, NULL, 'dfsd', 'ff@gmail.com', '32442', NULL, 1, 0, 0);
+(42, 1382191600, NULL, 1481665371, 'administrador_inia', 'cesar_10002@hotmail.com', '123456', 'dbc7916e576ac81f894a1f42dc63842c', 1, 0, 0),
+(217, NULL, NULL, 1477000481, '20274421615', 'cesar.gago.egocheaga@gmail.com', 'nz271DTGTd', NULL, 1, 0, 0),
+(218, NULL, NULL, 1477684904, '8_20131365994_5', 'cgago@boardperu.com', '4RxYmzik45', NULL, 1, 0, 0),
+(219, NULL, NULL, 1476747057, 'estacion_experimental_externo', 'cesar_10002@hotmail.com', '32365', NULL, 1, 0, 0),
+(220, NULL, NULL, 1476747155, 'inspector', 'cgago@e-labs.pe', '15010', NULL, 1, 0, 0),
+(223, NULL, NULL, NULL, '8_20131365994_2', 'cgago@boardperu.com', 'L2Yq8RWEE9', NULL, 1, 0, 0),
+(224, NULL, NULL, 1481665123, '8_20131365994', 'pdiaz@INIA.GOB.PE', 'MV6fed9ngl', NULL, 1, 0, 0),
+(225, NULL, NULL, NULL, 'ares02@inia.gob.pe', 'ares02@inia.gob.pe', '9776', NULL, 1, 0, 0),
+(226, NULL, NULL, NULL, 'jtaza@inia.gob.pe', 'jtaza@inia.gob.pe', '4777', NULL, 1, 0, 0),
+(227, NULL, NULL, 1478300426, 'mramirez', 'ares02@inia.gob.pe', '27142', NULL, 1, 0, 0),
+(228, NULL, NULL, NULL, 'gerencia@codeselambayeque.com', 'gerencia@codeselambayeque.com', '18938', NULL, 1, 0, 0),
+(229, NULL, NULL, NULL, 'certificadoragvr@hotmail.com', 'certificadoragvr@hotmail.com', '23467', NULL, 1, 0, 0),
+(230, NULL, NULL, NULL, 'codeseica@hotmail.com', 'codeseica@hotmail.com', '21000', NULL, 1, 0, 0),
+(231, NULL, NULL, NULL, 'cordesa.aqp@hotmail.com', 'cordesa.aqp@hotmail.com', '3489', NULL, 1, 0, 0),
+(232, NULL, NULL, NULL, 'corese_sm@speedy.com.pe', 'corese_sm@speedy.com.pe', '3014', NULL, 1, 0, 0),
+(233, NULL, NULL, NULL, 'jpuma@inia.gob.pe', 'jpuma@inia.gob.pe', '1927', NULL, 1, 0, 0),
+(234, NULL, NULL, NULL, 'jlimache@inia.gob.pe', 'jlimache@inia.gob.pe', '1716', NULL, 1, 0, 0),
+(235, NULL, NULL, NULL, 'mhuaman@inia.gob.pe', 'mhuaman@inia.gob.pe', '25309', NULL, 1, 0, 0),
+(236, NULL, NULL, NULL, 'vramirez@inia.gob.pe', 'vramirez@inia.gob.pe', '7762', NULL, 1, 0, 0),
+(237, NULL, NULL, NULL, 'afernandez@inia.gob.pe', 'afernandez@inia.gob.pe', '5411', NULL, 1, 0, 0),
+(238, NULL, NULL, NULL, 'idiaz@inia.gob.pe', 'idiaz@inia.gob.pe', '23072', NULL, 1, 0, 0),
+(239, NULL, NULL, 1481666758, '20398436505', 'ares04@inia.gob.pe', 'E49uwbWDJs', NULL, 1, 0, 0),
+(240, NULL, NULL, NULL, 'corese_sm1@speedy.com.pe', 'corese_sm1@speedy.com.pe', '16182', NULL, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1208,15 +1277,34 @@ CREATE TABLE IF NOT EXISTS `estacion_experimental` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(120) COLLATE utf8_spanish_ci NOT NULL,
   `estado` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `estacion_experimental`
 --
 
 INSERT INTO `estacion_experimental` (`id`, `descripcion`, `estado`) VALUES
-(1, 'anexo 1', 1),
-(2, 'descripcion 2', 1);
+(1, 'EEA CANAAN', 1),
+(2, 'EEA CHUMBIBAMBA', 1),
+(3, 'EEA ILLPA', 1),
+(4, 'EEA ANDENES', 1),
+(5, 'EEA  SANTA ANA ', 1),
+(6, 'EEA PICHANAQUI ', 1),
+(7, 'EEA SANTA RITA', 1),
+(8, 'C.E. LA MOLINA ', 1),
+(9, 'EEA. DONOSO ', 1),
+(10, 'EEA CHINCHA Y ANEXOS ', 1),
+(11, 'EEA VISTA FLORIDA ', 1),
+(12, 'EEA EL CHIRA ', 1),
+(13, 'EEA EL PORVENIR ', 1),
+(14, 'EEA SAN ROQUE ', 1),
+(15, 'EEA BAÑOS DEL INCA ', 1),
+(16, 'EEA LA PERLA DEL VRAE ', 1),
+(17, 'EEA AMAZONAS ', 1),
+(18, 'EEA SAN RAMON ', 1),
+(19, 'EEA PUCALLPA ', 1),
+(20, 'EEA SAN BERNARDO ', 1),
+(21, 'EEA MOQUEGUA ', 1);
 
 -- --------------------------------------------------------
 
@@ -1244,7 +1332,15 @@ CREATE TABLE IF NOT EXISTS `etiquetado` (
   `fecha_rechazado` date DEFAULT NULL,
   `rechazado` tinyint(4) DEFAULT NULL,
   `peso_total` decimal(18,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `etiquetado`
+--
+
+INSERT INTO `etiquetado` (`id`, `user_id`, `form_id`, `muestreo_id`, `fecha_emitir_etiquetado`, `fecha_solicitud`, `fecha_solicitud_etiquetado`, `hora_solicitud_etiquetado`, `solicitud`, `cantidad`, `fecha_notificado`, `fecha_notificado_etiquetado`, `hora_notificado_etiquetado`, `notificado`, `fecha_informe`, `informe`, `fecha_rechazado`, `rechazado`, `peso_total`) VALUES
+(1, 89, 3, 1, '2016-10-17', '2016-10-17', '2016-10-17', '02:00:00', 1, 8, '2016-10-17', '2016-10-17', '03:00:00', 1, NULL, 1, NULL, NULL, '200.00'),
+(2, 89, 3, 2, '2016-10-17', '2016-10-17', '2016-10-07', '02:00:00', 1, 4, '2016-10-17', '2016-10-18', '02:00:00', 1, NULL, 1, NULL, NULL, '58.00');
 
 -- --------------------------------------------------------
 
@@ -1261,7 +1357,16 @@ CREATE TABLE IF NOT EXISTS `etiquetas` (
   `etiquetado_id` int(11) DEFAULT NULL,
   `serie_fin` varchar(30) DEFAULT NULL,
   `cantidad` decimal(18,0) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `etiquetas`
+--
+
+INSERT INTO `etiquetas` (`id`, `user_id`, `form_id`, `muestreo_id`, `serie_inicio`, `etiquetado_id`, `serie_fin`, `cantidad`) VALUES
+(1, 89, 3, 1, '1', 1, '100', '4'),
+(2, 89, 3, 1, '100', 1, '200', '4'),
+(3, 89, 3, 2, '1', 2, '2', '4');
 
 -- --------------------------------------------------------
 
@@ -1275,14 +1380,7 @@ CREATE TABLE IF NOT EXISTS `farmers` (
   `name` varchar(30) DEFAULT NULL,
   `last_name` varchar(30) DEFAULT NULL,
   `document_number` varchar(12) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `farmers`
---
-
-INSERT INTO `farmers` (`id`, `form_id`, `name`, `last_name`, `document_number`) VALUES
-(1, 9, 'sdfsdf', NULL, 'sfdsdf');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1295,8 +1393,18 @@ CREATE TABLE IF NOT EXISTS `files` (
   `form_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `url` varchar(300) DEFAULT NULL,
-  `name_file` varchar(300) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `name_file` varchar(300) DEFAULT NULL,
+  `name` varchar(250) NOT NULL,
+  `estado` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `files`
+--
+
+INSERT INTO `files` (`id`, `form_id`, `user_id`, `url`, `name_file`, `name`, `estado`) VALUES
+(1, 7, NULL, NULL, '1.pdf', 'GUÍA GRÁFICA DE INGLÉS.PDF', 1),
+(2, 7, NULL, NULL, '2.pdf', 'Ficha-Contrato-6.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -1313,7 +1421,7 @@ CREATE TABLE IF NOT EXISTS `form` (
   `category` varchar(30) DEFAULT NULL,
   `source_crop_code` varchar(100) DEFAULT NULL,
   `quantity` decimal(18,2) DEFAULT NULL,
-  `location_id` int(11) DEFAULT NULL,
+  `location_id` varchar(6) DEFAULT NULL,
   `location_name` varchar(100) DEFAULT NULL,
   `location_annex` varchar(100) DEFAULT NULL,
   `area` decimal(18,2) DEFAULT NULL,
@@ -1337,7 +1445,19 @@ CREATE TABLE IF NOT EXISTS `form` (
   `modificacion` tinyint(4) DEFAULT NULL,
   `crop_before_id` int(11) NOT NULL,
   `variety_before_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `form`
+--
+
+INSERT INTO `form` (`id`, `user_id`, `headquarter_id`, `crop_id`, `variety_id`, `category`, `source_crop_code`, `quantity`, `location_id`, `location_name`, `location_annex`, `area`, `location_lon`, `location_lat`, `seed_date`, `sow_estimate_quantity`, `last_crop`, `farmers_id`, `registry_date`, `application_ok`, `last_area`, `observacion_aprobado`, `observacion_notificado`, `form_number`, `produccion_area`, `produccion_total`, `produccion_fecha_cosecha`, `mezclar_categorias`, `lotes`, `modificacion`, `crop_before_id`, `variety_before_id`) VALUES
+(2, 89, 69, 1, 17, '1', NULL, NULL, '010304', '234', '2323', '3.00', NULL, NULL, '2016-10-22', '4.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AM01-3-16', NULL, NULL, NULL, NULL, NULL, NULL, 1, 17),
+(3, 89, 69, 15, 344, '3', NULL, NULL, '021102', 'campo', 'fhfh', '10.00', NULL, NULL, '2016-10-07', '500.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'AM02-1-16', NULL, NULL, NULL, NULL, NULL, NULL, 13, 196),
+(4, 94, 72, 13, 319, '3', NULL, NULL, '150114', 'E.E.A. Donoso Huaral', 'Centro Experimental la Molina', '4.00', NULL, NULL, '2016-10-03', '28000.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 15, 342),
+(5, 94, 72, 2, 51, '2', NULL, NULL, '150116', 'ce', '5454', '4555.00', NULL, NULL, '2016-12-14', '10000.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 31),
+(6, 94, 72, 1, 17, '1', NULL, NULL, '150101', 'Productores', '10', '4.00', NULL, NULL, '2016-12-15', '10000.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 32),
+(7, 109, 83, 1, 17, '1', NULL, NULL, '220801', 'Multiplicador02', '91', '4.00', NULL, NULL, '2016-12-16', '10000.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'SAM1-1-16', NULL, NULL, NULL, NULL, NULL, NULL, 1, 33);
 
 -- --------------------------------------------------------
 
@@ -1348,7 +1468,7 @@ CREATE TABLE IF NOT EXISTS `form` (
 CREATE TABLE IF NOT EXISTS `headquarter` (
   `id` int(11) NOT NULL,
   `name` varchar(200) DEFAULT NULL,
-  `location_id` int(11) DEFAULT NULL,
+  `location_id` varchar(6) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
   `tipo_empresa` int(11) DEFAULT NULL,
   `ruc` varchar(30) DEFAULT NULL,
@@ -1357,16 +1477,36 @@ CREATE TABLE IF NOT EXISTS `headquarter` (
   `correlativo` decimal(18,0) DEFAULT NULL,
   `anio` varchar(4) DEFAULT NULL,
   `search_tipo_empresa` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `headquarter`
 --
 
 INSERT INTO `headquarter` (`id`, `name`, `location_id`, `parent_id`, `tipo_empresa`, `ruc`, `tipo_usuario`, `codigo_simple`, `correlativo`, `anio`, `search_tipo_empresa`) VALUES
-(66, 'csds', 10202, NULL, 2, '12312312', 2, NULL, NULL, NULL, 'Estatal'),
-(67, 'dfdsf', 20201, NULL, 1, '444323432', 2, NULL, NULL, NULL, 'Privado'),
-(68, NULL, 1, 67, NULL, '444323432', NULL, '555', '0', '16', '');
+(69, 'E.E. Prueba', '010202', NULL, 2, '1222222222', 2, NULL, NULL, NULL, 'Estatal'),
+(70, NULL, '01', 69, NULL, '1222222222', NULL, 'AM01', '3', '16', ''),
+(71, NULL, '02', 69, NULL, '1222222222', NULL, 'AM02', '1', '16', ''),
+(72, 'Sede Central', '150114', NULL, 2, '20131365994', 2, NULL, NULL, NULL, 'Estatal'),
+(73, 'EEA Santa Ana', '120101', NULL, 2, '20568503253', 2, NULL, NULL, NULL, 'Estatal'),
+(74, NULL, '12', 73, NULL, '20131365995', NULL, 'SAN3', '0', '16', ''),
+(75, NULL, '09', 73, NULL, '20131365995', NULL, 'SAN1', '0', '16', ''),
+(76, NULL, '10', 73, NULL, '20131365995', NULL, 'SAN2', '0', '16', ''),
+(77, NULL, '19', 73, NULL, '20131365995', NULL, 'SAN4', '0', '16', ''),
+(78, NULL, '15', 72, NULL, '20131365994', NULL, 'LIM1', '0', '16', ''),
+(79, 'CODESE Lambayeque', '140101', NULL, 1, '20165091834', 2, NULL, NULL, NULL, 'Privado'),
+(80, 'CERTIFICADORA GVR S.A.C.', '140101', NULL, 1, '20487646220', 2, NULL, NULL, NULL, 'Privado'),
+(81, 'CODESE ICA', '110101', NULL, 1, '20106398080', 2, NULL, NULL, NULL, 'Privado'),
+(82, 'CORDESA Arequipa', '040201', NULL, 1, '20195747092', 2, NULL, NULL, NULL, 'Privado'),
+(83, 'CORESE San Martin', '220901', NULL, 2, '20172239847', 2, NULL, NULL, NULL, 'Estatal'),
+(84, 'EEA Andenes', '080101', NULL, 2, '20491174693', 2, NULL, NULL, NULL, 'Estatal'),
+(85, 'EEA Illpa', '210101', NULL, 2, '20448637663', 2, NULL, NULL, NULL, 'Estatal'),
+(86, 'EEA Canaan', '050401', NULL, 2, '20131365994', 2, NULL, NULL, NULL, 'Estatal'),
+(87, 'EEA Chumbibamba', '030216', NULL, 2, '20131365994', 2, NULL, NULL, NULL, 'Estatal'),
+(88, 'EEA San Roque', '160101', NULL, 2, '20131365994', 2, NULL, NULL, NULL, 'Estatal'),
+(89, 'EEA Pucallpa', '250101', NULL, 2, '20448637663', 2, NULL, NULL, NULL, 'Estatal'),
+(90, NULL, '22', 83, NULL, '20172239847', NULL, 'SAM1', '1', '16', ''),
+(91, NULL, '01', 83, NULL, '20172239847', NULL, 'SAM2', '0', '16', '');
 
 -- --------------------------------------------------------
 
@@ -1385,7 +1525,44 @@ CREATE TABLE IF NOT EXISTS `inbox` (
   `rechazado` varchar(250) DEFAULT NULL,
   `observado` varchar(250) DEFAULT NULL,
   `form_type` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `inbox`
+--
+
+INSERT INTO `inbox` (`id`, `date`, `form_id`, `to`, `status_id`, `estado`, `aprobado`, `rechazado`, `observado`, `form_type`) VALUES
+(2, '2016-10-16', 2, 89, 1, 0, NULL, NULL, NULL, NULL),
+(3, '2016-10-16', 2, 91, 2, 1, NULL, NULL, NULL, NULL),
+(4, '2016-10-16', 2, 92, 3, 0, NULL, NULL, NULL, NULL),
+(5, '2016-10-16', 2, 89, 4, 0, 'cesar', NULL, NULL, NULL),
+(6, '2016-10-16', 2, 89, 7, 0, NULL, NULL, NULL, NULL),
+(7, '2016-10-16', 2, 89, 11, 1, NULL, NULL, NULL, NULL),
+(8, '2016-10-16', 2, 89, 12, 0, NULL, NULL, NULL, NULL),
+(9, '2016-10-17', 2, 89, 13, 1, NULL, NULL, NULL, NULL),
+(10, '2016-10-17', 2, 89, 17, 1, NULL, NULL, NULL, NULL),
+(11, '2016-10-17', 3, 89, 1, 0, NULL, NULL, NULL, NULL),
+(12, '2016-10-17', 3, 91, 2, 1, NULL, NULL, NULL, NULL),
+(13, '2016-10-17', 3, 92, 3, 0, NULL, NULL, NULL, NULL),
+(14, '2016-10-17', 3, 89, 4, 0, 'esta ok tu documento', NULL, NULL, NULL),
+(15, '2016-10-17', 3, 89, 7, 0, NULL, NULL, NULL, NULL),
+(16, '2016-10-17', 3, 89, 11, 1, NULL, NULL, NULL, NULL),
+(17, '2016-10-17', 3, 89, 12, 0, NULL, NULL, NULL, NULL),
+(18, '2016-10-17', 3, 89, 13, 1, NULL, NULL, NULL, NULL),
+(19, '2016-10-17', 3, 89, 17, 0, NULL, NULL, NULL, NULL),
+(20, '2016-10-17', 3, 89, 18, 1, NULL, NULL, NULL, NULL),
+(21, '2016-11-04', 4, 94, 1, 0, NULL, NULL, NULL, NULL),
+(22, '2016-11-04', 4, 95, 2, 1, NULL, NULL, NULL, NULL),
+(23, '2016-11-04', 4, 97, 3, 1, NULL, NULL, NULL, NULL),
+(24, '2016-12-12', 5, 94, 1, 1, NULL, NULL, NULL, NULL),
+(25, '2016-12-13', 6, 94, 1, 0, NULL, NULL, NULL, NULL),
+(26, '2016-12-13', 6, 95, 2, 1, NULL, NULL, NULL, NULL),
+(27, '2016-12-13', 7, 109, 1, 0, NULL, NULL, NULL, NULL),
+(28, '2016-12-13', 7, 102, 2, 1, NULL, NULL, NULL, NULL),
+(29, '2016-12-13', 7, 110, 3, 0, NULL, NULL, NULL, NULL),
+(30, '2016-12-13', 7, 109, 4, 0, 'Esta ok', NULL, NULL, NULL),
+(31, '2016-12-13', 7, 109, 7, 0, NULL, NULL, NULL, NULL),
+(32, '2016-12-13', 7, 109, 11, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1505,7 +1682,18 @@ CREATE TABLE IF NOT EXISTS `inspection` (
   `maiz_tolerancias` decimal(18,2) DEFAULT NULL,
   `alg_malvacearum` decimal(18,2) DEFAULT NULL,
   `nueva_inspeccion` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `inspection`
+--
+
+INSERT INTO `inspection` (`id`, `inspection_number`, `proposed_time`, `proposed_date`, `size`, `established_date`, `established_time`, `real_date`, `real_time`, `alg_fecha_siembra`, `alg_deshije`, `alg_floracion`, `alg_bellotas`, `alg_surcos`, `alg_mata`, `alg_campo_comercial`, `alg_otra_especie`, `alg_otra_cultivar`, `alg_plantas_otra_especie`, `alg_plantas_fuera_tipo`, `resultado`, `observaciones`, `recomendaciones`, `arz_siembra_directa`, `arz_transplante`, `arz_fecha_siembra`, `arz_fecha_almacigo`, `arz_fecha_transplante`, `arz_area_instalada`, `arz_aislamiento`, `cer_fecha_siembra`, `cer_floracion`, `cer_maduracion`, `cer_inflorecencias_otros_cultivares`, `cer_inflorecencias_otros_cultivares_menores`, `cer_carbon_apestoso`, `cer_carbon_cubierto`, `cer_carbon_volador`, `cer_cornezuelo`, `cer_mancha_foliar`, `cer_escaldadura`, `cer_presencia_maleza_nocivas`, `cer_aspecto_general_poblacion`, `cer_plagas`, `cer_aislamiento`, `cer_otra_cultivar`, `cer_otra_categoria`, `leg_fecha_siembra`, `leg_emergencia_fecha`, `leg_floracion`, `leg_llenado_grano`, `leg_fecha_cosecha`, `leg_distanciamiento_surcos`, `leg_mata`, `leg_campo_comercial`, `leg_otra_especie`, `leg_otro_cultivar`, `leg_presencia_maleza`, `leg_presencia_plagas`, `leg_plantas_otras_especies`, `leg_plantas_fuera_tipo`, `maiz_fecha_siembra`, `maiz_emergencia_fecha`, `maiz_floracion`, `maiz_llenado_grano`, `maiz_fecha_cosecha`, `maiz_distanciamiento_surcos`, `maiz_mata`, `maiz_campo_comercial`, `maiz_otra_especie`, `maiz_otro_cultivar`, `maiz_presencia_maleza`, `maiz_presencia_plagas`, `maiz_plantas_otras_especies`, `maiz_plantas_fuera_tipo`, `papa_campo_comercial`, `papa_otra_especie`, `papa_otro_cultivar`, `papa_fecha_siembra`, `papa_plagas`, `user_id`, `form_id`, `maiz_floracion_fecha`, `leg_floracion_fecha`, `cer_fecha_fenologico`, `cer_cantidad_semilla`, `afectadas_enrollamiento`, `afectadas_mozaico`, `afectadas_otros_virus`, `afectadas_erwinia`, `afectadas_mezclas`, `subsanacion`, `aprobado`, `observado`, `rechazado`, `subsanacion_date`, `subsanacion_time`, `subsanacion_real_date`, `subsanacion_real_time`, `arz_fuera_tipo`, `arz_rojo`, `arz_plantas_sintomas`, `leg_mosaicos`, `leg_moteado`, `leg_bacteriosis`, `leg_mancha_angular`, `cer_plantas_fuera_tipo`, `cer_otras_especies`, `maiz_tolerancias`, `alg_malvacearum`, `nueva_inspeccion`) VALUES
+(1, 1, '19:12:00', '2016-10-23', '0.00', NULL, NULL, '2016-10-16', '19:10:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'fffd', NULL, 1, 1, '2016-10-27', '2016-10-29', '2016-10-16', '4.00', '4.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 89, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4.00', '4.00', '4.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 2, '19:12:00', '2016-10-16', '0.00', NULL, NULL, '2016-10-16', '19:10:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dd', NULL, 1, 1, '2016-10-16', '2016-10-19', '2016-10-20', '4.00', '4.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 89, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '4.00', '4.00', '4.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(3, 1, '19:12:00', '2016-10-19', '20.00', NULL, NULL, '2016-10-20', '19:10:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'dsfhsdhfsdhkf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1000.00', '10.00', '40.00', '2016-10-19', NULL, 89, 3, NULL, NULL, NULL, NULL, '5.00', '5.00', '5.00', '5.00', '5.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(4, 2, '19:12:00', '2016-10-17', '50.00', NULL, NULL, '2016-10-20', '19:10:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'sdjfhsdfj', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '100.00', '2200.00', '20.00', '2016-10-17', NULL, 89, 3, NULL, NULL, NULL, NULL, '5.00', '5.00', '5.00', '5.00', '5.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 1, '19:12:00', '2017-01-15', NULL, NULL, NULL, '2017-01-20', '19:12:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 109, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1613,7 +1801,15 @@ CREATE TABLE IF NOT EXISTS `movilizacion` (
   `destino_district_id` int(11) DEFAULT NULL,
   `form_id` int(11) DEFAULT NULL,
   `movilizacion_ok` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `movilizacion`
+--
+
+INSERT INTO `movilizacion` (`id`, `cantidad_envases`, `capacidad_envases`, `cantidad_movilizar`, `fecha`, `origen`, `origen_nombre_predio`, `origen_district_id`, `destino`, `destino_nombre_predio`, `destino_registro`, `destino_district_id`, `form_id`, `movilizacion_ok`) VALUES
+(1, '100', '400.00', '400.00', '2016-10-17', 1, 'prueb', 50103, 2, 'otro', '3434', 10304, 2, NULL),
+(2, '40', '100.00', '200.00', '2016-10-17', 1, 'otrpoeo', 10202, 2, 'sdjjfjdsj', '43534', 90405, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -1674,7 +1870,15 @@ CREATE TABLE IF NOT EXISTS `muestreo` (
   `informe_acondicionamiento` tinyint(1) NOT NULL,
   `etiquetado_notificacion` tinyint(1) NOT NULL,
   `fecha_muestreo` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `muestreo`
+--
+
+INSERT INTO `muestreo` (`id`, `form_id`, `user_id`, `date_proposed`, `time_proposed`, `codigo_lote`, `name_muestreador`, `observacion`, `date_real`, `time_real`, `district_id`, `lugar_ubicacion`, `fecha_solicitud`, `solicitud`, `fecha_notificacion`, `notificacion`, `fecha_informe`, `informe`, `rechazo`, `fecha_rechazo`, `tipo_analisis_germinacion`, `tipo_analisis_humedad`, `tipo_analisis_pureza`, `tipo_analisis_otras_especies`, `registro`, `inspecciones_campo`, `folio_inspecciones_campo`, `inspecciones_observacion`, `acondicionamiento_campo`, `folio_acondicionamiento_campo`, `acondicionamiento_observacion`, `analisis_semillas`, `folio_analisis_semillas`, `analisis_semillas_observacion`, `observaciones_tecnicos`, `hora_notificacion`, `fecha_tecnico`, `tecnico`, `fecha_tecnico_rechazo`, `tecnico_rechazo`, `cantidad`, `peso_total`, `peso_envase`, `nro_envases`, `peso_muestra`, `acondicionamiento_id`, `fecha_notificacion_acondicionamiento`, `notificacion_acondicionamiento`, `fecha_informe_acondicionamiento`, `informe_acondicionamiento`, `etiquetado_notificacion`, `fecha_muestreo`) VALUES
+(1, 3, 89, NULL, NULL, 'AM02-1-16-1', NULL, NULL, NULL, NULL, NULL, NULL, '2016-10-17', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '100.00', '200.00', '100.00', '0.00', 2, '2016-10-17', 0, '0000-00-00', 0, 0, '0000-00-00'),
+(2, 3, 89, NULL, NULL, 'AM02-1-16-2', NULL, NULL, NULL, NULL, NULL, NULL, '2016-10-17', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0.00', '100.00', '30.00', '3.00', '0.00', 2, '2016-10-17', 0, '0000-00-00', 0, 0, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -1698,7 +1902,26 @@ CREATE TABLE IF NOT EXISTS `payment` (
   `ruc` varchar(30) DEFAULT NULL,
   `descripcion` varchar(300) DEFAULT NULL,
   `document_reference` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `payment`
+--
+
+INSERT INTO `payment` (`id`, `concept_id`, `date`, `quantity`, `document_number`, `price`, `total`, `form_id`, `user_id`, `pay_date`, `pay_code`, `code`, `ruc`, `descripcion`, `document_reference`) VALUES
+(1, 1, '2016-10-16', '1.00', NULL, '62.04', '62.04', 2, 89, '2016-10-16', '443334443', '1', '20274421615', 'Inscripción de campo de multiplicación de Arroz', '2016-10-16'),
+(2, 2, '2016-10-16', '3.00', NULL, '59.94', '59.94', 2, 89, '2016-10-16', '3342', '2', '20274421615', '1ra Inspección de campo de multiplicación de Arroz', 'AM01-3-16'),
+(3, 2, '2016-10-16', '3.00', NULL, '59.94', '59.94', 2, 89, '2016-10-16', '333', '3', '20274421615', '2da Inspección de campo de multiplicación de Arroz', 'AM01-3-16'),
+(4, 3, '2016-10-16', '1.00', NULL, '31.55', '31.55', 2, 89, '2016-10-16', '23432', '4', '20274421615', '1ra Inspección de acondicionamiento', 'AM01-3-16'),
+(5, 1, '2016-10-17', '1.00', NULL, '62.04', '62.04', 3, 89, '2017-10-16', '763475347', '5', '20274421615', 'Inscripción de campo de multiplicación de Papa', '2016-10-17'),
+(6, 2, '2016-10-17', '10.00', NULL, '59.94', '59.94', 3, 89, '2017-10-16', '34534', '6', '20274421615', '1ra Inspección de campo de multiplicación de Papa', 'AM02-1-16'),
+(7, 2, '2016-10-17', '10.00', NULL, '59.94', '59.94', 3, 89, '2017-10-16', '34534', '7', '20274421615', '2da Inspección de campo de multiplicación de Papa', 'AM02-1-16'),
+(8, 3, '2016-10-17', '1.00', NULL, '31.55', '31.55', 3, 89, '2017-10-16', '7676', '8', '20274421615', '1ra Inspección de acondicionamiento', 'AM02-1-16'),
+(9, 1, '2016-11-04', '1.00', NULL, '62.04', '62.04', 4, 94, '2004-11-16', '34567875345777', '9', '20131365994', 'Inscripción de campo de multiplicación de Ma', '2016-11-04'),
+(10, 1, '2016-12-12', '1.00', NULL, '62.04', NULL, 5, 94, NULL, NULL, NULL, '20131365994', 'Inscripción de campo de multiplicación de Algod?n', '2016-12-12'),
+(11, 1, '2016-12-13', '1.00', NULL, '62.04', '59.94', 6, 94, '2013-12-16', '234324324', '10', '20131365994', 'Inscripción de campo de multiplicación de Arroz', '2016-12-13'),
+(12, 1, '2016-12-13', '1.00', NULL, '62.04', '59.94', 7, 109, '2013-12-16', '234324324', '10', '20398436505', 'Inscripción de campo de multiplicación de Arroz', '2016-12-13'),
+(13, 2, '2016-12-13', '4.00', NULL, '59.94', '59.94', 7, 109, '2013-12-16', '234324324', '10', '20398436505', '1ra Inspección de campo de multiplicación de Arroz', 'SAM1-1-16');
 
 -- --------------------------------------------------------
 
@@ -1713,7 +1936,15 @@ CREATE TABLE IF NOT EXISTS `produccion` (
   `fecha_cosecha` date DEFAULT NULL,
   `form_id` int(11) DEFAULT NULL,
   `produccion_ok` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `produccion`
+--
+
+INSERT INTO `produccion` (`id`, `area`, `produccion`, `fecha_cosecha`, `form_id`, `produccion_ok`) VALUES
+(1, '100', '5000', '2016-10-06', 2, NULL),
+(2, '100', '100', '2016-10-17', 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -1744,62 +1975,62 @@ INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_
 (2, '002-1997-AG-SENASA', 5, 'Productora de Semillas y Granos S.A.', 'Lizardo Alzamora Oeste N? 205 Lima-Lima -San Isidro', 150101, '20251713902', 'Habilitado', NULL, NULL, 21),
 (3, '003-1997-AG-SENASA', 7, 'Angel Delgado Miranda', 'Urb. Sol de la Molina Av.La Molina N? 2135 Lima-Lima- La Molina', 150101, '10079291230', 'Habilitado', NULL, NULL, 21),
 (4, '001-1998-AG-SENASA', 9, 'Alicorp S.A.', 'Av.Argentina 4793         Lima- Callao-Carmen de La Legua', 150101, '20100055237', 'Habilitado', NULL, NULL, 21),
-(5, '002-1998-AG-SENASA', 11, 'Consorcio Agr?cola Ganadero S.A. - COAGRO', 'Av.  Grau N? 831 Piura-Piura-Piura', 200101, '20398436505', 'Habilitado', NULL, NULL, 21),
-(6, '003-1998-AG-SENASA', 13, 'Asociaci?n Ingenier?a para el Desarrollo ', 'Urb. Los Rosales, Calle Obregon N? 182, Lima -Lima-Santiago de Surco', 150101, '20156559092', 'Habilitado', NULL, NULL, 21),
+(5, '002-1998-AG-SENASA', 11, 'Consorcio Agricola Ganadero S.A. - COAGRO', 'Av.  Grau N° 831 Piura-Piura-Piura', 200101, '20398436505', 'Habilitado', NULL, '1', 21),
+(6, '003-1998-AG-SENASA', 13, 'Asociacion Ingenieria para el Desarrollo ', 'Urb. Los Rosales, Calle Obregon N° 182, Lima -Lima-Santiago de Surco', 150101, '20156559092', 'Habilitado', NULL, '0', 21),
 (7, '004-1998-AG-SENASA', 15, 'ECOMUSA "Santa Ana"', ' Anexo Colpa s/n         Jun?n-Tarma-Tarma', 120101, '20319714031', 'Habilitado', NULL, NULL, 21),
 (8, '005-1998-AG-SENASA', 17, 'SEMILLAS ANDINAS S.R.Ltda', 'Av. El Sol N? 909.       Puno-Puno-Puno', 210101, '20363462481', 'Habilitado', NULL, NULL, 21),
 (9, '006-1998-AG-SENASA', 19, 'Santiago Melendres Bermeo', 'Cas. Mitupampa s/n Piura-Huancabamba-Sondorillo', 200101, '10032077281', 'Habilitado', NULL, NULL, 21),
 (10, '007-1998-AG-SENASA', 21, 'PLANTEX S.A', 'Av. Industrial N? 296 Lima-Lima-Ate', 150101, '20258279701', 'Habilitado', NULL, NULL, 21),
 (11, '008-1998-AG-SENASA', 23, 'FUNDACION ESTACION EXPERIMENTAL HUALTACO ', 'Jr. Callao 540              Piura - Piura-Piura ', 200101, '20103031410', 'Habilitado', NULL, NULL, 21),
-(12, '009-1998-AG-SENASA', 25, 'Asociaci?n Zonal de Multiplicadores de Papa Chota* ', 'Jr. 27 De Noviembre N? 770 Cajamarca-Chota-Chota', 130101, '20230453625', 'Habilitado', NULL, NULL, 21),
+(12, '009-1998-AG-SENASA', 25, 'Asociacion Zonal de Multiplicadores de Papa Chota', 'Jr. 27 De Noviembre N° 770 Cajamarca-Chota-Chota', 130101, '20230453625', 'Habilitado', NULL, '0', 21),
 (13, '025-1998-AG-SENASA', 57, 'Adelmo Coronel Valderrama', 'Chulit,            Cajamarca-Chota-Chota', 130101, '10274236014', 'Habilitado', NULL, NULL, 21),
 (14, '040-1998-AG-SENASA', 87, 'PRODIA', 'Jr. San Mart?n N?. 272 Int. B               Cajamarca-Hualgayoc- Bambamarca', 130101, '20147135492', 'Habilitado', NULL, NULL, 21),
-(15, '041-1998-AG-SENASA', 89, 'Empresa Agr?cola La Semilla SRL', 'Leoncio Prado N?443 Lambayeque-Chiclayo-Chiclayo', 140101, '20162235142', 'Habilitado', NULL, NULL, 21),
-(16, '042-1998-AG-SENASA', 91, 'Fundaci?n para el Desarrollo Agrario del Alto Mayo', 'Av. Grau Cdra 6 s/n                       San Mart?n -Moyobamba-Moyobamba', 220101, '20205702530', 'Habilitado', NULL, NULL, 21),
-(17, '043-1998-AG-SENASA', 93, 'Programa Internacional de Capacitaci?n en Gesti?n - Desarrollo Rural - PROICAR PERU', 'Jr. Rioja N? 208 - 210 San Mart?n-San Mart?n -Tarapoto', 220101, '20349971951', 'Habilitado', NULL, NULL, 21),
-(18, '044-1998-AG-SENASA', 95, 'Grupo Agr?cola S.R.Ltda.', 'Jr. Lima 373 San Mart?n-San Mart?n-Morales', 220101, '20230300632', 'Habilitado', NULL, NULL, 21),
-(19, '045-1998-AG-SENASA', 97, 'Jos? Abraham Limo Serquen', 'Jr. Picota N? 620                            San Mart?n-Picota-Picota', 220101, '10010955691', 'Habilitado', NULL, NULL, 21),
+(15, '041-1998-AG-SENASA', 89, 'Empresa Agricola La Semilla SRL', 'Leoncio Prado N° 443 Lambayeque-Chiclayo-Chiclayo', 140101, '20162235142', 'Habilitado', NULL, '0', 21),
+(16, '042-1998-AG-SENASA', 91, 'Fundacion para el Desarrollo Agrario del Alto Mayo', 'Av. Grau Cdra 6 s/n - San Martin -Moyobamba-Moyobamba', 220101, '20205702530', 'Habilitado', NULL, '0', 21),
+(17, '043-1998-AG-SENASA', 93, 'Programa Internacional de Capacitacion en Gestion - Desarrollo Rural - PROICAR PERU', 'Jr. Rioja N° 208 - 210 San Martin-San Martin -Tarapoto', 220101, '20349971951', 'Habilitado', NULL, '0', 21),
+(18, '044-1998-AG-SENASA', 95, 'Grupo Agricola S.R.Ltda.', 'Jr. Lima 373 San Martin-San Martin-Morales', 220101, '20230300632', 'Habilitado', NULL, '0', 21),
+(19, '045-1998-AG-SENASA', 97, 'Jose Abraham Limo Serquen', 'Jr. Picota N° 620  - San Martin-Picota-Picota', 220101, '10010955691', 'Habilitado', NULL, '0', 21),
 (20, '046-1998-AG-SENASA', 99, 'Moises Diaz Diaz', 'Jr. Progreso N? 115 San Mart?n-Tocache-Tocache', 220101, '10011875179', 'Habilitado', NULL, NULL, 21),
 (21, '047-1998-AG-SENASA', 101, 'Carlos Daniel Vecco Giove', 'Jr. San Pablo De la Cruz 401                             San Mart?n-San Mart?n -Tarapoto', 220101, '10078799787', 'Habilitado', NULL, NULL, 21),
 (22, '048-1998-AG-SENASA', 103, 'Municipalidad Distrital de Chaglla', 'Jr. Mayro N? s/n                     Huanuco - Pachitea - Chaglla', 100101, '20160934591', 'Habilitado', NULL, NULL, 21),
-(23, '001-1999-AG-SENASA', 105, 'Jos? Ualverto Vargas Paredes', 'Perlamayo Capilla Chugur             Cajamarca-Chota-Chota', 130101, '10275597355', 'Habilitado', NULL, NULL, 21),
-(24, '003-1999-AG-SENASA', 109, 'Asociaci?n de Productores de Semilla de Papa Gloriapata - Caramarca', 'Jr. Ollantay N? 109 Paucarbamba                                  Huanuco - Huanuco - Amarilis', 100101, '20404761138', 'Habilitado', NULL, NULL, 21),
+(23, '001-1999-AG-SENASA', 105, 'Jose Ualverto Vargas Paredes', 'Perlamayo Capilla Chugur - Cajamarca-Chota-Chota', 130101, '10275597355', 'Habilitado', NULL, '0', 21),
+(24, '003-1999-AG-SENASA', 109, 'Asociacion de Productores de Semilla de Papa Gloriapata - Caramarca', 'Jr. Ollantay N° 109 Paucarbamba -  Huanuco - Huanuco - Amarilis', 100101, '20404761138', 'Habilitado', NULL, '0', 21),
 (25, '004-1999-AG-SENASA', 111, 'Gregorio Cajas Cordova', 'Jr. Colonial N? 115 - Pucarbamba                           Huanuco - Huanuco - Amarilis', 100101, '10224083217', 'Habilitado', NULL, NULL, 21),
-(26, '005-1999-AG-SENASA', 113, 'Juan Jos? Esp?ritu Anastacio', ' Nueva Libertad de  Sogobamba s/n                  Huanuco-Huanuco-Chinchao', 100101, '10229978972', 'Habilitado', NULL, NULL, 21),
+(26, '005-1999-AG-SENASA', 113, 'Juan Jose Espiritu Anastacio', ' Nueva Libertad de  Sogobamba s/n - Huanuco-Huanuco-Chinchao', 100101, '10229978972', 'Habilitado', NULL, '0', 21),
 (27, '006-1999-AG-SENASA', 115, 'ECOMUSA El Agricultor', 'Cas. Utao s/n                     Huanuco-Huanuco-Churubamaba', 100101, '20285690251', 'Habilitado', NULL, NULL, 21),
-(28, '007-1999-AG-SENASA', 117, 'Ra?l Antonio Arrascue P?rez ', 'Jr. Pedro De Urzua N?309 San Mart?n-San Mart?n-Tarapoto', 220101, '10166353462', 'Habilitado', NULL, NULL, 21),
-(29, '008-1999-AG-SENASA', 119, 'Alcibiades Segundo S?nchez Macedo  ', 'Jr. Augusto B. Leguia N? 617                            San Mart?n-San Mart?n-Tarapoto', 220101, '10011569370', 'Habilitado', NULL, NULL, 21),
-(30, '009-1999-AG-SENASA', 121, 'Elva Violeta C?rdenas D?az ', 'Jr. Yurimaguas N? 485               San Mat?n-San Mart?n-La Banda de Shilcayo', 220101, '10011018306', 'Habilitado', NULL, NULL, 21),
-(31, '010-1999-AG-SENASA', 123, 'Ra?l Tiburcio Cabrera Quispe', 'Jr. Angel Delgado Morey N? 422                                                   San Mart?n-San Mart?n-Tarapoto', 220101, '10011477564', 'Habilitado', NULL, NULL, 21),
-(32, '011-1999-AG-SENASA', 125, 'Ra?l Americo Abad Jim?nez ', 'Km 38 Carretera BELLAVISTA, SAN JOSE DE SISA San Mart?n -El Dorado-Santa Rosa', 220101, '10008820916', 'Habilitado', NULL, NULL, 21),
+(28, '007-1999-AG-SENASA', 117, 'Raul Antonio Arrascue Perez ', 'Jr. Pedro De Urzua N?309 San Martin-San Martin-Tarapoto', 220101, '10166353462', 'Habilitado', NULL, '0', 21),
+(29, '008-1999-AG-SENASA', 119, 'Alcibiades Segundo Sanchez Macedo  ', 'Jr. Augusto B. Leguia N? 617 - San Martin-San Martin-Tarapoto', 220101, '10011569370', 'Habilitado', NULL, '0', 21),
+(30, '009-1999-AG-SENASA', 121, 'Elva Violeta Cardenas Diaz ', 'Jr. Yurimaguas N? 485 - San Matin-San Martin-La Banda de Shilcayo', 220101, '10011018306', 'Habilitado', NULL, '0', 21),
+(31, '010-1999-AG-SENASA', 123, 'Raul Tiburcio Cabrera Quispe', 'Jr. Angel Delgado Morey N° 422                                                   San Mart?n-San Mart?n-Tarapoto', 220101, '10011477564', 'Habilitado', NULL, '0', 21),
+(32, '011-1999-AG-SENASA', 125, 'Raul Americo Abad Jimenez ', 'Km 38 Carretera BELLAVISTA, SAN JOSE DE SISA San Martin -El Dorado-Santa Rosa', 220101, '10008820916', 'Habilitado', NULL, '0', 21),
 (33, '012-1999-AG-SENASA', 127, 'Maquinarias y Servicios Agropecuarios Tocache S.A. (MASATO)  ', 'Jr. Progreso N?109                         San Mart?n-Tocache-Tocache', 220101, '20194647337', 'Habilitado', NULL, NULL, 21),
 (34, '013-1999-AG-SENASA', 129, 'Procesadora S.A.', 'Av. Melgarejo N? 580 Urb. Santa Patricia                                  Lima - Lima - La Molina', 150101, '20117751954', 'Habilitado', NULL, NULL, 21),
-(35, '014-1999-AG-SENASA', 131, 'Guzm?n Fern?ndez Irigo?n ', 'Jr. Dos de Mayo s/n Chucmar (cdra 4)        Cajamarca-Cajamarca-Cajamarca', 130101, '10274109675', 'Habilitado', NULL, NULL, 21),
+(35, '014-1999-AG-SENASA', 131, 'Guzman Fernandez Irigoin ', 'Jr. Dos de Mayo s/n Chucmar (cdra 4)        Cajamarca-Cajamarca-Cajamarca', 130101, '10274109675', 'Habilitado', NULL, '0', 21),
 (36, '015-1999-AG-SENASA', 133, 'COMERCIO REGIONAL E.I.R.L ', 'Psje Salesianos N? 185  Jun?n-Huancayo- El tambo', 120101, '20194082992', 'Habilitado', NULL, NULL, 21),
 (37, '016-1999-AG-SENASA', 135, 'Rember Pinedo Taco', 'Av. Manco Capac N? 490 Apurimac-Andahuaylas-Talavera', 100101, '10239243181', 'Habilitado', NULL, NULL, 21),
 (38, '017-1999-AG-SENASA', 137, 'Victor Yauris Quintana', 'Jr. Alfonso Ugarte N? 110 Apurimac-Andahuaylas-San Jer?nimo', 100101, '10311505829', 'Habilitado', NULL, NULL, 21),
 (39, '018-1999-AG-SENASA', 139, 'Mario H. Tello Ceron.', 'Juan Francisco Ramos N? 311-01                                                Apurimac-Andahuaylas-Andahuaylas', 100101, '10211033890', 'Habilitado', NULL, NULL, 21),
-(40, '019-1999-AG-SENASA', 141, 'Empresa Agraria Comunal "San Agust?n"', 'C.P.M  Chucmar                            Cajamarca-Chota-Chota', 130101, '20230794708', 'Habilitado', NULL, NULL, 21),
-(41, '020-1999-AG-SENASA', 143, 'Semillas Chalp?n E. I. R. L.', 'Bronsino N? 357                     Lima -Lima-San Borja', 150101, '20343670355', 'Habilitado', NULL, NULL, 21),
-(42, '021-1999-AG-SENASA', 145, 'Patricia Leonila D?az Alva', 'Jr. Santa Ines N? 277 San Mart?n-San Mart?n-Tarapoto', 220101, '10011016494', 'Habilitado', NULL, NULL, 21),
+(40, '019-1999-AG-SENASA', 141, 'Empresa Agraria Comunal "San Agustin"', 'C.P.M  Chucmar                            Cajamarca-Chota-Chota', 130101, '20230794708', 'Habilitado', NULL, '0', 21),
+(41, '020-1999-AG-SENASA', 143, 'Semillas Chalpon E. I. R. L.', 'Bronsino N° 357                     Lima -Lima-San Borja', 150101, '20343670355', 'Habilitado', NULL, '0', 21),
+(42, '021-1999-AG-SENASA', 145, 'Patricia Leonila Diaz Alva', 'Jr. Santa Ines N? 277 San Martin-San Martin-Tarapoto', 220101, '10011016494', 'Habilitado', NULL, '0', 21),
 (43, '022-1999-AG-SENASA', 147, 'Percy Antonio Arce Alegria', 'Jr.Ram?n Castilla N? 173                    Apurimac -Andahuaylas-Andahuaylas', 100101, '10311660140', 'Habilitado', NULL, NULL, 21),
-(44, '023-1999-AG-SENASA', 149, 'Carlos Presentaci?n Carbajal Cabieses', '1? de Mayo N? 1167                         Jun?n-Jauja-Acolla', 120101, '10207263341', 'Habilitado', NULL, NULL, 21),
+(44, '023-1999-AG-SENASA', 149, 'Carlos Presentacion Carbajal Cabieses', '1ro de Mayo N? 1167                         Junin-Jauja-Acolla', 120101, '10207263341', 'Habilitado', NULL, '0', 21),
 (45, '024-1999-AG-SENASA', 151, 'Walter Oswaldo Navarro Mallma', 'Jr. 15 De Setiembre Jun?n-Jauja-Tunanmarca', 120101, '10207133383', 'Habilitado', NULL, NULL, 21),
 (46, '025-1999-AG-SENASA', 153, 'CODIPAPA - HUASAHUASI', 'Calle 24 De Junio N? s/n Huasahuasi                         Jun?n-Tarma- Huasahuasi', 120101, '20212636305', 'Habilitado', NULL, NULL, 21),
-(47, '026-1999-AG-SENASA', 155, 'Yonel Echevarria Nore?a', 'Dos De Mayo N? 1876 Huanuco-Huanuco-Churubamba', 100101, '10224773671', 'Habilitado', NULL, NULL, 21),
+(47, '026-1999-AG-SENASA', 155, 'Yonel Echevarria Noreña', 'Dos De Mayo N° 1876 Huanuco-Huanuco-Churubamba', 100101, '10224773671', 'Habilitado', NULL, '0', 21),
 (48, '027-1999-AG-SENASA', 157, 'Antonio Herrera Castro', 'Huacora s/n            Huanuco-Huanuco-Margos', 100101, '10225197747', 'Habilitado', NULL, NULL, 21),
-(49, '028-1999-AG-SENASA', 159, 'Nireo F?lix Cajas Tacuche', ' Cas. Illongacocha s/n Huanuco-Huanuco-Margos', 100101, '10407162752', 'Habilitado', NULL, NULL, 21),
+(49, '028-1999-AG-SENASA', 159, 'Nireo Felix Cajas Tacuche', ' Cas. Illongacocha s/n Huanuco-Huanuco-Margos', 100101, '10407162752', 'Habilitado', NULL, '0', 21),
 (50, '029-1999-AG-SENASA', 161, 'Mery Mercedes Cajas Tacuche', ' Cas. Illongacocha s/n Huanuco-Huanuco-Margos', 100101, '10224948871', 'Habilitado', NULL, NULL, 21),
 (51, '030-1999-AG-SENASA', 163, 'Pablo Florentino Camones Valdivia', 'Caser?o. Illonga s/n Huanuco-Huanuco-Yarumayo', 100101, '10224831451', 'Habilitado', NULL, NULL, 21),
 (52, '031-1999-AG-SENASA', 165, 'Pedro Cajas Miraval', ' Cas. Illongacocha s/n Huanuco-Huanuco-Margos', 100101, '10224456757', 'Habilitado', NULL, NULL, 21),
-(53, '032-1999-AG-SENASA', 167, 'Comit? de Productores de Papa-Ambo', 'Jr. Progreso N? 498 Huanuco-Ambo-Ambo', 100101, '20362511586', 'Habilitado', NULL, NULL, 21),
+(53, '032-1999-AG-SENASA', 167, 'Comite de Productores de Papa-Ambo', 'Jr. Progreso N° 498 Huanuco-Ambo-Ambo', 100101, '20362511586', 'Habilitado', NULL, '0', 21),
 (54, '033-1999-AG-SENASA', 169, 'Pedro Pablo Esteban Cajas', 'Psj. Virgen De F?tima N? 14                              Huanuco-Huanuco-Huanuco', 100101, '10225095588', 'Habilitado', NULL, NULL, 21),
 (55, '034-1999-AG-SENASA', 171, 'Luis Fernando Morales Flores', 'Chinchan s/n         Huanuco-Huanuco-Yarumayo', 100101, '10224830748', 'Habilitado', NULL, NULL, 21),
 (56, '035-1999-AG-SENASA', 173, 'Eugenio Maylle Manuel', 'San Cristobal De Chinchan s/n                 Huanuco-Huanuco-Yarumayo', 100101, '10224824071', 'Habilitado', NULL, NULL, 21),
-(57, '036-1999-AG-SENASA', 175, 'Ceverina Valenzuela Crist?bal', 'San Cristobal De Chinchan s/n                 Huanuco-Huanuco-Yarumayo', 100101, '10224578852', 'Habilitado', NULL, NULL, 21),
-(58, '037-1999-AG-SENASA', 177, 'Eusebio Mart?n Benancio', 'San Cristobal De Chinchan s/n                 Huanuco-Huanuco-Yarumayo', 100101, '10224825841', 'Habilitado', NULL, NULL, 21),
-(59, '039-1999-AG-SENASA', 181, 'Herm?genes Amado Chupill?n Campos', 'Jr. Cabo A.Leveau N?244 San Mart?n-San Mart?n-Tarapoto', 220101, '10164435267', 'Habilitado', NULL, NULL, 21),
-(60, '040-1999-AG-SENASA', 183, 'Instituto Superior Tecnol?gico "Santiago Ant?nez de Mayolo"', 'La Victoria N? 300 - 302 Palian                        Jun?n-Huancayo-Huancayo', 120101, '20443885880', 'Habilitado', NULL, NULL, 21),
+(57, '036-1999-AG-SENASA', 175, 'Ceverina Valenzuela Cristobal', 'San Cristobal De Chinchan s/n                 Huanuco-Huanuco-Yarumayo', 100101, '10224578852', 'Habilitado', NULL, '0', 21),
+(58, '037-1999-AG-SENASA', 177, 'Eusebio Martin Benancio', 'San Cristobal De Chinchan s/n                 Huanuco-Huanuco-Yarumayo', 100101, '10224825841', 'Habilitado', NULL, '0', 21),
+(59, '039-1999-AG-SENASA', 181, 'Hermogenes Amado Chupillon Campos', 'Jr. Cabo A.Leveau N° 244 San Martin-San Martin-Tarapoto', 220101, '10164435267', 'Habilitado', NULL, '0', 21),
+(60, '040-1999-AG-SENASA', 183, 'Instituto Superior Tecnologico "Santiago Antunez de Mayolo"', 'La Victoria N° 300 - 302 Palian Junin-Huancayo-Huancayo', 120101, '20443885880', 'Habilitado', NULL, '0', 21),
 (61, '041-1999-AG-SENASA', 185, 'Isidoro Joaqu?n Arauco Jimenez', 'Mar?a Miranda s/n            Jun?n-Chupaca-Chupaca', 120101, '10199064954', 'Habilitado', NULL, NULL, 21),
 (62, '042-1999-AG-SENASA', 187, 'Asociaci?n de Productores de Semilla de Papa Illongacocha', ' Cas. Illongacocha s/n Huanuco-Huanuco-Margos', 100101, '20404856864', 'Habilitado', NULL, NULL, 21),
 (63, '043-1999-AG-SENASA', 189, 'Flor de Mar?a Esteban Cajas', 'Caser?o. Illonga s/n Huanuco-Huanuco-Yarumayo', 100101, '10225215354', 'Habilitado', NULL, NULL, 21),
@@ -1992,9 +2223,9 @@ INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_
 (250, '067-2001-AG-SENASA', 169, 'C?rpus Valdivia Chugnas', 'Cas. Puruay Alto s/n                           Cajamarca - Cajamarca-Cajamarca', 130101, '10266903125', 'Habilitado', NULL, NULL, 21),
 (251, '068-2001-AG-SENASA', 171, 'Asociaci?n de Productores Agropecuarios "Pe?a Blanca de Agua Mala"', 'Cas. Agua Mala s/n                  Cajamarca - Cajamarca - La Enca?ada', 130101, '20368891011', 'Habilitado', NULL, NULL, 21),
 (252, '069-2001-AG-SENASA', 173, 'Santos Llanos Coronado', 'Cas. Bellavista Alta s/n         Cajamarca - Cajamarca - La Enca?ada', 130101, '10266468658', 'Habilitado', NULL, NULL, 21),
-(253, '070-2001-AG-SENASA', 175, 'Germ?n Sangay Llanos', 'Cas. San Pedro de Combayo Cajamarca - Cajamarca - La Enca?ada', 130101, '10266503666', 'Habilitado', NULL, NULL, 21);
+(253, '070-2001-AG-SENASA', 175, 'Germ?n Sangay Llanos', 'Cas. San Pedro de Combayo Cajamarca - Cajamarca - La Enca?ada', 130101, '10266503666', 'Habilitado', NULL, NULL, 21),
+(254, '071-2001-AG-SENASA', 177, 'Semillas Nacional E.I.R.L.', 'Cal. Las Begonias N? 160 Urb. Los Parques Lambayeque-Chiclayo-Chiclayo', 140101, '20103441669', 'Habilitado', NULL, NULL, 21);
 INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_id`, `document_number`, `status`, `legal_address`, `libro`, `status_admin`) VALUES
-(254, '071-2001-AG-SENASA', 177, 'Semillas Nacional E.I.R.L.', 'Cal. Las Begonias N? 160 Urb. Los Parques Lambayeque-Chiclayo-Chiclayo', 140101, '20103441669', 'Habilitado', NULL, NULL, 21),
 (255, '072-2001-AG-SENASA', 179, 'Instituto Nacional de Investigaci?n Agraria - INIA ', 'Av. La Molina N? 1981                Lima - Lima - La Molina', 150101, '20131365994', 'Habilitado', NULL, NULL, 21),
 (256, '073-2001-AG-SENASA', 181, 'Hortus', 'Calle Sucre N? 270 Ate Vitarte', 150101, '20101637221', 'Habilitado', NULL, NULL, 21),
 (257, '001-2002-AG-SENASA', 183, 'Milward Remy Ortega Dongo', 'Av. Lima N? 752                                          Arequipa - Camana - Camana', 16711, '10304170242', 'Habilitado', NULL, NULL, 21),
@@ -2243,9 +2474,9 @@ INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_
 (500, '022-2007-AG-SENASA', 271, 'Asociaci?n de Productores de semillas y otros Pucar? Alta', 'JR. SAN CRISTOBAL S/N BARRIO MARISCAL CACERES                            JUNIN - HUANCAYO - PUCARA', 120101, '20486524171', 'Habilitado', NULL, NULL, 21),
 (501, '023-2007-AG-SENASA', 273, 'Asociaci?n de Productores de Habas de la Provincia de Canchis', 'PZA. JOSE CARLOS MARIATEGUI S/N CANCHIS                                      CUSCO - CANCHIS - TINTA', 811, '20527816123', 'Habilitado', NULL, NULL, 21),
 (502, '024-2007-AG-SENASA', 275, 'Adolfo Doroteo Manyari Huam', 'AV. EVITAMIENTO N? 480               JUNIN - JAUJA - JAUJA', 120101, '10095393654', 'Habilitado', NULL, NULL, 21),
-(503, '025-2007-AG-SENASA', 277, 'Elias Mois?s Malon Caldas', 'JR. CABO ALBERTO LEVEAU N? 446                                                        SAN MARTIN - SAN MARTIN - TARAPOTO', 220101, '10335609463', 'Habilitado', NULL, NULL, 21);
+(503, '025-2007-AG-SENASA', 277, 'Elias Mois?s Malon Caldas', 'JR. CABO ALBERTO LEVEAU N? 446                                                        SAN MARTIN - SAN MARTIN - TARAPOTO', 220101, '10335609463', 'Habilitado', NULL, NULL, 21),
+(504, '026-2007-AG-SENASA', 279, 'Asociaci?n de Productores Semilleristas R?o Santa (APROSERS)', 'JR. SUCRE N? 1431                                   ANCASH - HUAYLAS - CARAZ', 9031, '20533930043', 'Habilitado', NULL, NULL, 21);
 INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_id`, `document_number`, `status`, `legal_address`, `libro`, `status_admin`) VALUES
-(504, '026-2007-AG-SENASA', 279, 'Asociaci?n de Productores Semilleristas R?o Santa (APROSERS)', 'JR. SUCRE N? 1431                                   ANCASH - HUAYLAS - CARAZ', 9031, '20533930043', 'Habilitado', NULL, NULL, 21),
 (505, '027-2007-AG-SENASA', 281, 'Agroindustrias Uni?n 404 S.A.C', 'CAL. UNION N? 404 CERCADO LAMBAYEQUE - FERRE?AFE - FERRE?AFE', 140101, '20480123027', 'Habilitado', NULL, NULL, 21),
 (506, '028-2007-AG-SENASA', 283, 'AGROTECHNOLOGY S.A.C', 'CAL. LAS PALMERAS N? 1319 P.J. NUEVO SAN LORENZO LAMBAYEQUE - CHICLAYO - JOSE LEONARDO ORTIZ', 140101, '20480108061', 'Habilitado', NULL, NULL, 21),
 (507, '029-2007-AG-SENASA', 285, 'AMS INVERIONES S.AC', 'AV. SEPARADORA INDUSTRIAL MZA. F LOTE. 31 URB. COVIMA LIMA - LIMA - LA MOLINA', 100101, '20211672821', 'Habilitado', NULL, NULL, 21),
@@ -2540,9 +2771,9 @@ INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_
 (796, '035-2011-INIA', 75, 'BIOTECNOLOGIAS INTERNACIONALES S.A.C.', 'CALLE COLOMBIA N? 940 LEONARDO ORTIZ', 140101, '20487645762', 'Habilitado', NULL, NULL, 21),
 (797, '036-2011-INIA', 77, 'INVERSIONES EL ARADO S.A.C.', 'FUNDO SAN JOSE DE CASMA LOTE B', 100101, '20541318012', 'Habilitado', NULL, NULL, 21),
 (798, '037-2011-INIA', 79, 'ASOCIACION AGROPECUARIA PATAHUASI-VILCASHUAMAN', 'JR LIMA MZ "A" LT 20 LA FLORIDA - VISTA ALEGRE', 20551, '20534223499', 'Habilitado', NULL, NULL, 21),
-(799, '038-2011-INIA', 81, 'ASOCIACI?N  DE PRODUCTORES AGROPECUARIOS RICCHARY AYLLU DE LA COMUNIDAD CAMPESINA DE MANCHAYBAMBA KAR', 'C.C. MANCHAYBAMBA, KARHUACALLA, PACCARITAMBO, PARURO', 811, '20490383485', 'Habilitado', NULL, NULL, 21);
+(799, '038-2011-INIA', 81, 'ASOCIACI?N  DE PRODUCTORES AGROPECUARIOS RICCHARY AYLLU DE LA COMUNIDAD CAMPESINA DE MANCHAYBAMBA KAR', 'C.C. MANCHAYBAMBA, KARHUACALLA, PACCARITAMBO, PARURO', 811, '20490383485', 'Habilitado', NULL, NULL, 21),
+(800, '039-2011-INIA', 83, 'ASOCIACI?N DE PRODUCTORES AGROPECUARIOS Y COMERCIANTES MINA UCHCO RUMICHACA', 'CASERIO RUMICHACA, PANAO, PACHITEA', 100101, '20529237783', 'Habilitado', NULL, NULL, 21);
 INSERT INTO `producer` (`id`, `registry`, `folio`, `name`, `address`, `location_id`, `document_number`, `status`, `legal_address`, `libro`, `status_admin`) VALUES
-(800, '039-2011-INIA', 83, 'ASOCIACI?N DE PRODUCTORES AGROPECUARIOS Y COMERCIANTES MINA UCHCO RUMICHACA', 'CASERIO RUMICHACA, PANAO, PACHITEA', 100101, '20529237783', 'Habilitado', NULL, NULL, 21),
 (801, '040-2011-INIA', 85, 'GRUPO CAMPOSUR S.A.C.', 'CALLE DEL PINAR N? 124 DPTO 1001 URB. CHACARILLA DEL ESTANQUE, SANTIAGO DE SURCO', 150101, '20516698196', 'Habilitado', NULL, NULL, 21),
 (802, '041-2011-INIA', 87, 'G?MULA E.I.R.L.', 'PA MRCAL RAMON CASTILLA URB 01 RUPA RUPA, LEONCIO PRADO', 100101, '20529075511', 'Habilitado', NULL, NULL, 21),
 (803, '042-2011-INIA', 89, 'ROCHA DE VENTURA, ALICIA', 'PROLONGACI?N ANDR?S C?CERES S/N, FERRE?AFE', 140101, '10175411041', 'Habilitado', NULL, NULL, 21),
@@ -4791,17 +5022,34 @@ CREATE TABLE IF NOT EXISTS `user` (
   `search_usuario` varchar(200) NOT NULL,
   `search_estado` varchar(100) NOT NULL,
   `search_oc_ee` varchar(200) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `ruc`, `cruge_user_id`, `tipo_documento`, `type_id`, `person_type`, `tipo_estacion_experimental`, `legal_name`, `first_name`, `last_name`, `registry`, `district_id`, `email`, `status`, `headquarter_id`, `address`, `reference`, `phone`, `fax`, `document_number`, `producer_id`, `fecha_registro`, `search_cultivo`, `search_usuario`, `search_estado`, `search_oc_ee`) VALUES
-(81, NULL, '20274421615', NULL, '1', 1, NULL, NULL, 'Productor Externo', 'productor', 'externo', '001-1997-AG-SENASA', '010202', 'cesar.gago.egocheaga@gmail.com', 1, NULL, 'direccion', 'refrencia', '', '', '11111111', 1, '2016-09-10 18:57:55', '', '', '', ''),
-(86, '20131365994', '20131365994', 214, '1', 2, NULL, 1, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'Productor INIA', 'INIA', NULL, '010202', 'cesar_10002@hotmail.com', 2, NULL, 'direccion', 'referencia', '', '', '22222222', NULL, '2016-09-10 20:20:29', '', '', 'Activo', ''),
-(87, '20131365994', '20131365994', NULL, '1', 2, NULL, 2, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'Productor INIA ', 'INIA ', NULL, '010202', 'cgago@boardperu.com', 2, NULL, 'direccion', 'referencia', '', '', '23333333', NULL, '2016-09-10 20:22:52', '', '', 'Activo', ''),
-(88, 'dfsd', '444323432', 216, NULL, 5, NULL, NULL, 'dfdsf', 'dfd', 'df', NULL, '020201', 'ff@gmail.com', 2, 67, 'dsfd', NULL, NULL, NULL, '423', NULL, NULL, '', '', '', '');
+(89, '20274421615', '20274421615', 217, '1', 1, NULL, NULL, 'Productor Externo', 'César Enrique', 'Gago Egocheaga', '001-1997-AG-SENASA', '010202', 'cesar.gago.egocheaga@gmail.com', 3, NULL, 'Direccion', 'Refrencia', '7701456', '', '71802407', 1, '2016-09-20 14:20:51', '', '', 'Suspendido', ''),
+(90, '20131365994', '20131365994', 223, '1', 2, NULL, 8, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'Xivin', 'Rosquete', NULL, '010202', 'cgago@boardperu.com', 3, NULL, 'direccion', 'referencia', '944455734', '', '11111111', NULL, '2016-09-20 14:22:31', '', '', 'Suspendido', ''),
+(91, 'estacion_experimental_externo', '1222222222', 219, NULL, 5, NULL, NULL, 'E.E. Prueba', 'Prueba EE', 'EE', NULL, '010202', 'cesar_10002@hotmail.com', 2, 69, 'Direccion', NULL, NULL, NULL, '12323233', NULL, NULL, '', '', '', ''),
+(92, 'inspector', '20131365994', 220, NULL, 3, NULL, NULL, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'Inspector', 'Pruebaa', NULL, '010202', 'cgago@e-labs.pe', 2, 69, 'Direccion', NULL, '3492600', NULL, '55555555', NULL, NULL, '', '', '', 'E.E. Prueba'),
+(94, '20131365994', '20131365994', 224, '1', 2, NULL, 8, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'PEDRO ', 'INJANTE SILVA', NULL, '150114', 'pdiaz@INIA.GOB.PE', 2, NULL, 'AV LA MOLINA 1981', 'FRENTE PUERTA 1 UNALM', '943020541', '', '21411074', NULL, '2016-10-20 16:47:11', '', '', 'Activo', ''),
+(95, 'ares02@inia.gob.pe', '20131365994', 225, NULL, 5, NULL, NULL, 'Sede Central', 'Mariela', 'Ramirez Sanches', NULL, '150114', 'ares02@inia.gob.pe', 2, 72, 'Av. La molina 1981', NULL, NULL, NULL, '40788152', NULL, NULL, '', '', '', ''),
+(96, 'jtaza@inia.gob.pe', '20131365995', 226, NULL, 5, NULL, NULL, 'EEA Santa Ana', 'Juan Carlos', 'Taza Cervantes', NULL, '120101', 'jtaza@inia.gob.pe', 2, 73, 'Hualahoyo - Saños Grande; distrito el Tambo', NULL, NULL, NULL, '20036240', NULL, NULL, '', '', '', ''),
+(97, 'mramirez', '20131365994', 227, NULL, 3, NULL, NULL, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'Mariela', 'Ramirez Sanchez', NULL, '150114', 'ares02@inia.gob.pe', 2, 72, 'Av. La molina 1981', NULL, '3492600', NULL, '40788152', NULL, NULL, '', '', '', 'Sede Central'),
+(98, 'gerencia@codeselambayeque.com', '20165091834', 228, NULL, 5, NULL, NULL, 'CODESE Lambayeque', 'Mario ', 'Valencia Hernández   ', NULL, '140101', 'gerencia@codeselambayeque.com', 2, 79, 'Chinchaysuyo N° 710, Urb. Federico Villarreal', NULL, NULL, NULL, '23008546', NULL, NULL, '', '', '', ''),
+(99, 'certificadoragvr@hotmail.com', '20487646220', 229, NULL, 5, NULL, NULL, 'CERTIFICADORA GVR S.A.C.', 'Elipio Gerardo             ', 'Villalva Ramírez', NULL, '140101', 'certificadoragvr@hotmail.com', 2, 80, 'Calle Cánepa Nº 428 Urb. La Primavera I Etapa', NULL, NULL, NULL, '70087254', NULL, NULL, '', '', '', ''),
+(100, 'codeseica@hotmail.com', '20106398080', 230, NULL, 5, NULL, NULL, 'CODESE ICA', 'Luis ', 'Ramírez Arroyo  ', NULL, '110101', 'codeseica@hotmail.com', 2, 81, 'Pedro Olaechea Nº 231. Urb. Luren', NULL, NULL, NULL, '21446897', NULL, NULL, '', '', '', ''),
+(101, 'cordesa.aqp@hotmail.com', '20195747092', 231, NULL, 5, NULL, NULL, 'CORDESA Arequipa', ' Miguel ', 'Valdivia Bravo ', NULL, '040201', 'cordesa.aqp@hotmail.com', 2, 82, 'Av. Samuel Pastor 802, La Pampa', NULL, NULL, NULL, '29633390', NULL, NULL, '', '', '', ''),
+(102, 'corese_sm@speedy.com.pe', '20172239847', 232, NULL, 5, NULL, NULL, 'CORESE San Martin', ' Jaime ', 'Montilla Vela', NULL, '220901', 'corese_sm@speedy.com.pe', 2, 83, 'Jr. La Molinera N° 490 (Altura del Km. 2.5 carretera Tarapoto-Juanjuí) Banda de Shilcayo ', NULL, NULL, NULL, '01132131', NULL, NULL, '', '', '', ''),
+(103, 'jpuma@inia.gob.pe', '20491174693', 233, NULL, 5, NULL, NULL, 'EEA Andenes', ' JULIO FEDERICO', 'PUMA URRUTIA', NULL, '080101', 'jpuma@inia.gob.pe', 2, 84, 'Zurite, distrito de Zurite- Anta', NULL, NULL, NULL, '23962251', NULL, NULL, '', '', '', ''),
+(104, 'jlimache@inia.gob.pe', '20448637663', 234, NULL, 5, NULL, NULL, 'EEA Illpa', 'LIMACHE JARECCA', 'JOSÉ', NULL, '210101', 'jlimache@inia.gob.pe', 2, 85, 'Km 22 Carretera Puno- Juliaca', NULL, NULL, NULL, '01282485', NULL, NULL, '', '', '', ''),
+(105, 'mhuaman@inia.gob.pe', '20131365994', 235, NULL, 5, NULL, NULL, 'EEA Canaan', 'MÁXIMO', 'HUAMÁN PAUCCA', NULL, '050401', 'mhuaman@inia.gob.pe', 2, 86, 'Av. Abancay s/n - Canaan Bajo', NULL, NULL, NULL, '28235245', NULL, NULL, '', '', '', ''),
+(106, 'vramirez@inia.gob.pe', '20131365994', 236, NULL, 5, NULL, NULL, 'EEA Chumbibamba', 'VIRGILIO', 'RAMÍREZ ROMANÍ', NULL, '030216', 'vramirez@inia.gob.pe', 2, 87, 'Carretera Chumbibamba; distrito de Talavera', NULL, NULL, NULL, '28308308', NULL, NULL, '', '', '', ''),
+(107, 'afernandez@inia.gob.pe', '20131365994', 237, NULL, 5, NULL, NULL, 'EEA San Roque', 'FERNANDEZ ', 'SANDOVAL ANDRÉS', NULL, '160101', 'afernandez@inia.gob.pe', 2, 88, 'Calle San Roque 209; distrito San Juan Bautista-Maynas', NULL, NULL, NULL, '05335392', NULL, NULL, '', '', '', ''),
+(108, 'idiaz@inia.gob.pe', '20448637663', 238, NULL, 5, NULL, NULL, 'EEA Pucallpa', 'IRENE ', 'DÍAZ BARDALES', NULL, '250101', 'idiaz@inia.gob.pe', 2, 89, 'Av. Centenario Km. 4 y 4.2; distrito Calleria- Coronel Portillo- Ucayali', NULL, NULL, NULL, '00965691', NULL, NULL, '', '', '', ''),
+(109, '20398436505', '20398436505', 239, '1', 1, NULL, NULL, 'Consorcio Agricola Ganadero S.A. - COAGRO', 'Mariela', 'Mariela', '002-1998-AG-SENASA', '220801', 'ares04@inia.gob.pe', 2, NULL, 'Av.  Grau N° 831 Piura-Piura-Piura', 'Av.  Grau N° 831 Piura-Piura-Piura', '', '', '77777222', 5, '2016-12-13 16:44:50', '', '', 'Activo', ''),
+(110, 'corese_sm1@speedy.com.pe', '20131365994', 240, NULL, 3, NULL, NULL, 'INSTITUTO NACIONAL DE INNOVACION AGRARIA', 'Jhon', 'del Aguila Macedo', NULL, '220901', 'corese_sm1@speedy.com.pe', 2, 83, 'Jr. La Molinera N° 490 (Altura del Km. 2.5 carretera Tarapoto-Juanjuí) Banda de Shilcayo ', NULL, '3492600', NULL, '01132131', NULL, NULL, '', '', '', 'CORESE San Martin');
 
 --
 -- Índices para tablas volcadas
@@ -4890,12 +5138,6 @@ ALTER TABLE `cruge_system`
 --
 ALTER TABLE `cruge_user`
   ADD PRIMARY KEY (`iduser`);
-
---
--- Indices de la tabla `estacion_experimental`
---
-ALTER TABLE `estacion_experimental`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `etiquetado`
@@ -5037,7 +5279,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `acondicionamiento`
 --
 ALTER TABLE `acondicionamiento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `attachment`
 --
@@ -5077,7 +5319,7 @@ ALTER TABLE `cruge_fieldvalue`
 -- AUTO_INCREMENT de la tabla `cruge_session`
 --
 ALTER TABLE `cruge_session`
-  MODIFY `idsession` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=952;
+  MODIFY `idsession` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=984;
 --
 -- AUTO_INCREMENT de la tabla `cruge_system`
 --
@@ -5087,52 +5329,47 @@ ALTER TABLE `cruge_system`
 -- AUTO_INCREMENT de la tabla `cruge_user`
 --
 ALTER TABLE `cruge_user`
-  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=217;
---
--- AUTO_INCREMENT de la tabla `estacion_experimental`
---
-ALTER TABLE `estacion_experimental`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `iduser` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=241;
 --
 -- AUTO_INCREMENT de la tabla `etiquetado`
 --
 ALTER TABLE `etiquetado`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `etiquetas`
 --
 ALTER TABLE `etiquetas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `farmers`
 --
 ALTER TABLE `farmers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `form`
 --
 ALTER TABLE `form`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `headquarter`
 --
 ALTER TABLE `headquarter`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=92;
 --
 -- AUTO_INCREMENT de la tabla `inbox`
 --
 ALTER TABLE `inbox`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT de la tabla `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `laboratory`
 --
@@ -5147,22 +5384,22 @@ ALTER TABLE `maestro`
 -- AUTO_INCREMENT de la tabla `movilizacion`
 --
 ALTER TABLE `movilizacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `muestreo`
 --
 ALTER TABLE `muestreo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `produccion`
 --
 ALTER TABLE `produccion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `producer`
 --
@@ -5192,7 +5429,7 @@ ALTER TABLE `temp_reporte_1`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=89;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=111;
 --
 -- Restricciones para tablas volcadas
 --

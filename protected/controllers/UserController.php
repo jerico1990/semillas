@@ -385,10 +385,9 @@ class UserController extends Controller
 				   "Nro de Registro <br />".
 				   "RUC ".
 				   "<br />".
-				   "Para mas información contactar con el INIA".
+				   "Para mayor información contactarse con el Organismo Certificador de su ambito o escribir al correo electronico certificacion_semillas@inia.gob.pe.".
 				   "<br />".
-				   "Atentamente,<br />".
-				   "Administrador del INIA<br />"
+				   "Gracias,<br />"
 				   );
 	    $smt->AddAddress($email, "");
 	    if(!$smt->Send())
@@ -417,10 +416,9 @@ class UserController extends Controller
 				   "Usuario:".$cruge->username."<br />".
 				   "Password:".$cruge->password."<br />".
 				   "<br />".
-				   "Para mas información contactar con el INIA".
+				   "Para mayor información contactarse con el Organismo Certificador de su ambito o escribir al correo electronico certificacion_semillas@inia.gob.pe.".
 				   "<br />".
-				   "Atentamente,<br />".
-				   "Administrador del INIA<br />"
+				   "Gracias,<br />"
 				   );
 	    $smt->AddAddress($cruge->email, "");
 	    if(!$smt->Send())

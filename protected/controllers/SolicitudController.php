@@ -50,7 +50,7 @@ class SolicitudController extends Controller
 	    $user->fecha_registro=date("Y-m-d H:i:s");
             if($user->save())
             {
-               Yii::app()->user->setFlash('msg','Su registro ha sido enviado,gracias.');
+               Yii::app()->user->setFlash('msg','Su registro ha sido enviado,gracias.<br>Por favor revisar su correo electrónico.');
                $this->refresh();
             }         
          }
