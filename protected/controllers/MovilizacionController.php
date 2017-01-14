@@ -60,7 +60,7 @@ class MovilizacionController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id=null)
 	{
 		$this->pageTitle = "Movilización";
 		$model=new Movilizacion;
@@ -70,31 +70,28 @@ class MovilizacionController extends Controller
 
 		if(isset($_POST['Movilizacion']))
 		{
-			//var_dump($_REQUEST);die;
-			$model->attributes=$_POST['Movilizacion'];
-			$model->form_id=$_REQUEST['form_id'];
-			$model->fecha=date('Y-m-d',strtotime($_REQUEST['Movilizacion']['fecha']));
-			$model->cantidad_envases=str_replace(',','',$_REQUEST['Movilizacion']['cantidad_envases']);
-			$model->capacidad_envases=str_replace(',','',$_REQUEST['Movilizacion']['capacidad_envases']);
-			$model->cantidad_movilizar=str_replace(',','',$_REQUEST['Movilizacion']['cantidad_movilizar']);
-			$model->destino_registro=$_REQUEST['destino_registro'];
-			if($model->save())
-				$this->redirect(array('iform/movilizacionindex'));
+		    //var_dump($_REQUEST);die;
+		    $model->attributes=$_POST['Movilizacion'];
+		    $model->form_id=$id;
+		    $model->fecha=date('Y-m-d',strtotime($_REQUEST['Movilizacion']['fecha']));
+		    $model->cantidad_envases=str_replace(',','',$_REQUEST['Movilizacion']['cantidad_envases']);
+		    $model->capacidad_envases=str_replace(',','',$_REQUEST['Movilizacion']['capacidad_envases']);
+		    $model->cantidad_movilizar=str_replace(',','',$_REQUEST['Movilizacion']['cantidad_movilizar']);
+		    $model->destino_registro=$_REQUEST['destino_registro'];
+		    if($model->save())
+		    {
+			$this->redirect(array('iform/movilizacionindex'));
+		    }
 		}
 		
-		$plantas = Plantas::model()->findAll(array(
-				'select'   => 't.registry',				
-			)); 
-         
-			$plantarr = array();
-			foreach ($plantas as $planta) {
-				 $plantarr[] = $planta->registry;
-         }
-         
-      $plantas=CJSON::encode($plantarr);
-		
+		$plantas = Plantas::model()->findAll(array('select'   => 't.registry',));
+		$plantarr = array();
+		foreach ($plantas as $planta) {
+		    $plantarr[] = $planta->registry;
+		}
+		$plantas=CJSON::encode($plantarr);
 		$this->render('create',array(
-			'model'=>$model,'id'=>$_REQUEST['id'],'plantas'=>$plantas
+			'model'=>$model,'id'=>$id,'plantas'=>$plantas
 		));
 	}
 

@@ -237,7 +237,6 @@ if($varestacion ===1)
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="20%"></td> 
-                    <td width="60%" style="text-align: center; font-size: 0.8em;">"Decenios de las Personas con Discapacidad en el Perú"<br>"Año de la Inversión para el Desarrollo Rural y la Seguridad Alimentaria"</td>
                     <td width="20%"></td> 
                 </tr>
             </table>
@@ -259,8 +258,7 @@ else
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="20%"></td> 
-                    <td width="60%" style="text-align: center; font-size: 0.8em;">"Decenios de las Personas con Discapacidad en el Perú"<br>"Año de la Inversión para el Desarrollo Rural y la Seguridad Alimentaria"</td>
-                    <td width="20%"></td> 
+                     <td width="20%"></td> 
                 </tr>
             </table>
         </div>'

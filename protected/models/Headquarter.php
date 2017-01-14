@@ -52,7 +52,7 @@ class Headquarter extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('location_id, parent_id, tipo_empresa, tipo_usuario', 'numerical', 'integerOnly'=>true),
-			array('ruc,location_id','required'),
+			//array('ruc,location_id','required'),
 			array('name', 'length', 'max'=>200),
 			array('ruc, codigo_simple', 'length', 'max'=>30),
 			// The following rule is used by search().

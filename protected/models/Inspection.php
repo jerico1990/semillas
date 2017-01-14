@@ -125,14 +125,17 @@ class Inspection extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-   public $fecha_propuesta;
-   public $select_id;
+        public $fecha_propuesta;
+        public $select_id;
 	//
-   
+        public $y01;
+        public $y02;
+        public $y03;
 	public $condicional_fecha_propuesta;
 	public $aprobado_fecha_propuesta;
 	public $nhora_propuesta;
 	public $inlineck;
+        public $fecha;
 	public function tableName()
 	{
 		return 'inspection';
@@ -146,13 +149,13 @@ class Inspection extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('inspection_number, resultado, arz_siembra_directa, arz_transplante, papa_plagas, user_id, form_id, subsanacion, aprobado, observado, rechazado, nueva_inspeccion', 'numerical', 'integerOnly'=>true),
-			array('size, alg_floracion, alg_bellotas, alg_surcos, alg_mata, alg_campo_comercial, alg_otra_especie, alg_otra_cultivar, arz_area_instalada, arz_aislamiento, cer_floracion, cer_maduracion, cer_aislamiento, cer_otra_cultivar, cer_otra_categoria, leg_floracion, leg_llenado_grano, leg_distanciamiento_surcos, leg_mata, leg_campo_comercial, leg_otra_especie, leg_otro_cultivar, maiz_floracion, maiz_llenado_grano, maiz_distanciamiento_surcos, maiz_mata, maiz_campo_comercial, maiz_otra_especie, maiz_otro_cultivar, papa_campo_comercial, papa_otra_especie, papa_otro_cultivar, cer_cantidad_semilla, afectadas_enrollamiento, afectadas_mozaico, afectadas_otros_virus, afectadas_erwinia, afectadas_mezclas, arz_fuera_tipo, arz_rojo, arz_plantas_sintomas, leg_mosaicos, leg_moteado, leg_bacteriosis, leg_mancha_angular, cer_plantas_fuera_tipo, cer_otras_especies, maiz_tolerancias, alg_malvacearum', 'length', 'max'=>18),
-			array('alg_plantas_otra_especie, alg_plantas_fuera_tipo, observaciones, recomendaciones, cer_inflorecencias_otros_cultivares, cer_inflorecencias_otros_cultivares_menores, cer_carbon_apestoso, cer_carbon_cubierto, cer_carbon_volador, cer_cornezuelo, cer_mancha_foliar, cer_escaldadura, cer_presencia_maleza_nocivas, cer_aspecto_general_poblacion, cer_plagas, leg_presencia_maleza, leg_presencia_plagas, leg_plantas_otras_especies, leg_plantas_fuera_tipo, maiz_presencia_maleza, maiz_presencia_plagas, maiz_plantas_otras_especies, maiz_plantas_fuera_tipo', 'length', 'max'=>300),
-			array('proposed_time, proposed_date, established_date, established_time, real_date, real_time, alg_fecha_siembra, alg_deshije, arz_fecha_siembra, arz_fecha_almacigo, arz_fecha_transplante, cer_fecha_siembra, leg_fecha_siembra, leg_emergencia_fecha, leg_fecha_cosecha, maiz_fecha_siembra, maiz_emergencia_fecha, maiz_fecha_cosecha, papa_fecha_siembra, maiz_floracion_fecha, leg_floracion_fecha, cer_fecha_fenologico, subsanacion_date, subsanacion_time, subsanacion_real_date, subsanacion_real_time', 'safe'),
+			array('y01,y02,y03,select_id,inspection_number, resultado, arz_siembra_directa, arz_transplante, papa_plagas, user_id, form_id, subsanacion, aprobado, observado, rechazado, nueva_inspeccion', 'numerical', 'integerOnly'=>true),
+			array('size, alg_floracion, alg_bellotas, alg_surcos, alg_mata, alg_campo_comercial, alg_otra_especie, alg_otra_cultivar, arz_area_instalada, arz_aislamiento, cer_floracion, cer_maduracion, cer_aislamiento, cer_otra_cultivar, cer_otra_categoria, leg_floracion, leg_llenado_grano, leg_distanciamiento_surcos, leg_mata, leg_campo_comercial, leg_otra_especie, leg_otro_cultivar, maiz_floracion, maiz_llenado_grano, maiz_distanciamiento_surcos, maiz_mata, maiz_campo_comercial, maiz_otra_especie, maiz_otro_cultivar, papa_campo_comercial, papa_otra_especie, papa_otro_cultivar, cer_cantidad_semilla, afectadas_enrollamiento, afectadas_mozaico, afectadas_otros_virus, afectadas_erwinia, afectadas_mezclas,  leg_mosaicos, leg_moteado, leg_bacteriosis, leg_mancha_angular, cer_plantas_fuera_tipo, cer_otras_especies, maiz_tolerancias, alg_malvacearum', 'length', 'max'=>18),
+			array('alg_plantas_otra_especie, alg_plantas_fuera_tipo, observaciones, recomendaciones, cer_inflorecencias_otros_cultivares, cer_inflorecencias_otros_cultivares_menores, cer_carbon_apestoso, cer_carbon_cubierto, cer_carbon_volador, cer_cornezuelo, cer_mancha_foliar, cer_escaldadura, cer_presencia_maleza_nocivas, cer_aspecto_general_poblacion, cer_plagas, leg_presencia_maleza, leg_presencia_plagas, leg_plantas_otras_especies, leg_plantas_fuera_tipo, maiz_presencia_maleza, maiz_presencia_plagas, maiz_plantas_otras_especies, maiz_plantas_fuera_tipo,arz_fuera_tipo, arz_rojo, arz_plantas_sintomas', 'length', 'max'=>300),
+			array('aprobado_fecha_propuesta,proposed_time, proposed_date, established_date, established_time, real_date, real_time, alg_fecha_siembra, alg_deshije, arz_fecha_siembra, arz_fecha_almacigo, arz_fecha_transplante, cer_fecha_siembra, leg_fecha_siembra, leg_emergencia_fecha, leg_fecha_cosecha, maiz_fecha_siembra, maiz_emergencia_fecha, maiz_fecha_cosecha, papa_fecha_siembra, maiz_floracion_fecha, leg_floracion_fecha, cer_fecha_fenologico, subsanacion_date, subsanacion_time, subsanacion_real_date, subsanacion_real_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, inspection_number, proposed_time, proposed_date, size, established_date, established_time, real_date, real_time, alg_fecha_siembra, alg_deshije, alg_floracion, alg_bellotas, alg_surcos, alg_mata, alg_campo_comercial, alg_otra_especie, alg_otra_cultivar, alg_plantas_otra_especie, alg_plantas_fuera_tipo, resultado, observaciones, recomendaciones, arz_siembra_directa, arz_transplante, arz_fecha_siembra, arz_fecha_almacigo, arz_fecha_transplante, arz_area_instalada, arz_aislamiento, cer_fecha_siembra, cer_floracion, cer_maduracion, cer_inflorecencias_otros_cultivares, cer_inflorecencias_otros_cultivares_menores, cer_carbon_apestoso, cer_carbon_cubierto, cer_carbon_volador, cer_cornezuelo, cer_mancha_foliar, cer_escaldadura, cer_presencia_maleza_nocivas, cer_aspecto_general_poblacion, cer_plagas, cer_aislamiento, cer_otra_cultivar, cer_otra_categoria, leg_fecha_siembra, leg_emergencia_fecha, leg_floracion, leg_llenado_grano, leg_fecha_cosecha, leg_distanciamiento_surcos, leg_mata, leg_campo_comercial, leg_otra_especie, leg_otro_cultivar, leg_presencia_maleza, leg_presencia_plagas, leg_plantas_otras_especies, leg_plantas_fuera_tipo, maiz_fecha_siembra, maiz_emergencia_fecha, maiz_floracion, maiz_llenado_grano, maiz_fecha_cosecha, maiz_distanciamiento_surcos, maiz_mata, maiz_campo_comercial, maiz_otra_especie, maiz_otro_cultivar, maiz_presencia_maleza, maiz_presencia_plagas, maiz_plantas_otras_especies, maiz_plantas_fuera_tipo, papa_campo_comercial, papa_otra_especie, papa_otro_cultivar, papa_fecha_siembra, papa_plagas, user_id, form_id, maiz_floracion_fecha, leg_floracion_fecha, cer_fecha_fenologico, cer_cantidad_semilla, afectadas_enrollamiento, afectadas_mozaico, afectadas_otros_virus, afectadas_erwinia, afectadas_mezclas, subsanacion, aprobado, observado, rechazado, subsanacion_date, subsanacion_time, subsanacion_real_date, subsanacion_real_time, arz_fuera_tipo, arz_rojo, arz_plantas_sintomas, leg_mosaicos, leg_moteado, leg_bacteriosis, leg_mancha_angular, cer_plantas_fuera_tipo, cer_otras_especies, maiz_tolerancias, alg_malvacearum, nueva_inspeccion', 'safe', 'on'=>'search'),
+			array('fecha,id, inspection_number, proposed_time, proposed_date, size, established_date, established_time, real_date, real_time, alg_fecha_siembra, alg_deshije, alg_floracion, alg_bellotas, alg_surcos, alg_mata, alg_campo_comercial, alg_otra_especie, alg_otra_cultivar, alg_plantas_otra_especie, alg_plantas_fuera_tipo, resultado, observaciones, recomendaciones, arz_siembra_directa, arz_transplante, arz_fecha_siembra, arz_fecha_almacigo, arz_fecha_transplante, arz_area_instalada, arz_aislamiento, cer_fecha_siembra, cer_floracion, cer_maduracion, cer_inflorecencias_otros_cultivares, cer_inflorecencias_otros_cultivares_menores, cer_carbon_apestoso, cer_carbon_cubierto, cer_carbon_volador, cer_cornezuelo, cer_mancha_foliar, cer_escaldadura, cer_presencia_maleza_nocivas, cer_aspecto_general_poblacion, cer_plagas, cer_aislamiento, cer_otra_cultivar, cer_otra_categoria, leg_fecha_siembra, leg_emergencia_fecha, leg_floracion, leg_llenado_grano, leg_fecha_cosecha, leg_distanciamiento_surcos, leg_mata, leg_campo_comercial, leg_otra_especie, leg_otro_cultivar, leg_presencia_maleza, leg_presencia_plagas, leg_plantas_otras_especies, leg_plantas_fuera_tipo, maiz_fecha_siembra, maiz_emergencia_fecha, maiz_floracion, maiz_llenado_grano, maiz_fecha_cosecha, maiz_distanciamiento_surcos, maiz_mata, maiz_campo_comercial, maiz_otra_especie, maiz_otro_cultivar, maiz_presencia_maleza, maiz_presencia_plagas, maiz_plantas_otras_especies, maiz_plantas_fuera_tipo, papa_campo_comercial, papa_otra_especie, papa_otro_cultivar, papa_fecha_siembra, papa_plagas, user_id, form_id, maiz_floracion_fecha, leg_floracion_fecha, cer_fecha_fenologico, cer_cantidad_semilla, afectadas_enrollamiento, afectadas_mozaico, afectadas_otros_virus, afectadas_erwinia, afectadas_mezclas, subsanacion, aprobado, observado, rechazado, subsanacion_date, subsanacion_time, subsanacion_real_date, subsanacion_real_time, arz_fuera_tipo, arz_rojo, arz_plantas_sintomas, leg_mosaicos, leg_moteado, leg_bacteriosis, leg_mancha_angular, cer_plantas_fuera_tipo, cer_otras_especies, maiz_tolerancias, alg_malvacearum, nueva_inspeccion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -175,6 +178,7 @@ class Inspection extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+                        'subsanacion_time'=>'Subsanación de hora',
 			'id' => 'ID',
 			'inspection_number' => 'N°',
 			'proposed_time' => 'Hora Propuesta',
@@ -433,5 +437,105 @@ class Inspection extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+        
+        
+        public function Inspeccion($max,$fecha,$usuario,$formulario,$headquarter_id)
+	{
+		
+	    $sinspection=new Inspection;
+	    $sinspection->inspection_number=$max;
+	    $sinspection->proposed_date=$fecha;
+	    //$sinspection->proposed_time=$hora;
+	    $sinspection->user_id=$usuario;
+	    $sinspection->form_id=$formulario;
+	    $sinspection->save();
+	    
+	    switch($max)
+	    {
+		    case(1): $texto="1ra"; break;
+		    case(2): $texto="2da"; break;
+		    case(3): $texto="3ra"; break;
+		    case(4): $texto="4ta"; break;
+		    case(5): $texto="5ta"; break;
+	    }
+	    
+	    
+	    $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$headquarter_id));
+	    $form=Iform::model()->find('id=:id',array(':id'=>$formulario));
+	    $user=User::model()->find('id=:id',array(':id'=>$form->user_id));
+	    if($headquarter->tipo_empresa==2)
+	    {
+		$quantity=round($form->area);
+		$concepto = Concept::model()->find('id=:id',array(':id'=>2));					
+		$payment=new Payment;
+		$payment->concept_id=$concepto->id;
+		$payment->date=date('Y-m-d');
+		$payment->quantity=$quantity;
+		$payment->ruc=$user->ruc;
+		$payment->price=$concepto->price;
+		$payment->form_id=$formulario;
+		$payment->user_id=$form->user_id;
+		$payment->document_reference=$form->form_number;
+		$payment->descripcion="$texto Inspección de campo de multiplicación de ".$form->crop->name;
+		$payment->save();			
+	    }
+	    else if($headquarter->tipo_empresa==1)
+	    {				
+		//Inspeccion
+		$inspeccion=Inspection::model()->find('id=:id',array(':id'=>$sinspection->id));
+		$inspeccion->proposed_time=date("H:i",strtotime('12:00 PM'));
+		$inspeccion->proposed_date=date('Y-m-d',strtotime($fecha));
+		$inspeccion->save();
+	    }
+	}
+        
+        
+        public function Acondicionamiento($fecha,$aform,$aid,$usuario)
+	{
+	    $form=Iform::model()->find('id=:id',array(':id'=>$aform));
+	    $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$form->headquarter_id));
+	    $user=User::model()->find('id=:id',array(':id'=>$form->user_id));
+	    
+	    $criteria=new CDbCriteria;
+	    $criteria->select='max(parent_id) as parent_id';		
+	    $max = Acondicionamiento::model()->find($criteria);
+	    $max = $max->parent_id + 1;		
+		    
+	    if($headquarter->tipo_empresa==2)
+	    {				
+		    $concepto = Concept::model()->find('id=:id',array(':id'=>3));					
+		    $payment=new Payment;
+		    $payment->concept_id=$concepto->id;
+		    $payment->date=date('Y-m-d');
+		    $payment->quantity=1;
+		    $payment->ruc=$user->ruc;
+		    $payment->price=$concepto->price;
+		    $payment->form_id=$form->id;
+		    $payment->user_id=$form->user_id;
+		    $payment->document_reference=$form->form_number;
+		    $payment->descripcion="1ra ".$concepto->short_name;
+		    $payment->save();
+		    
+		    //Nueo Acondicionamieno
+		    $acondicionamiento=new Acondicionamiento;
+		    $acondicionamiento->proposed_date=$fecha;
+		    $acondicionamiento->form_id=$aform;
+		    $acondicionamiento->inspection_id=$aid;
+		    $acondicionamiento->user_id=$usuario;
+		    $acondicionamiento->acondicionamiento_number=1;
+		    $acondicionamiento->parent_id=$max;
+		    $acondicionamiento->save();	
+	    }
+	    
+	    //Nuevo Acondcionamiento Solicitada
+	    $inbox=new Inbox;
+	    $inbox->date=date('Y-m-d');
+	    $inbox->form_id=$aform;
+	    $inbox->status_id=12;
+	    $inbox->estado=1;
+	    $inbox->to=$usuario;
+	    $inbox->save();
+		
 	}
 }

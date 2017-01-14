@@ -88,15 +88,52 @@ class LeguminosasController extends Controller
 	{
 		$this->pageTitle = "Leguminosas";
 		$model=$this->loadModel($id);
+		
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Inspection']))
 		{
-			$model->attributes=$_POST['Inspection'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		    $model->attributes=$_POST['Inspection'];
+		    $model->leg_fecha_siembra=date("Y-m-d", strtotime($model->leg_fecha_siembra));
+		    $model->leg_emergencia_fecha=date("Y-m-d", strtotime($model->leg_emergencia_fecha));
+		    $model->leg_floracion_fecha=date("Y-m-d", strtotime($model->leg_floracion_fecha));
+		    $model->leg_fecha_cosecha=date("Y-m-d", strtotime($model->leg_fecha_cosecha));
+		    $model->size=str_replace(',','',$model->size);
+		    $model->leg_floracion=str_replace(',','',$model->leg_floracion);
+		    $model->leg_llenado_grano=str_replace(',','',$model->leg_llenado_grano);
+		    $model->leg_distanciamiento_surcos=str_replace(',','',$model->leg_distanciamiento_surcos);
+		    $model->leg_mata=str_replace(',','',$model->leg_mata);
+		    $model->leg_campo_comercial=str_replace(',','',$model->leg_campo_comercial);
+		    $model->leg_otra_especie=str_replace(',','',$model->leg_otra_especie);
+		    $model->leg_otro_cultivar=str_replace(',','',$model->leg_otro_cultivar);
+		    $model->leg_mosaicos=str_replace(',','',$model->leg_mosaicos);
+		    $model->leg_moteado=str_replace(',','',$model->leg_moteado);
+		    $model->leg_bacteriosis=str_replace(',','',$model->leg_bacteriosis);
+		    $model->leg_mancha_angular=str_replace(',','',$model->leg_mancha_angular);
+		    $fecha=date("Y-m-d", strtotime($model->aprobado_fecha_propuesta));
+		    if($model->y01==1)//cumple
+		    {
+			if($model->select_id==2){
+			    $max=$model->inspection_number+1;
+			    $model->Inspeccion($max,$fecha,$form->user_id,$form->id,$form->headquarter_id);
+			}
+			elseif($model->select_id==1){
+			    $model->Acondicionamiento($fecha,$form->id,$model->id,$form->user_id);
+			}
+		    }
+		    elseif($model->y01==2)//condicional
+		    {
+			$model->subsanacion_date=date("Y-m-d", strtotime($model->subsanacion_date));
+			$model->subsanacion=1;
+		    }
+		    elseif($model->y01==3)//denegado
+		    {
+			$model->rechazado=1;
+		    }
+		    $model->update();
+		    return $this->redirect(array('iform/ivcampo','id'=>$model->form_id));
 		}
 
 		$this->render('update',array(

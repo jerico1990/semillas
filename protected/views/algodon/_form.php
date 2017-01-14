@@ -3,346 +3,399 @@ $forma=Iform::model()->find('id=:form_id',array(':form_id'=>$model->form_id));
 $user=User::model()->find('id=:id',array(':id'=>$model->user_id));
 $location=Location::model()->find('district_id=:district_id',array(':district_id'=>$forma->location_id));
 ?>
-
-
-
 <div class="form well span12" style="background: #FFFFFF">
-
-<?php /*$form=$this->beginWidget('CActiveForm', array(
-	'id'=>'inspection-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-)); */
-
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-    'id'=>'inspection-form',
-   // 'htmlOptions'=>array('class'=>'well span13'),
-   
-));
-?>
-
-
-	<?php echo $form->errorSummary($model); ?>
-	<?php echo CHtml::hiddenField('formu',$model->form_id); ?>
-	<?php echo CHtml::hiddenField('condicional_inspection_id',$model->id); ?>
-
-		 
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Campo de Multiplicación</h4></div>      
-		  </div> 
-		  <div class="row-fluid">		      
-					 <div class="span3"><?php echo $form->textFieldRow($model,'size',array('class'=>'algodon span12')); ?></div>			 
-					 <div class="span9">
-				     <?php echo $form->datepickerRow($model,'alg_fecha_siembra',
-						                          array(	
-									  'htmlOptions'=>array('class'=>'algodon_fecha span10'),
-									  //'prepend'=>'<i class="icon-calendar"></i>',
-									  'options'=>array( 'format' => 'dd-mm-yyyy', 
-									  'weekStart'=> 1,
-									  'showButtonPanel' => true,
-									  'showAnim'=>'fold',))); ?>		     		        				     
-					 </div>
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Etapa/Estado fenológico del cultivo</h4></div>      
-		  </div> 
-		  <div class="row-fluid">						 
-					 <div class="span4">
-					 <?php echo $form->datepickerRow($model,'alg_deshije',
-																array(	
-																'htmlOptions'=>array('class'=>'algodon_fecha span10'),
-																//'prepend'=>'<i class="icon-calendar"></i>',
-																'options'=>array( 'format' => 'dd-mm-yyyy', 
-																'weekStart'=> 1,
-																'showButtonPanel' => true,
-																'showAnim'=>'fold',))); ?></div>
-					 <div class="span4"><?php echo $form->textFieldRow($model,'alg_floracion',array('size'=>18,'maxlength'=>18,'class'=>'algodon span12')); ?></div>
-					 <div class="span4"><?php echo $form->textFieldRow($model,'alg_bellotas',array('size'=>18,'maxlength'=>18 ,'class'=>'algodon span12')); ?></div>
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Distanciamiento</h4></div>      
-		  </div> 
-		  <div class="row-fluid">
-					 <div class="row-fluid">
-								<div class="span3"><?php echo $form->textFieldRow($model,'alg_surcos',array('size'=>18,'maxlength'=>18,'class'=>'algodon span9')); ?></div>
-								<div class="span9"><?php echo $form->textFieldRow($model,'alg_mata',array('size'=>18,'maxlength'=>18,'class'=>'algodon span3')); ?></div>			    
-					 </div>
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Aislamiento</h4></div>      
-		  </div>
-        <div class="row-fluid">
-					 <div class="span4"><?php echo $form->textFieldRow($model,'alg_campo_comercial',array('size'=>18,'maxlength'=>18,'class'=>'algodon span12')); ?></div>
-					 <div class="span4"><?php echo $form->textFieldRow($model,'alg_otra_especie',array('size'=>18,'maxlength'=>18,'class'=>'algodon span12')); ?></div>
-					 <div class="span4"><?php echo $form->textFieldRow($model,'alg_otra_cultivar',array('size'=>18,'maxlength'=>18,'class'=>'algodon span12')); ?></div>
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Plantas</h4></div>      
-		  </div>
-		  <div class="row-fluid">
-			 <div class="span6"><?php echo $form->textAreaRow($model,'alg_plantas_otra_especie',array('size'=>60,'maxlength'=>300,'class'=>'algodon span12','rows'=>8)); ?></div>
-			 <div class="span6"><?php echo $form->textAreaRow($model,'alg_plantas_fuera_tipo',array('size'=>60,'maxlength'=>300,'class'=>'algodon span12','rows'=>8)); ?></div>		  
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Datos</h4></div>      
-		  </div>
-		  <div class="row-fluid">
-			 <div class="span12"><?php echo $form->textFieldRow($model,'alg_malvacearum',array('size'=>18,'maxlength'=>18,'class'=>'algodon span2')); ?></div>
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Resultados</h4></div>      
-		  </div>
-		  <div class="row-fluid">
-			 <div class="span12"><?php echo $form->textAreaRow($model,'observaciones',array('size'=>60,'maxlength'=>300,'class'=>'algodon span12','rows'=>8)); ?></div>
-		  </div>
-		  
-        <div class="row-fluid">
-            <div class="span12">
-               <div class="form-actions">
-						<div class="span4">
-							<!--Aprobado-->
-								<a id="myModal_btn_apro" role="button" class="btn btn-success span12">
-									Cumple
-								</a>
-							<!--Fin de Aprobado-->	
-                  </div>
-                  <div class="span4">
-							<!--Condicional-->
-								<a id="myModal_btn_condi" role="button" class="btn btn-primary span12">
-									condicional
-								</a>
-							<!--Fin de Condicional-->							 										 
-                  </div>
-						<div class="span4">														  
-                          <?php $this->widget('bootstrap.widgets.TbButton', array(
-													'id'=>'myModal_btn_recha',
-													'type'=>'danger',
-													'buttonType'=>'ajaxButton',
-													'label'=>'No Cumple',
-													'url'=>Yii::app()->createUrl( 'inspection/rechazado' ),
-													'ajaxOptions'=>array(
-																				'type'=>'POST',
-																				'data' => 'js:$("#inspection-form").serialize()',
-																				'success' =>'function( data ){
-																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-																				}'
-																				),													
-													'htmlOptions'=>array('class'=>'span12',
-																				'url' => Yii::app()->createUrl( 'iform/rechazado' ),))); ?>																		 
-                  </div>
-                  
-               </div>
-            </div>
-        </div>
-	
-		
-
-<!--Botones-->
-	<!--Aprobado-->
-	<div id="myModal_acond_apro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						  <div class="modal-header">
-							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							 <h4 id="myModalLabel"></h4>
-						  </div>
-						  <div class="modal-body">
-							 <p>
-									<div class="form">
-										<?php 
-										$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-											'id'=>'inbox-form',										
-										));						
-										?>	
-										<div class="row-fluid">
-											<div class="span5">Continuar con la Inspección de</div>
-											<div class="span7"><?php echo $form->dropDownListRow($model,'select_id', array('1'=>'Acondicionamiento','2'=>'Campo'),array('empty'=>' ','class'=>'validar')); ?></div>
-										</div>
-										<div class="row-fluid">
-											<div class="span5">Fecha propuesta</div>
-											<div class="span7"><?php echo $form->datepickerRow($model,'aprobado_fecha_propuesta',
-																array(
-																 'htmlOptions'=>array('class'=>'validar'),
-																 'options'=>array( 'format' => 'dd-mm-yyyy', 
-																 'weekStart'=> 1,
-																 'showButtonPanel' => true,
-																 'showAnim'=>'fold',))); ?>
-											</div>
-										</div>
-										<?php $this->endWidget(); ?>	
-																		
-									</div><!-- form -->																  
-							 </p>
-						 
-						  <div class="modal-footer">
-								<!--Boton de Si cumple-->
-								<?php $this->widget('bootstrap.widgets.TbButton', array(
-								'id'=>'btn_aprobado_si',
-								'type'=>'primary',
-								'label'=>'Aceptar',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'inspection/cumple' ),
-								'ajaxOptions'=>array(			     
-								'type'=>'POST',	
-								'data' => array(
-										  'size'=>'js:$("#Inspection_size").val()',
-										  'alg_fecha_siembra'=>'js:$("#Inspection_alg_fecha_siembra").val()',
-										  'alg_deshije'=>'js:$("#Inspection_alg_deshije").val()',
-										  'alg_floracion'=>'js:$("#Inspection_alg_floracion").val()',
-										  'alg_bellotas'=>'js:$("#Inspection_alg_bellotas").val()',
-										  'alg_surcos'=>'js:$("#Inspection_alg_surcos").val()',
-										  'alg_mata'=>'js:$("#Inspection_alg_mata").val()',
-										  'alg_campo_comercial'=>'js:$("#Inspection_alg_campo_comercial").val()',
-										  'alg_otra_especie'=>'js:$("#Inspection_alg_otra_especie").val()',
-										  'alg_otra_cultivar'=>'js:$("#Inspection_alg_otra_cultivar").val()',
-										  'alg_plantas_otra_especie'=>'js:$("#Inspection_alg_plantas_otra_especie").val()',
-										  'alg_plantas_fuera_tipo'=>'js:$("#Inspection_alg_plantas_fuera_tipo").val()',
-										  'alg_malvacearum'=>'js:$("#Inspection_alg_malvacearum").val()',										  
-										  'observaciones'=>'js:$("#Inspection_observaciones").val()',
-										  'btn'=>'js:$("#Inspection_select_id").val()',
-										  'id'=>$model->id,
-										  'fecha'=>'js:$("#Inspection_aprobado_fecha_propuesta").val()'),
-								'success' => 'function(data){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
-								),
-								
-								'htmlOptions'=>array('data-dismiss'=>'modal',
-								'url' => Yii::app()->createUrl( 'inspection/cumple' ),
-								),));
-								?>
-								 <!--Boton de No cumple-->
-												
-						  </div>
-						</div>
+<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');  ?>
+    <div class="row-fluid">
+	<div class="span12" id="error" style="color: red"></div>      
+    </div> 	
+    <div class="row-fluid">
+	<div class="span12"><h4>Campo de Multiplicación</h4></div>      
+    </div> 
+    <div class="row-fluid">
+	<div class="span3">
+	    <label for="Inspection_size">Area(m2)</label>
+	    <input class="algodon span12" name="Inspection[size]" id="Inspection_size" type="text" maxlength="18">
 	</div>
-	
-	
-	<!--Boton Condicional-->	
-	<div id="myModal_acond_conda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						  <div class="modal-header">
-							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							 <h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
-						  </div>
-						  <div class="modal-body">
-							 <p>
-												
-								<?php echo $form->datepickerRow($model,'subsanacion_date',
-														array(
-														 'options'=>array( 'format' => 'dd-mm-yyyy', 
-														 'weekStart'=> 1,
-														 'showButtonPanel' => true,
-														 'showAnim'=>'fold',))); ?>
-														 
-							 </p>
-						  </div>
-						  <div class="modal-footer">
-								 <!--Boton de Condicional-->
-								<?php $this->widget('bootstrap.widgets.TbButton', array(	
-								'type'=>'primary',
-								'label'=>'Enviar',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'inspection/condicional' ),
-								'ajaxOptions'=>array(
-								//'dataType'=> 'jsonp',		  
-								'type'=>'POST',	
-								'data' => "js:$('#inspection-form').serializeArray()",
-								'success' =>'function( data ){
-								location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-								}'
-								),
-								'htmlOptions'=>array('data-dismiss'=>'modal',
-								'url' => Yii::app()->createUrl( 'inspection/condicional' ),
-								),));
-								?>		
-								 				
-						  </div>
+	<div class="span9">
+	    <label for="Inspection_alg_fecha_siembra">Fecha Siembra</label>
+	    <input class="algodon_fecha span10" type="text" autocomplete="off" name="Inspection[alg_fecha_siembra]" id="Inspection_alg_fecha_siembra">		     		        				     
 	</div>
-<!--Fin de botones-->	
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Etapa/Estado fenológico del cultivo</h4></div>      
+    </div> 
+    <div class="row-fluid">						 
+	<div class="span4">
+	    <label for="Inspection_alg_deshije">Fecha de Deshije</label>
+	    <input class="algodon_fecha span10" type="text" autocomplete="off" name="Inspection[alg_deshije]" id="Inspection_alg_deshije">
+	</div>
+	<div class="span4">
+	    <label for="Inspection_alg_floracion">Floracion (%)</label>
+	    <input size="18" maxlength="18" class="algodon span12" name="Inspection[alg_floracion]" id="Inspection_alg_floracion" type="text">
+	</div>
+	<div class="span4">
+	    <label for="Inspection_alg_bellotas">Bellotas Abiertas(%)</label>
+	    <input size="18" maxlength="18" class="algodon span12" name="Inspection[alg_bellotas]" id="Inspection_alg_bellotas" type="text">
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Distanciamiento</h4></div>
+    </div> 
+    <div class="row-fluid">
+	<div class="row-fluid">
+	    <div class="span3">
+		<label for="Inspection_alg_surcos">Surcos (m)</label>
+		<input size="18" maxlength="18" class="algodon span9" name="Inspection[alg_surcos]" id="Inspection_alg_surcos" type="text">
+	    </div>
+	    <div class="span9">
+		<label for="Inspection_alg_mata">Mata (m)</label>
+		<input size="18" maxlength="18" class="algodon span3" name="Inspection[alg_mata]" id="Inspection_alg_mata" type="text">
+	    </div>
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Aislamiento</h4></div>
+    </div>
+    <div class="row-fluid">
+	<div class="span4">
+	    <label for="Inspection_alg_campo_comercial">Campo Comercial (m)</label>
+	    <input size="18" maxlength="18" class="algodon span12" name="Inspection[alg_campo_comercial]" id="Inspection_alg_campo_comercial" type="text">
+	</div>
+	<div class="span4">
+	    <label for="Inspection_alg_otra_especie">Otra Especie / Híbrido (m)</label>
+	    <input size="18" maxlength="18" class="algodon span12" name="Inspection[alg_otra_especie]" id="Inspection_alg_otra_especie" type="text">
+	</div>
+	<div class="span4">
+	    <label for="Inspection_alg_otra_cultivar">Otra Cultivar (m)</label>
+	    <input size="18" maxlength="18" class="algodon span12" name="Inspection[alg_otra_cultivar]" id="Inspection_alg_otra_cultivar" type="text">
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Plantas</h4></div>
+    </div>
+    <div class="row-fluid">
+	<div class="span6">
+	    <label for="Inspection_alg_plantas_otra_especie">Otra Especie</label>
+	    <textarea size="60" maxlength="300" class="algodon span12" rows="8" name="Inspection[alg_plantas_otra_especie]" id="Inspection_alg_plantas_otra_especie"></textarea>
+	</div>
+	<div class="span6">
+	    <label for="Inspection_alg_plantas_fuera_tipo">Fuera de Tipo</label>
+	    <textarea size="60" maxlength="300" class="algodon span12" rows="8" name="Inspection[alg_plantas_fuera_tipo]" id="Inspection_alg_plantas_fuera_tipo"></textarea>
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Datos</h4></div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><label for="Inspection_alg_malvacearum">Alg Malvacearum</label><input size="18" maxlength="18" class="algodon span2" name="Inspection[alg_malvacearum]" id="Inspection_alg_malvacearum" type="text"></div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Resultados</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><label for="Inspection_observaciones"> </label><textarea size="60" maxlength="300" class="algodon span12" rows="8" name="Inspection[observaciones]" id="Inspection_observaciones"></textarea></div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12">
+	    <div class="form-actions">
+		<div class="span4">
+		<!--Aprobado-->
+		    <button id="btn_apro" class="btn btn-success span12" data-toggle="modal">Cumple</button>
+		    <input name="Inspection[y01]" id="hidden" type="hidden">
+		<!--Fin de Aprobado-->	
+		</div>
+		<div class="span4">
+		<!--Condicional-->
+		    <button id="btn_condi"  class="btn btn-primary span12" data-toggle="modal">condicional</button>
+		<!--Fin de Condicional-->
+		</div>
+		<!--Boton de No cumples-->
+		<div class="span4">
+		    <button id="btn_recha"  class="btn btn-danger span12" >No cumple</button>
+		</div>
+	    </div>
+	</div>
+    </div>
+    <!--Botones-->
+    <!--Aprobado-->
+    <div id="myModal_acond_apro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >	
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 id="myModalLabel">Pasar a Inspeccion de Acondicionamiento</h4>
+	</div>
+	<div class="modal-body">
+	    <p>
+		<div class="form">
+		    <div class="row-fluid">
+			<div class="span5">Continuar con la Inspección de</div>
+			<div class="span7">
+			    <select class="validar" name="Inspection[select_id]" id="Inspection_select_id">
+				<option value>Seleccionar</option>
+				<option value="1">Acondicionamiento</option>
+				<option value="2">Campo</option>
+			    </select>
+			</div>
+		    </div>
+		    <div class="row-fluid">
+			<div class="span5">Fecha propuesta</div>
+			<div class="span7">
+			    <input type="date" name="Inspection[aprobado_fecha_propuesta]" id="Inspection_aprobado_fecha_propuesta">
+			</div>
+		    </div>
+		</div><!-- form -->
+	    </p>
+	</div>
+	<div class="modal-footer">
+	    <button id="btn_enviar_aprobado" class="btn btn-primary">Enviar</button>
+	</div>
+    </div>
+    <!--Boton Condicional-->	
+    <div id="myModal_acond_conda" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
+	</div>
+	<div class="modal-body">
+	    <p>
+		<label for="Inspection_subsanacion_date">Subsanación Fecha</label>
+		<input type="date" name="Inspection[subsanacion_date]" id="Inspection_subsanacion_date">
+	    </p>
+	</div>
+	<div class="modal-footer">
+	    <button id="btn_enviar_condicional" class="btn btn-primary">Enviar</button>			
+	</div>
+    </div>
 
 <?php $this->endWidget(); ?>
-
 </div><!-- form -->
-
-
-
-
-
-
-
+<?php
+    $cumple=CController::createUrl('inspection/rechazado');
+    $condicional=CController::createUrl('inspection/condicional');
+    $no_cumple=CController::createUrl('inspection/rechazado');
+?>
 <script>
-	//yw3
+    //Fecha Formato
+    $('.algodon_fecha').datepicker({format: 'dd-mm-yyyy'})
+    
+    $('.algodon').on('blur', function(){
+	    $('#Inspection_size').val(numeral($('#Inspection_size').val()).format('0,0.00'));
+	    $('#Inspection_alg_surcos').val(numeral($('#Inspection_alg_surcos').val()).format('0,0.00'));
+	    $('#Inspection_alg_mata').val(numeral($('#Inspection_alg_mata').val()).format('0,0.00'));
+	    $('#Inspection_alg_campo_comercial').val(numeral($('#Inspection_alg_campo_comercial').val()).format('0,0.00'));
+	    $('#Inspection_alg_otra_especie').val(numeral($('#Inspection_alg_otra_especie').val()).format('0,0.00'));
+	    $('#Inspection_alg_otra_cultivar').val(numeral($('#Inspection_alg_otra_cultivar').val()).format('0,0.00'));
+	    $('#Inspection_alg_floracion').val(numeral($('#Inspection_alg_floracion').val()).format('0,0.00'));
+	    $('#Inspection_alg_bellotas').val(numeral($('#Inspection_alg_bellotas').val()).format('0,0.00'));
+    });
+    
+    $('#btn_apro').on('click', function(){
+	var error='';
+	if ($('#Inspection_size').val()=='') {
+	    error=error+'Debe ingresar el Area(m2)<br>';
+	}
+	if ($('#Inspection_alg_fecha_siembra').val()=='') {
+		error=error+'Debe ingresar la Fecha Siembra<br>';
+	    }
+	if ($('#Inspection_alg_deshije').val()=='') {
+	    error=error+'Debe ingresar la Fecha de Deshije<br>';
+	}
+	if ($('#Inspection_alg_floracion').val()=='') {
+	    error=error+'Debe ingresar Floracion (%)<br>';
+	}
+	if ($('#Inspection_alg_bellotas').val()=='') {
+	    error=error+'Debe ingresar Bellotas Abiertas(%)<br>';
+	}
+	if ($('#Inspection_alg_surcos').val()=='') {
+	    error=error+'Debe ingresar Surcos (m)<br>';
+	}
+	if ($('#Inspection_alg_mata').val()=='') {
+	    error=error+'Debe ingresar Mata (m)<br>';
+	}
+	if ($('#Inspection_alg_campo_comercial').val()=='') {
+	    error=error+'Debe ingresar el Campo Comercial (m)<br>';
+	}
+	if ($('#Inspection_alg_otra_especie').val()=='') {
+	    error=error+'Debe ingresar Otra Especie / Híbrido (m)<br>';
+	}
+	if ($('#Inspection_alg_otra_cultivar').val()=='') {
+	    error=error+'Debe ingresar Otra Cultivar (m)<br>';
+	}
+	if ($('#Inspection_alg_plantas_otra_especie').val()=='') {
+	    error=error+'Debe ingresar Otra Especie<br>';
+	}
+	if ($('#Inspection_alg_plantas_fuera_tipo').val()=='') {
+	    error=error+'Debe ingresar Fuera de Tipo<br>';
+	}
+	if ($('#Inspection_alg_malvacearum').val()=='') {
+	    error=error+'Debe ingresar Algodón Malvacearum<br>';
+	}
+	if ($('#Inspection_observaciones').val()=='') {
+	    error=error+'Debe ingresar el resultado<br>';
+	}
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
+	$('#myModal_acond_apro').modal('show');
+	return true;
+    });
+    
+    $('#btn_condi').on('click', function(){
+	var error='';
+	if ($('#Inspection_size').val()=='') {
+	    error=error+'Debe ingresar el Area(m2)<br>';
+	}
+	if ($('#Inspection_alg_fecha_siembra').val()=='') {
+		error=error+'Debe ingresar la Fecha Siembra<br>';
+	    }
+	if ($('#Inspection_alg_deshije').val()=='') {
+	    error=error+'Debe ingresar la Fecha de Deshije<br>';
+	}
+	if ($('#Inspection_alg_floracion').val()=='') {
+	    error=error+'Debe ingresar Floracion (%)<br>';
+	}
+	if ($('#Inspection_alg_bellotas').val()=='') {
+	    error=error+'Debe ingresar Bellotas Abiertas(%)<br>';
+	}
+	if ($('#Inspection_alg_surcos').val()=='') {
+	    error=error+'Debe ingresar Surcos (m)<br>';
+	}
+	if ($('#Inspection_alg_mata').val()=='') {
+	    error=error+'Debe ingresar Mata (m)<br>';
+	}
+	if ($('#Inspection_alg_campo_comercial').val()=='') {
+	    error=error+'Debe ingresar el Campo Comercial (m)<br>';
+	}
+	if ($('#Inspection_alg_otra_especie').val()=='') {
+	    error=error+'Debe ingresar Otra Especie / Híbrido (m)<br>';
+	}
+	if ($('#Inspection_alg_otra_cultivar').val()=='') {
+	    error=error+'Debe ingresar Otra Cultivar (m)<br>';
+	}
+	if ($('#Inspection_alg_plantas_otra_especie').val()=='') {
+	    error=error+'Debe ingresar Otra Especie<br>';
+	}
+	if ($('#Inspection_alg_plantas_fuera_tipo').val()=='') {
+	    error=error+'Debe ingresar Fuera de Tipo<br>';
+	}
+	if ($('#Inspection_alg_malvacearum').val()=='') {
+	    error=error+'Debe ingresar Algodón Malvacearum<br>';
+	}
+	if ($('#Inspection_observaciones').val()=='') {
+	    error=error+'Debe ingresar el resultado<br>';
+	}
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
+	$('#myModal_acond_conda').modal('show');
+	return true;
+    });
+    
+    
+    $('#btn_recha').on('click', function(){
+	var error='';
+	if ($('#Inspection_size').val()=='') {
+	    error=error+'Debe ingresar el Area(m2)<br>';
+	}
+	if ($('#Inspection_alg_fecha_siembra').val()=='') {
+		error=error+'Debe ingresar la Fecha Siembra<br>';
+	    }
+	if ($('#Inspection_alg_deshije').val()=='') {
+	    error=error+'Debe ingresar la Fecha de Deshije<br>';
+	}
+	if ($('#Inspection_alg_floracion').val()=='') {
+	    error=error+'Debe ingresar Floracion (%)<br>';
+	}
+	if ($('#Inspection_alg_bellotas').val()=='') {
+	    error=error+'Debe ingresar Bellotas Abiertas(%)<br>';
+	}
+	if ($('#Inspection_alg_surcos').val()=='') {
+	    error=error+'Debe ingresar Surcos (m)<br>';
+	}
+	if ($('#Inspection_alg_mata').val()=='') {
+	    error=error+'Debe ingresar Mata (m)<br>';
+	}
+	if ($('#Inspection_alg_campo_comercial').val()=='') {
+	    error=error+'Debe ingresar el Campo Comercial (m)<br>';
+	}
+	if ($('#Inspection_alg_otra_especie').val()=='') {
+	    error=error+'Debe ingresar Otra Especie / Híbrido (m)<br>';
+	}
+	if ($('#Inspection_alg_otra_cultivar').val()=='') {
+	    error=error+'Debe ingresar Otra Cultivar (m)<br>';
+	}
+	if ($('#Inspection_alg_plantas_otra_especie').val()=='') {
+	    error=error+'Debe ingresar Otra Especie<br>';
+	}
+	if ($('#Inspection_alg_plantas_fuera_tipo').val()=='') {
+	    error=error+'Debe ingresar Fuera de Tipo<br>';
+	}
+	if ($('#Inspection_alg_malvacearum').val()=='') {
+	    error=error+'Debe ingresar Algodón Malvacearum<br>';
+	}
+	if ($('#Inspection_observaciones').val()=='') {
+	    error=error+'Debe ingresar el resultado<br>';
+	}
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
 	
-	$('#myModal_btn_apro').addClass('disabled');//Aprobado
-	$('#myModal_btn_condi').addClass('disabled');//Condicional
-	$('#myModal_btn_recha').addClass('disabled');//Rechazado
+	var txt;
+	var r = confirm("¿Estas seguro de que el informe no cumple?");
+	if (r == true) {
+	    $('#hidden').val(3);
+	    return true;
+	} else {
+	    return false;
+	}
+    });
+    
+    $('#btn_enviar_aprobado').click(function(){
+	var error='';
+	if ($('#Inspection_aprobado_fecha_propuesta').val()=='') {
+	    error=error+'Debe ingresar la fecha propuesta\n';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
 	
 	
-	$('#myModal_btn_apro').modal('hide');//Aprobado
-	$('#myModal_btn_condi').modal('hide');//condicional
-	
-	$('#myModal_btn_condi').on('click', function(){
-		if (!$('#myModal_btn_condi').hasClass('disabled')) {
-			$('#myModal_acond_conda').modal('show');
-		}	
-	
-	})
-	
-	$('#myModal_btn_apro').on('click', function(){
-		if (!$('#myModal_btn_apro').hasClass('disabled')) {
-			$('#myModal_acond_apro').modal('show');
-		}		
-	})
-	
-	
-	//Fecha Formato
-	$('.algodon_fecha').datepicker({
-    format: 'dd-mm-yyyy',    
-	})
-	/*$('.algodon_fecha').datepicker()
-	.on('changeDate', function(ev){		
-		$('#Inspection_arz_area_instalada').trigger('keyup');
-
-	});*/
-	$('.algodon').on('blur', function(){
-		$('#Inspection_size').val(numeral($('#Inspection_size').val()).format('0,0.00'));
-		$('#Inspection_alg_surcos').val(numeral($('#Inspection_alg_surcos').val()).format('0,0.00'));
-		$('#Inspection_alg_mata').val(numeral($('#Inspection_alg_mata').val()).format('0,0.00'));
-		$('#Inspection_alg_campo_comercial').val(numeral($('#Inspection_alg_campo_comercial').val()).format('0,0.00'));
-		$('#Inspection_alg_otra_especie').val(numeral($('#Inspection_alg_otra_especie').val()).format('0,0.00'));
-		$('#Inspection_alg_otra_cultivar').val(numeral($('#Inspection_alg_otra_cultivar').val()).format('0,0.00'));
-		$('#Inspection_alg_floracion').val(numeral($('#Inspection_alg_floracion').val()).format('0,0.00'));
-		$('#Inspection_alg_bellotas').val(numeral($('#Inspection_alg_bellotas').val()).format('0,0.00'));
-	});
+	var txt;
+	var r = confirm("¿Estas seguro de enviar la fecha sugerida?");
+	if (r == true) {
+	    $('#hidden').val(1);
+	    return true;
+	} else {
+	    return false;
+	}
+    });
+    
+    $('#btn_enviar_condicional').click(function(){
+	var error='';
+	if ($('#Inspection_subsanacion_date').val()=='') {
+	    error=error+'Debe ingresar la fecha de subsanación\n';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
 	
 	
-	$('.algodon, .algodon_fecha').on('keyup', function(){
-		console.log('trigger')		
-		
-	
-		
-		if ($('#Inspection_size').val() != '' && $('#Inspection_alg_fecha_siembra').val()!='' &&
-			 $('#Inspection_alg_deshije').val()!=''  && $('#Inspection_alg_floracion').val() != '' &&
-			 $('#Inspection_alg_bellotas').val()!='' && $('#Inspection_alg_floracion').val() != '' &&		 
-			 $('#Inspection_alg_surcos').val() != '' && $('#Inspection_alg_mata').val() != '' &&
-			 $('#Inspection_alg_campo_comercial').val()!='' && $('#Inspection_alg_otra_especie').val() != '' &&
-			 $('#Inspection_alg_otra_cultivar').val()!='' && $('#Inspection_alg_plantas_otra_especie').val() != '' &&
-			 $('#Inspection_alg_plantas_fuera_tipo').val()!='' && $('#Inspection_alg_plantas_otra_especie').val() != '' &&
-			 $('#Inspection_alg_malvacearum').val()!='' 
-			  
-			)
-		{		
-			$('#myModal_btn_apro').removeClass('disabled');
-			$('#myModal_btn_condi').removeClass('disabled');
-			$('#myModal_btn_recha').removeClass('disabled');
-			
-		}
-		else {
-			$('#myModal_btn_apro').addClass('disabled');
-			$('#myModal_btn_condi').addClass('disabled');
-			$('#myModal_btn_recha').addClass('disabled');
-			
-		}
-	});
+	var txt;
+	var r = confirm("¿Estas seguro de enviar la fecha de subsanación?");
+	if (r == true) {
+	    $('#hidden').val(2);
+	    return true;
+	} else {
+	    return false;
+	}
+    });
 </script>
 
 

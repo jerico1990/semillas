@@ -253,14 +253,14 @@ $(function(){
 								
 								<!--Habilitar o Deshabilkitar Boton de Acondiocionamiento-->
 								<?php
+								//var_dump($model->id);die;
 								$produccion=Produccion::model()->find('form_id=:form_id',array('form_id'=>$model->id));
 								$movilizacion=Movilizacion::model()->find('form_id=:form_id',array('form_id'=>$model->id));
 								$payment=Payment::model()->findAll('form_id=:form_id and concept_id=:concept_id and pay_code is null',array(':form_id'=>$model->id,':concept_id'=>3));
 								
-								if($produccion!==null && $movilizacion!==null && $payment!==null)
+								if($produccion!=null && $movilizacion!=null)
 								{?>
 									<!--Solicitar Acondicionamiento-->
-									
 									<a id="myModal_btnacond" role="button" class="btn btn-primary">
 										<?php echo 'Solicitar '.$acondicionamiento->acondicionamiento_number.' Acondicionamiento' ?>
 									</a>
@@ -271,7 +271,7 @@ $(function(){
 								else
 								{
 									
-								 $this->widget('bootstrap.widgets.TbButton', array(
+								    $this->widget('bootstrap.widgets.TbButton', array(
 																			'id'=>'btn_acon',
 																			'type'=>'primary',
 																			'label'=>'Solicitar '.$acondicionamiento->acondicionamiento_number.' Acondicionamiento',

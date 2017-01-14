@@ -8,10 +8,12 @@ $contador=1;
     <h2>Documentos</h2>
     <form method="post" enctype="multipart/form-data">
     <div style="color: red">Nota: Subir en formato .pdf, .jpg, .png con un tamaño maximo de 2MB.</div>
+    <div id="error" style="color:red"></div>
     <button type="button" id="agregar_archivo" class="btn btn-primary">Agregar documento</button><br><br>
     <table class="table borderless table-hover" id="detalle_tabla_archivo" border="0">
         <thead>
             <tr>
+		<th style="width:200px !important;">Nombre</th>
                 <th style="width:300px !important;">Adjuntar</th>
                 <th width="22px">&nbsp;</th>
             </tr>
@@ -36,7 +38,6 @@ $contador=1;
             </tr>
         </thead>
         <tbody>
-            
             <?php foreach($files as $file){?>
             <tr>
                 <td><?= $file->name ?> <input type="hidden" name="Files[nombres_archivos][]" value="<?= $file->name ?>" id="nombre_archivo_<?= $contador ?>"></td>
@@ -98,9 +99,11 @@ $contador=1;
         {
 	    var option = null;
             $('#archivo_'+contador).html(
-					    
 					    '<td>'+
-                                                '<input type="file" style="width:300px !important;" name="Files[archivos][]" id="archivo_'+contador+'">'+
+                                                '<input type="text" style="width:300px !important;" name="Files[name][]" >'+
+					    '</td>'+
+					    '<td>'+
+                                                '<input type="file" style="width:300px !important;" name="Files[archivos][]" id="archivo_'+contador+'" onchange="Documento(this)">'+
 					    '</td>'+
 					    '<td>'+
 						'<span class="eliminar icon-minus-sign" >'+
@@ -138,4 +141,30 @@ $contador=1;
             mensaje = "Se elimino el Registro Correctamente";
         } 
     });
+    
+    
+    function Documento(elemento) {
+        var ext = $(elemento).val().split('.').pop().toLowerCase();
+        var error='';
+        if($.inArray(ext, ['pdf','jpg','png']) == -1) {
+            error=error+'Solo se permite subir archivos con extensiones .docx,.doc';
+        }
+        if (error=='' && elemento.files[0].size/1024/1024>=2) {
+            error=error+'Solo se permite archivos hasta 2 MB';
+        }
+        
+        if (error!='') {
+            $('#error').html(error);
+            //fileupload = $('#equipo-foto_img');  
+            //fileupload.replaceWith($fileupload.clone(true));
+            $(elemento).replaceWith($(elemento).val('').clone(true));
+            //$('#equipo-foto_img').val('');
+            return false;
+        }
+        else
+        {
+            //mostrarImagen(this);
+            return true;
+        }
+    }
 </script>

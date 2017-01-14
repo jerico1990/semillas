@@ -11,6 +11,21 @@ elseif($identificador==2)
 }
 
 $status=Status::model()->find('id=:id',array(':id'=>$inbox->status_id));
+
+$organismoCertificador=Headquarter::model()->find('id=:id',array(':id'=>$model->headquarter_id));
+$width="437px";
+$height="40px";
+$img="form_header.png";
+
+$logo=User::model()->find('ruc=:ruc',array(':ruc'=>$organismoCertificador->ruc));
+$img_logo="logos/".$logo->avatar;
+/*
+if($logo)
+{
+    $width="200px";
+    $height="60";
+}
+*/
 ?>
 
 <?php
@@ -75,32 +90,13 @@ tr.row td:last-child { border-right: thin solid black; }
 </style>
 </head>
 <body>
-<!--<div style="text-align: center; font-style: italic;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td class="bigfont" width="50%"><p><strong>Comité Regional de Semillas de San Martín</strong> </p>
-      <p>R.J. Nro 134-2006-AG-SENASA</p></td>
-      <td width="15%">.</td>
-      <td width="35%" bgcolor="#FFFFFF" class="bigfont"></td>
-    </tr>
-    <tr>
-      <td class="smallfont" width="50%">
-        <p>Jr. Martinez de Compagñon Nro 1035-Tarapoto      </p>
-      <p>Telefax (042)-52228881 | email:corese_sm@speedy.com.pe</p></td>
-      <td width="15%"></td>
-      <td width="35%"></td>
-    </tr>
-    </table>
-</div> --> 
-</head>
-<body>
-	<table width="100%" cellpadding="2">
-		<tr>
-			<td colspan="3" align="center"><div><br><strong>Notificacion de revisión de Solicitud</strong></div></td>
-	  </tr>
-      <tr>
-			<td colspan="3" align="center"><div><br></div></td>
-	  </tr>
+    <table width="100%" cellpadding="2">
+	<tr>
+	    <td colspan="3" align="center"><div><br><strong>Notificacion de revisión de Solicitud</strong></div></td>
+	</tr>
+	<tr>
+	    <td colspan="3" align="center"><div><br></div></td>
+	</tr>
 	</table>
 	<table width="100%" cellpadding="2">
         <tr>
@@ -119,16 +115,16 @@ tr.row td:last-child { border-right: thin solid black; }
             <td width="80%"><div>'.date('d-m-Y').'</div></td>    
         </tr>
     </table>
-	<table width="100%" cellpadding="2">
-		<tr>
-		    <td width="100%"><div ></div></td>
+    <table width="100%" cellpadding="2">
+	<tr>
+	    <td width="100%"><div ></div></td>
         </tr>
-	    <tr>
+	<tr>
     		<td width="100%"><div ></div></td>
 		</tr>
 		<tr>
     		<td width="100%"><div class="tab">
-    		 <div align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Se le notifica que su solicitud de Inscripción de Campo de Multiplicación de Semillas ha sido';
+    		 <div align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Se le notifica que su solicitud de Inscripción de Campo de Multiplicación de Semillas ha sido ';
            switch($status->id)
            {
                case(4):
@@ -160,32 +156,7 @@ tr.row td:last-child { border-right: thin solid black; }
 		<tr>
 		    <td width="100%"><div ></div></td>
 		</tr>';
-		/*<tr>
-		    <td width="100%"><div class="tab">
-		     <div align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Por lo tanto ha sido ';
-           switch($status->id)
-           {
-               case(4):
-                  $html.="Aprobado";
-               break;
-               case(5):
-                  $html.="Rechazado";
-               break;
-               case(6):
-                  $html.="Observado";
-               break;
-           }
-           $html.=', por lo cual posteriormente se estará coordinando para efectuar las inspecciones de campo correspondientes.</div>
-		    </div></td>
-		</tr>
-		<tr>
-		    <td width="100%"><div ></div></td>
-		</tr>
-        <tr>
-            <td width="100%"><div class="tab">
-             <div align="justify">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sin otro particular es propicia la oportunidad para expresarle las consideraciones de mi estima personal.</div>
-            </div></td>
-        </tr>';*/
+		
         $html.='<tr>
             <td width="100%"><div ></div></td>
         </tr>
@@ -213,7 +184,7 @@ if($varestacion ===1)
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="20%"></td> 
-                    <td width="60%"><div align="center"><img src="'.Yii::app()->getBaseUrl(true).'/images/form_header.png" width="437" height="40"  alt=""/></div></td>
+                    <td width="60%"><div align="center"><img src="'.Yii::app()->getBaseUrl(true).'/images/'.$img.'"   alt=""/><img src="'.Yii::app()->getBaseUrl(true).'/images/'.$img_logo.'"   alt=""/></div></td>
                     <td width="20%" style="font-size: 0.8em; text-align: center; font-weight: bold;">Exp Nro: '.$model->form_number.'</td>
                 </tr>
             </table>

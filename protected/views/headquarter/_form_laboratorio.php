@@ -1,4 +1,10 @@
 <?php
+    $departamentos = Location::model()->findAll(array(
+	  'select'   => 't.department, t.department_id',
+	  'group'    => 't.department',
+	  'order'    => 't.department ASC',
+	  'distinct' => true
+     ));
     $departments = Location::model()->findAll(array(
 		      'select'   => 't.id, t.department, t.department_id',
 		      'group'    => 't.id,t.department',
@@ -18,6 +24,7 @@
     
     if($model->id!==null)
     {
+	
 	$user=User::model()->find('type_id=6 and headquarter_id=:headquarter',array(':headquarter'=>$model->id));				
 	$cruge=Cruge::model()->find('iduser=:cruge_user_id',array(':cruge_user_id'=>$user->cruge_user_id));
     }
@@ -70,30 +77,29 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </div>
 <div class="row-fluid">		  
     <div class="span4">
-    <?php echo $form->dropDownListRow($model,'department_id',$list,array(								
-			   'ajax' => array(
-			   'type'=>'GET', //request type
-			   'url'=>CController::createUrl('location/provinces'), //url to call.
-			   'update'=>'#Headquarter_province_id', //selector to update
-			   'data'   => 'js:$("#Headquarter_department_id").val()'
-	   ))); ?>
+	<label for="Headquarter_department_id">Departamento</label>
+	<select name="Headquarter[department_id]" id="Headquarter_department_id" onchange="Provincias($(this).val())">
+	    <option value="">Seleccionar</option>
+	    <?php foreach($departamentos as $departamento){ ?>
+	    <option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+	    <?php } ?>
+	</select>
+	<div class="help-block error" id="Headquarter_department_id_em_" style="display:none">Departamento no es correcto.</div>
     </div>
-    <div class="span8"></div>
-</div>
-<div class="row-fluid">		  
-    <div class="span8"> <?php echo $form->dropDownListRow($model,'province_id',array(),array(								
-			   'ajax' => array(
-					    'type'=>'GET', //request type
-						  'url'=>CController::createUrl('location/districts'), //url to call.
-						  'update' => '#Headquarter_location_id',
-						  'data'   => 'js:$("#Headquarter_province_id").val()'
-					  ))); ?>
+    <div class="span4">
+	<label for="Headquarter_province_id">Provincia</label>
+	<select name="Headquarter[province_id]" id="Headquarter_province_id" onchange="Distritos($(this).val())">
+	    <option value="">Seleccionar</option>
+	</select>
+	<div class="help-block error" id="Headquarter_province_id_em_" style="display:none">Provincia no es correcto.</div>
     </div>
-    <div class="span4"></div>
-</div>
-<div class="row-fluid">		  
-    <div class="span8"> <?php echo $form->dropDownListRow($model,'location_id',array(), array()); ?></div>
-    <div class="span4"></div>
+    <div class="span4">
+	<label for="Headquarter_location_id" class="required">Distrito <span class="required">*</span></label>
+	<select name="Headquarter[location_id]" id="Headquarter_location_id">
+	    <option value="">Seleccionar</option>
+	</select>
+	<div class="help-block error" id="Headquarter_location_id_em_" style="display:none">Distrito no es correcto.</div>
+    </div>
 </div>
 <div class="row-fluid" >
     <div class="span6">
@@ -229,3 +235,19 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<?php
+$provincias=CController::createUrl('location/provinces');
+$distritos=CController::createUrl('location/districts');
+?>
+<script>
+    function Provincias(valor) {
+	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Headquarter_province_id" ).html( data );});
+	$("#Headquarter_province_id").find("option").remove().end().append("<option value></option>").val("");
+	$("#Headquarter_district_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+    
+    function Distritos(valor) {
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Headquarter_location_id" ).html( data );});
+	$("#Headquarter_location_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+</script>

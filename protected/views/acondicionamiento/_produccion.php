@@ -129,6 +129,4 @@ $(function(){
 		$('#Iform_produccion_area').val(numeral($('#Iform_produccion_area').val()).format('0,0'));
 		$('#Iform_produccion_total').val(numeral($('#Iform_produccion_total').val()).format('0,0'));
 	});
-	
-	
 </script>

@@ -1024,10 +1024,11 @@ class IformController extends Controller
 		//$count=count();
 		$model->archivos=CUploadedFile::getInstances($model,'archivos');
 		//var_dump($model->archivos);die;//
+		$i=0;
 		foreach ($model->archivos as $file) {
 		    $doc=new Files;
 		    $doc->form_id=$id;
-		    $doc->name=$file->name;
+		    $doc->name=$file->name[$i];
 		    $doc->estado=1;
 		    $doc->insert();
 		    $file->saveAs('files/'.$doc->id.'.pdf');

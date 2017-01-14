@@ -401,15 +401,15 @@ foreach($inspections as $inspection)
 		{			
 			if($inbox->status_id==12 )
 			{?>
-						<!--Fecha Programada-->
-						<div class="row-fluid">
-							<div class="span2">
-								<?php echo date("d-m-Y", strtotime($inbox->date)); ?>
-							</div>
-							<div class="span10">
-								<?php echo CHtml::link("<b>Informe de $texto Inspección</b>",array('pdf/Semilla','id'=>$model->id,'idinspect'=>$idinspect,'identificador'=>1));?>
-							</div>
-						</div>											
+				<!--Fecha Programada-->
+				<div class="row-fluid">
+					<div class="span2">
+						<?php echo date("d-m-Y", strtotime($inbox->date)); ?>
+					</div>
+					<div class="span10">
+						<?php echo CHtml::link("<b>Informe de $texto Inspección</b>",array('pdf/Semilla','id'=>$model->id,'idinspect'=>$idinspect,'identificador'=>1));?>
+					</div>
+				</div>											
 				
 			<?php
 			}
@@ -565,7 +565,7 @@ foreach($inspections as $inspection)
 							
 			<?php				
 			}
-			if($inbox->status_id==11 && $inspection->size!==null)
+			if($inbox->status_id==11)
 			{?>				
 				<!--Fecha Programada-->
 						<div class="row-fluid">

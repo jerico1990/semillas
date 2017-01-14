@@ -86,29 +86,56 @@ class ArrozController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$this->pageTitle = "Arroz";
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Inspection']))
+	
+	    $this->pageTitle = "Arroz";
+	    $model=$this->loadModel($id);
+	    $form=Iform::model()->findByPk($model->form_id);
+	    
+	    if(isset($_POST['Inspection']))
+	    {
+		$model->attributes=$_POST['Inspection'];
+		
+		$model->arz_fecha_siembra=date("Y-m-d", strtotime($model->arz_fecha_siembra));
+		$model->arz_fecha_almacigo=date("Y-m-d", strtotime($model->arz_fecha_almacigo));
+		$model->arz_fecha_transplante=date("Y-m-d", strtotime($model->arz_fecha_transplante));
+		$model->arz_area_instalada=str_replace(',','',$model->arz_area_instalada);
+		$model->arz_aislamiento=str_replace(',','',$model->arz_aislamiento);
+		$fecha=date("Y-m-d", strtotime($model->aprobado_fecha_propuesta));
+		//$fecha=date("Y-m-d", strtotime($_REQUEST['fecha']));
+		if($model->y01==1)//cumple
 		{
-			$model->attributes=$_POST['Inspection'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		    if($model->select_id==2){
+			$max=$model->inspection_number+1;
+			$model->Inspeccion($max,$fecha,$form->user_id,$form->id,$form->headquarter_id);
+		    }
+		    elseif($model->select_id==1){
+			$model->Acondicionamiento($fecha,$form->id,$model->id,$form->user_id);
+		    }
 		}
+		elseif($model->y01==2)//condicional
+		{
+		    $model->subsanacion_date=date("Y-m-d", strtotime($model->subsanacion_date));
+		    $model->subsanacion=1;
+		}
+		elseif($model->y01==3)//denegado
+		{
+		    $model->rechazado=1;
+		}
+		$model->update();
+		return $this->redirect(array('iform/ivcampo','id'=>$model->form_id));
+	    }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+	    return $this->render('update',array(
+		    'model'=>$model,
+	    ));
 	}
 
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
-	 */
+	 
+	
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
@@ -121,6 +148,57 @@ class ArrozController extends Controller
 	/**
 	 * Lists all models.
 	 */
+	/*
+	public function Inspeccion($max,$fecha,$usuario,$formulario,$headquarter_id)
+	{
+		
+	    $sinspection=new Inspection;
+	    $sinspection->inspection_number=$max;
+	    $sinspection->proposed_date=$fecha;
+	    //$sinspection->proposed_time=$hora;
+	    $sinspection->user_id=$usuario;
+	    $sinspection->form_id=$formulario;
+	    $sinspection->save();
+	    
+	    switch($max)
+	    {
+		    case(1): $texto="1ra"; break;
+		    case(2): $texto="2da"; break;
+		    case(3): $texto="3ra"; break;
+		    case(4): $texto="4ta"; break;
+		    case(5): $texto="5ta"; break;
+	    }
+	    
+	    
+	    $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$headquarter_id));
+	    $form=Iform::model()->find('id=:id',array(':id'=>$formulario));
+	    $user=User::model()->find('id=:id',array(':id'=>$form->user_id));
+	    if($headquarter->tipo_empresa==2)
+	    {
+		$quantity=round($form->area);
+		$concepto = Concept::model()->find('id=:id',array(':id'=>2));					
+		$payment=new Payment;
+		$payment->concept_id=$concepto->id;
+		$payment->date=date('Y-m-d');
+		$payment->quantity=$quantity;
+		$payment->ruc=$user->ruc;
+		$payment->price=$concepto->price;
+		$payment->form_id=$formulario;
+		$payment->user_id=$form->user_id;
+		$payment->document_reference=$form->form_number;
+		$payment->descripcion="$texto Inspección de campo de multiplicación de ".$form->crop->name;
+		$payment->save();			
+	    }
+	    else if($headquarter->tipo_empresa==1)
+	    {				
+		//Inspeccion
+		$inspeccion=Inspection::model()->find('id=:id',array(':id'=>$sinspection->id));
+		$inspeccion->proposed_time=date("H:i",strtotime('12:00 PM'));
+		$inspeccion->proposed_date=date('Y-m-d',strtotime($fecha));
+		$inspeccion->save();
+	    }
+	}
+	*/
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('Inspection');
@@ -171,4 +249,53 @@ class ArrozController extends Controller
 			Yii::app()->end();
 		}
 	}
+	/*
+	public function Acondicionamiento($fecha,$aform,$aid,$usuario)
+	{
+	    $form=Iform::model()->find('id=:id',array(':id'=>$aform));
+	    $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$form->headquarter_id));
+	    $user=User::model()->find('id=:id',array(':id'=>$form->user_id));
+	    
+	    $criteria=new CDbCriteria;
+	    $criteria->select='max(parent_id) as parent_id';		
+	    $max = Acondicionamiento::model()->find($criteria);
+	    $max = $max->parent_id + 1;		
+		    
+	    if($headquarter->tipo_empresa==2)
+	    {				
+		    $concepto = Concept::model()->find('id=:id',array(':id'=>3));					
+		    $payment=new Payment;
+		    $payment->concept_id=$concepto->id;
+		    $payment->date=date('Y-m-d');
+		    $payment->quantity=1;
+		    $payment->ruc=$user->ruc;
+		    $payment->price=$concepto->price;
+		    $payment->form_id=$form->id;
+		    $payment->user_id=$form->user_id;
+		    $payment->document_reference=$form->form_number;
+		    $payment->descripcion="1ra ".$concepto->short_name;
+		    $payment->save();
+		    
+		    //Nueo Acondicionamieno
+		    $acondicionamiento=new Acondicionamiento;
+		    $acondicionamiento->proposed_date=$fecha;
+		    $acondicionamiento->form_id=$aform;
+		    $acondicionamiento->inspection_id=$aid;
+		    $acondicionamiento->user_id=$usuario;
+		    $acondicionamiento->acondicionamiento_number=1;
+		    $acondicionamiento->parent_id=$max;
+		    $acondicionamiento->save();	
+	    }
+	    
+	    //Nuevo Acondcionamiento Solicitada
+	    $inbox=new Inbox;
+	    $inbox->date=date('Y-m-d');
+	    $inbox->form_id=$aform;
+	    $inbox->status_id=12;
+	    $inbox->estado=1;
+	    $inbox->to=$usuario;
+	    $inbox->save();
+		
+	}
+	*/
 }

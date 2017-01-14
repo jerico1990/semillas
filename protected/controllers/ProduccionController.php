@@ -60,29 +60,30 @@ class ProduccionController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id=null)
 	{
-		$this->pageTitle = "Producción";
-		$model=new Produccion;
+	    $this->pageTitle = "Producción";
+	    $model=new Produccion;
+	    
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Produccion']))
-		{			
-			$model->attributes=$_POST['Produccion'];
-			$model->form_id=$_POST['form_id'];
-			$model->fecha_cosecha=date('Y-m-d',strtotime($_REQUEST['Produccion']['fecha_cosecha']));
-			$model->area=str_replace(',','',$_REQUEST['Produccion']['area']);
-			$model->produccion=str_replace(',','',$_REQUEST['Produccion']['produccion']);
-		
-			if($model->save())
-				$this->redirect(array('iform/produccionindex'));
+	    if(isset($_POST['Produccion']))
+	    {			
+		$model->attributes=$_POST['Produccion'];
+		$model->form_id=$id;
+		$model->fecha_cosecha=date('Y-m-d',strtotime($_REQUEST['Produccion']['fecha_cosecha']));
+		$model->area=str_replace(',','',$_REQUEST['Produccion']['area']);
+		$model->produccion=str_replace(',','',$_REQUEST['Produccion']['produccion']);
+		if($model->save())
+		{
+		    $this->redirect(array('iform/produccionindex'));
 		}
+	    }
 
-		$this->render('create',array(
-			'model'=>$model,'id'=>$_REQUEST['id']
-		));
+	    $this->render('create',array(
+		    'model'=>$model,'id'=>$id
+	    ));
 	}
 
 	/**

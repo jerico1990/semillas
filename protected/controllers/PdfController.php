@@ -65,18 +65,16 @@ class PdfController extends Controller
    }
 	
 	public function actionSolicitudcampo($id,$idinspect)
-   {
-      $form=Iform::model()->findByPk($id);
-      
-      $this->render('solicitudcampo',array('model'=>$form,'id'=>$idinspect));
-   }
+	{
+	    $form=Iform::model()->findByPk($id);
+	    $this->render('solicitudcampo',array('model'=>$form,'id'=>$idinspect));
+	}
 	
 	public function actionNotificacioncampo($id,$idinspect)
-   {
-      $form=Iform::model()->findByPk($id);
-      
-      $this->render('notificacioncampo',array('model'=>$form,'id'=>$idinspect));
-   }
+	{
+	    $form=Iform::model()->findByPk($id);
+	    $this->render('notificacioncampo',array('model'=>$form,'id'=>$idinspect));
+	}
 	
 	public function actionSemilla($id,$idinspect,$identificador)
 	{
@@ -113,22 +111,22 @@ class PdfController extends Controller
 	}
 	
 	public function actionInformecampoarroz($id,$number,$identificador)
-   {
+    {
       $form=Iform::model()->findByPk($id);      
       $this->render('informecampoarroz',array('model'=>$form,'id'=>$number,'identificador'=>$identificador));
-   }
+    }
 	
 	public function actionInformecampoalgodon($id,$number,$identificador)
-   {
+    {
       $form=Iform::model()->findByPk($id);      
       $this->render('informecampoalgodon',array('model'=>$form,'id'=>$number,'identificador'=>$identificador));
-   }
+    }
 	
 	public function actionInformecampocereales($id,$number,$identificador)
-   {
+    {
       $form=Iform::model()->findByPk($id);      
       $this->render('informecampocereales',array('model'=>$form,'id'=>$number,'identificador'=>$identificador));
-   }
+    }
 	
 	public function actionInformecampoleguminosas($id,$number,$identificador)
 	{
@@ -142,12 +140,12 @@ class PdfController extends Controller
       $this->render('informecampomaiz',array('model'=>$form,'id'=>$number,'identificador'=>$identificador));
 	}
 	
-   public function actionInformecampopapa($id,$number,$identificador)
-   {
+    public function actionInformecampopapa($id,$number,$identificador)
+    {
       $form=Iform::model()->findByPk($id);
       
       $this->render('informecampopapa',array('model'=>$form,'id'=>$number,'identificador'=>$identificador));
-   }
+    }
 	
 	public function actionSolicitudacondicionamiento($id)
 	{		

@@ -2,14 +2,20 @@
 /* @var $this MuestreoController */
 /* @var $model Muestreo */
 /* @var $form CActiveForm */
+$departamentos = Location::model()->findAll(array(
+	  'select'   => 't.department, t.department_id',
+	  'group'    => 't.department',
+	  'order'    => 't.department ASC',
+	  'distinct' => true
+     ));
 
 $departments = Location::model()->findAll(array(
-					 'select'   => 't.id, t.department, t.departament_id',
+					 'select'   => 't.id, t.department, t.department_id',
 					 'group'    => 't.id,t.department',
 					 'order'    => 't.department ASC',
 					 'distinct' => true
 		  )); 
-$listdeparts = CHtml::listData($departments,'departament_id','department');
+$listdeparts = CHtml::listData($departments,'department_id','department');
 
 
 $maestro=Maestro::model()->findAll('codigo=:codigo',array(':codigo'=>'011'));
@@ -51,7 +57,32 @@ $lista_laboratorios=CHtml::listData($laboratorios,'id','legal_name');
 	</div>
 		
 		
-	<div class="row-fluid">		  
+	<div class="row-fluid">
+	    <div class="span4">
+		<label for="Muestreo_department_id">Departamento</label>
+		<select name="Muestreo[department_id]" id="Muestreo_department_id" onchange="Provincias($(this).val())">
+		    <option value="">Seleccionar</option>
+		    <?php foreach($departamentos as $departamento){ ?>
+		    <option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+		    <?php } ?>
+		</select>
+		<div class="help-block error" id="Muestreo_department_id_em_" style="display:none">Departamento no es correcto.</div>
+	    </div>
+	    <div class="span4">
+		<label for="Muestreo_province_id">Provincia</label>
+		<select name="Muestreo[province_id]" id="Muestreo_province_id" onchange="Distritos($(this).val())">
+		    <option value="">Seleccionar</option>
+		</select>
+		<div class="help-block error" id="Muestreo_province_id_em_" style="display:none">Provincia no es correcto.</div>
+	    </div>
+	    <div class="span4">
+		<label for="Muestreo_district_id" class="required">Distrito <span class="required">*</span></label>
+		<select name="Muestreo[district_id]" id="Muestreo_district_id">
+		    <option value="">Seleccionar</option>
+		</select>
+		<div class="help-block error" id="Muestreo_district_id_em_" style="display:none">Distrito no es correcto.</div>
+	    </div>
+	    <!--
 		<div class="span4">
 		<?php echo $form->dropDownListRow($model,'department_id',$listdeparts,array(								
 				  'ajax' => array(
@@ -62,11 +93,11 @@ $lista_laboratorios=CHtml::listData($laboratorios,'id','legal_name');
 		  ))); ?>
 		</div>
 		<div class="span8">
-		</div>
+		</div>-->
 	</div>
-	
+	<!--
 	<div class="row-fluid">		  
-		<div class="span8"> <?php echo $form->dropDownListRow($model,'province_id',array(),array(								
+		<div class="span8"> <?php /*echo $form->dropDownListRow($model,'province_id',array(),array(								
 				  'ajax' => array(
 							'type'=>'GET', //request type
 							 'url'=>CController::createUrl('location/districts'), //url to call.
@@ -77,10 +108,10 @@ $lista_laboratorios=CHtml::listData($laboratorios,'id','legal_name');
 	</div>
 	
 	<div class="row-fluid">		  
-		<div class="span8"><?php echo $form->dropDownListRow($model,'district_id',array(), array()); ?></div>
+		<div class="span8"><?php echo $form->dropDownListRow($model,'district_id',array(), array());*/ ?></div>
 		<div class="span4"></div>
 	</div>
-	
+	-->
 	<div class="row-fluid">			 				
 		<div class="span3"><?php echo $form->checkboxRow($model, 'tipo_analisis_germinacion'); ?></div>
 		<div class="span3"><?php echo $form->checkboxRow($model, 'tipo_analisis_humedad'); ?></div>
@@ -108,3 +139,20 @@ $lista_laboratorios=CHtml::listData($laboratorios,'id','legal_name');
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<?php
+$provincias=CController::createUrl('location/provinces');
+$distritos=CController::createUrl('location/districts');
+?>
+<script>
+    function Provincias(valor) {
+	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Muestreo_province_id" ).html( data );});
+	$("#Muestreo_province_id").find("option").remove().end().append("<option value></option>").val("");
+	$("#Muestreo_district_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+    
+    function Distritos(valor) {
+	$.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Muestreo_district_id" ).html( data );});
+	$("#Muestreo_district_id").find("option").remove().end().append("<option value></option>").val("");
+    }
+</script>

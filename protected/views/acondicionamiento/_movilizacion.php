@@ -63,14 +63,14 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	</div>
    <div class="row-fluid">     
       <div class="span4">Departamento<?php echo CHtml::dropDownList('odepartment_id','', $list,
-																		  array(
-																					 'class'=>'span12',
-																					 'ajax' => array(
-																							 'type'=>'GET', //request type
-																							 'url'=>CController::createUrl('location/provinces'), //url to call.
-																							 'update'=>'#oprovince_id', //selector to update
-																							 'data'   => 'js:$("#odepartment_id").val()'
-																							 )));?></div>
+											array(
+											      'class'=>'span12',
+											      'ajax' => array(
+													      'type'=>'GET', //request type
+													      'url'=>CController::createUrl('location/provinces'), //url to call.
+													      'update'=>'#oprovince_id', //selector to update
+													      'data'   => 'js:$("#odepartment_id").val()'
+													      )));?></div>
       <div class="span4">Provincia<?php  echo CHtml::dropDownList('oprovince_id','', array(),
 						    array(
 								'class'=>'span12',

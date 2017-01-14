@@ -6,7 +6,22 @@ switch($id)
     case(1):$inumber="1ra";break;
     case(2):$inumber="2da";break;
     case(3):$inumber="3ra";break;
+    case(4):$inumber="4ta";break;
+	    
 }
+
+$organismoCertificador=Headquarter::model()->find('id=:id',array(':id'=>$model->headquarter_id));
+$width="437px";
+$height="40px";
+$img="form_header.png";
+$logo=User::model()->find('ruc=:ruc',array(':ruc'=>$organismoCertificador->ruc));
+$img="logos/".$logo->avatar;
+if($logo)
+{
+    $width="200px";
+    $height="60";
+}
+
 ?>
 <?php
 $pdf = Yii::createComponent('application.extensions.MPDF56.mpdf');
@@ -164,14 +179,13 @@ if($varestacion ===1)
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="20%"></td> 
-                    <td width="60%"><div align="center"><img src="'.Yii::app()->getBaseUrl(true).'/images/form_header.png" width="437" height="40"  alt=""/></div></td>
+                    <td width="60%"><div align="center"><img src="'.Yii::app()->getBaseUrl(true).'/images/'.$img.'" width="'.$width.'" height="'.$height.'"  alt=""/></div></td>
                     <td width="20%" style="font-size: 0.8em; text-align: center; font-weight: bold;"></td>
                 </tr>
             </table>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="20%"></td> 
-                    <td width="60%" style="text-align: center; font-size: 0.8em;">"Decenios de las Personas con Discapacidad en el Perú"<br>"Año de la Inversión para el Desarrollo Rural y la Seguridad Alimentaria"</td>
                     <td width="20%"></td> 
                 </tr>
             </table>
@@ -193,7 +207,6 @@ else
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="20%"></td> 
-                    <td width="60%" style="text-align: center; font-size: 0.8em;">"Decenios de las Personas con Discapacidad en el Perú"<br>"Año de la Inversión para el Desarrollo Rural y la Seguridad Alimentaria"</td>
                     <td width="20%"></td> 
                 </tr>
             </table>

@@ -1,55 +1,44 @@
-<?php
-$forma=Iform::model()->find('id=:form_id',array(':form_id'=>$model->form_id));
-$user=User::model()->find('id=:id',array(':id'=>$model->user_id));
-$location=Location::model()->find('district_id=:district_id',array(':district_id'=>$forma->location_id));
-?>
 <div class="form well span12" style="background: #FFFFFF">
-
-<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id'=>'inspection-form',));  ?>
-	<?php echo $form->errorSummary($model); ?>
-	<?php echo CHtml::hiddenField('formu',$model->form_id); ?>
-	<?php echo CHtml::hiddenField('condicional_inspection_id',$model->id); ?>
+    <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm');  ?>
+	<div class="row-fluid">
+	    <div class="span12" id="error" style="color: red"></div>      
+	</div> 	
 	<div class="row-fluid">
 	    <div class="span12"><h4>Estado fenologico del cultivo</h4></div>      
 	</div> 		  
 	<div class="row-fluid">
-	    <div class="span6"><?php echo $form->checkBoxRow($model,'arz_siembra_directa',array('class'=>'arroz')); ?></div>
-	    <div class="span6"><?php echo $form->checkBoxRow($model,'arz_transplante',array('class'=>'arroz')); ?></div>
+	    <div class="span6">
+		<label class="checkbox">
+		    <input class="arroz" name="Inspection[arz_siembra_directa]" id="Inspection_arz_siembra_directa" type="checkbox">Siembra Directa
+		</label>
+	    </div>
+	    <div class="span6">
+		<label class="checkbox">
+		    <input class="arroz" name="Inspection[arz_transplante]" id="Inspection_arz_transplante" type="checkbox">Transplante
+		</label>
+	    </div>
 	</div>
 	<div class="row-fluid">
 	    <div class="span12"><h4>Campo de Multiplicación</h4></div>      
 	</div> 
 	<div class="row-fluid">
 	    <div class="span4">
-		<?php echo $form->datepickerRow($model,'arz_fecha_siembra',array(	
-								 'htmlOptions'=>array('class'=>'arroz_fecha'),
-								 'options'=>array( 'format' => 'dd-mm-yyyy', 
-								 'weekStart'=> 1,
-								 'showButtonPanel' => true,
-								 'showAnim'=>'fold',))); ?>
+		<label>Fecha siembra</label>
+		<input type="date" name="Inspection[arz_fecha_siembra]" id="Inspection_arz_fecha_siembra">
 	    </div>
 	    <div class="span4">
-	    <?php echo $form->datepickerRow($model,'arz_fecha_almacigo',
-													     array(	
-								     'htmlOptions'=>array('class'=>'arroz_fecha'),
-								     'options'=>array( 'format' => 'dd-mm-yyyy', 
-								     'weekStart'=> 1,
-								     'showButtonPanel' => true,
-								     'showAnim'=>'fold',))); ?>
+		<label>Fecha Almacigo</label>
+		<input type="date" name="Inspection[arz_fecha_almacigo]" id="Inspection_arz_fecha_almacigo">
 	    </div>
 	    <div class="span4">
-		<?php echo $form->datepickerRow($model,'arz_fecha_transplante',
-													array(	
-								'htmlOptions'=>array('class'=>'arroz_fecha'),	
-								'options'=>array( 'format' => 'dd-mm-yyyy', 
-								'weekStart'=> 1,
-								'showButtonPanel' => true,
-								'showAnim'=>'fold',))); ?>
+		<label>Fecha de Transplante</label>
+		<input type="date" name="Inspection[arz_fecha_transplante]" id="Inspection_arz_fecha_transplante">
 	    </div>		 
 	</div>
 	<div class="row-fluid">
 	    <div class="span12">
-		<?php echo $form->textFieldRow($model,'arz_area_instalada',array('value'=>'0','size'=>18,'maxlength'=>18,'class'=>'arroz span6')); ?>
+		<label>Area Instalada (ha)</label>
+		<input type="text" name="Inspection[arz_area_instalada]" class="arroz " id="Inspection_arz_area_instalada" maxlength="5">
 	    </div>				  	 
 	</div>
 	<div class="row-fluid">
@@ -58,10 +47,28 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 	<div class="row-fluid">
 	    <div class="span12">
 		<div class="row-fluid">
-		    <div class="span3"><?php echo $form->textFieldRow($model,'arz_fuera_tipo',array('size'=>18,'maxlength'=>18,'class'=>'arroz span12')); ?></div>
-		    <div class="span2"><?php echo $form->textFieldRow($model,'arz_rojo',array('size'=>18,'maxlength'=>18,'class'=>'arroz span12')); ?></div>
-		    <div class="span5"><?php echo $form->textFieldRow($model,'arz_plantas_sintomas',array('size'=>18,'maxlength'=>18,'class'=>'arroz span12')); ?></div>
-		    <div class="span2"> <?php echo $form->textFieldRow($model,'arz_aislamiento',array('value'=>'0','size'=>18,'maxlength'=>18,'class'=>'arroz span12')); ?></div>
+		    <div class="span6">
+			<label>Plantas fuera de tipo</label>
+			<input type="text" name="Inspection[arz_fuera_tipo]" class="span12" id="Inspection_arz_fuera_tipo" maxlength="5">
+		    </div>
+		    <div class="span6">
+			<label>Arroz rojo</label>
+			<input type="text" name="Inspection[arz_rojo]" class="span12" id="Inspection_arz_rojo" maxlength="5">
+		    </div>
+		</div>
+	    </div>
+	</div>
+	<div class="row-fluid">
+	    <div class="span12">
+		<div class="row-fluid">
+		    <div class="span6">
+			<label>Plantas con síntomas de enfermedades</label>
+			<input type="text" name="Inspection[arz_plantas_sintomas]" class="span12" id="Inspection_arz_plantas_sintomas" maxlength="5">
+		    </div>
+		    <div class="span6">
+			<label>Aislamiento (m)</label>
+			<input type="text" name="Inspection[arz_aislamiento]" class="arroz span12" id="Inspection_arz_aislamiento" maxlength="5">
+		    </div>
 		</div>
 	    </div>	    		  
 	</div>
@@ -71,7 +78,10 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 	<div class="row-fluid">
 	    <div class="span12">
 		<div class="row-fluid">
-		    <div class="span12"><?php echo $form->textAreaRow($model,'observaciones',array('size'=>60,'maxlength'=>300,'rows'=>6,'class'=>'arroz span12')); ?></div>		    
+		    <div class="span12">
+			<label>Observación</label>
+			<textarea size="60" maxlength="300" rows="6" class="arroz span12" name="Inspection[observaciones]" id="Inspection_observaciones"></textarea>
+		    </div>		    
 		</div>
 	    </div>	    		  
 	</div>
@@ -80,37 +90,26 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 		<div class="form-actions">
 		    <div class="span4">
 		    <!--Aprobado-->
-			<a id="myModal_btn_apro" role="button" class="btn btn-success span12">Cumple</a>
+			<button id="btn_apro" class="btn btn-success span12" data-toggle="modal">Cumple</button>
+			<input name="Inspection[y01]" id="hidden" type="hidden">
 		    <!--Fin de Aprobado-->	
 		    </div>
 		    <div class="span4">
 		    <!--Condicional-->
-			<a id="myModal_btn_condi" role="button" class="btn btn-primary span12">condicional</a>
-		    <!--Fin de Condicional-->							 										 
+			<button id="btn_condi"  class="btn btn-primary span12" data-toggle="modal">condicional</button>
+		    <!--Fin de Condicional-->
 		    </div>
 		    <!--Boton de No cumples-->
 		    <div class="span4">
-			<button id="myModal_btn_recha" class="btn btn-danger">No cumple</button>
-			  <?php /*$this->widget('bootstrap.widgets.TbButton', array(
-										'id'=>'myModal_btn_recha',
-										'type'=>'danger',
-										'buttonType'=>'ajaxButton',
-										'label'=>'No Cumple',
-										'url'=>Yii::app()->createUrl( 'inspection/rechazado' ),
-										'ajaxOptions'=>array(
-											    'type'=>'POST',
-											    'data' => 'js:$("#inspection-form").serialize()',
-											    'success' =>'function( data ){
-												location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-											    }'),													
-										'htmlOptions'=>array('class'=>'span12','url' => Yii::app()->createUrl( 'iform/1' ),)));*/ ?>																		 
+			<button id="btn_recha"  class="btn btn-danger span12" >No cumple</button>
 		    </div>
 		</div>
 	    </div>
 	</div>
-<!--Botones-->
+	<!--Botones-->
+	
 	<!--Aprobado-->
-	<div id="myModal_acond_apro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div id="myModal_acond_apro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >	
 	    <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		<h4 id="myModalLabel">Pasar a Inspeccion de Acondicionamiento</h4>
@@ -118,207 +117,265 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 	    <div class="modal-body">
 		<p>
 		    <div class="form">
-			<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id'=>'inbox-form',)); ?>	
 			<div class="row-fluid">
 			    <div class="span5">Continuar con la Inspección de</div>
-			    <div class="span7"><?php echo $form->dropDownListRow($model,'select_id', array('1'=>'Acondicionamiento','2'=>'Campo'),array('empty'=>' ','class'=>'validar')); ?></div>
+			    <div class="span7">
+				<select class="validar" name="Inspection[select_id]" id="Inspection_select_id">
+				    <option value>Seleccionar</option>
+				    <option value="1">Acondicionamiento</option>
+				    <option value="2">Campo</option>
+				</select>
+			    </div>
 			</div>
 			<div class="row-fluid">
 			    <div class="span5">Fecha propuesta</div>
-			    <div class="span7"><?php echo $form->datepickerRow($model,'aprobado_fecha_propuesta',
-								    array(
-								     'htmlOptions'=>array('class'=>'validar'),
-								     'options'=>array( 'format' => 'dd-mm-yyyy', 
-								     'weekStart'=> 1,
-								     'showButtonPanel' => true,
-								     'showAnim'=>'fold',))); ?>
+			    <div class="span7">
+				<input type="date" name="Inspection[aprobado_fecha_propuesta]" id="Inspection_aprobado_fecha_propuesta">
 			    </div>
 			</div>
-			<?php $this->endWidget(); ?>				
-		    </div><!-- form -->															  
+		    </div><!-- form -->
 		</p>
 	    </div>
 	    <div class="modal-footer">
-		<!--Boton de Si cumple-->
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-		'id'=>'btn_aprobado_si',
-		'type'=>'primary',
-		'label'=>'Aceptar',
-		'buttonType'=>'ajaxButton',
-		'url'=>Yii::app()->createUrl( 'inspection/cumple' ),
-		'ajaxOptions'=>array(			     
-		'type'=>'POST',	
-		'data' => array(
-				  'arz_siembra_directa'=>'js:$("#Inspection_arz_siembra_directa").val()',
-				  'arz_transplante'=>'js:$("#Inspection_arz_transplante").val()',
-				  'arz_fecha_siembra'=>'js:$("#Inspection_arz_fecha_siembra").val()',
-				  'arz_fecha_almacigo'=>'js:$("#Inspection_arz_fecha_almacigo").val()',
-				  'arz_fecha_transplante'=>'js:$("#Inspection_arz_fecha_transplante").val()',
-				  'arz_area_instalada'=>'js:$("#Inspection_arz_area_instalada").val()',
-				  'arz_aislamiento'=>'js:$("#Inspection_arz_aislamiento").val()',
-				  'arz_fuera_tipo'=>'js:$("#Inspection_arz_fuera_tipo").val()',
-				  'arz_rojo'=>'js:$("#Inspection_arz_rojo").val()',
-				  'arz_plantas_sintomas'=>'js:$("#Inspection_arz_plantas_sintomas").val()',										  									  
-				  'observaciones'=>'js:$("#Inspection_observaciones").val()',						 
-				  'btn'=>'js:$("#Inspection_select_id").val()',
-				  'id'=>$model->id,
-				  'fecha'=>'js:$("#Inspection_aprobado_fecha_propuesta").val()'
-				  ),
-		'success' => 'function(data){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
-		),
-		
-		'htmlOptions'=>array('data-dismiss'=>'modal',
-		'url' => Yii::app()->createUrl( 'inspection/cumple' ),
-		),));
-		?>
-		 <!--Boton de No cumple-->
+		<button id="btn_enviar_aprobado" class="btn btn-primary">Enviar</button>
 	    </div>
 	</div>
 	<!--Boton Condicional-->	
-	<div id="myModal_acond_conda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div id="myModal_acond_conda" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
 	    <div class="modal-header">
-		  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		  <h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
 	    </div>
 	    <div class="modal-body">
-		  <p>
-		  <?php echo $form->datepickerRow($model,'subsanacion_date',
-									 array(
-									  'options'=>array( 'format' => 'dd-mm-yyyy', 
-									  'weekStart'=> 1,
-									  'showButtonPanel' => true,
-									  'showAnim'=>'fold',))); ?>
-									  
-		  </p>
+		<p>
+		    <label for="Inspection_subsanacion_date">Subsanación Fecha</label>
+		    <input type="date" name="Inspection[subsanacion_date]" id="Inspection_subsanacion_date">
+		</p>
 	    </div>
 	    <div class="modal-footer">
-		  <!--Boton de Condicional-->
-		  <?php $this->widget('bootstrap.widgets.TbButton', array(	
-		  'type'=>'primary',
-		  'label'=>'Enviar',
-		  'buttonType'=>'ajaxButton',
-		  'url'=>Yii::app()->createUrl( 'inspection/condicional' ),
-		  'ajaxOptions'=>array(
-		  //'dataType'=> 'jsonp',		  
-		  'type'=>'POST',	
-		  'data' => "js:$('#inspection-form').serializeArray()",
-		  'success' =>'function( data ){
-		  location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-		  }'
-		  ),
-		  'htmlOptions'=>array('data-dismiss'=>'modal',
-		  'url' => Yii::app()->createUrl( 'inspection/condicional' ),
-		  ),));
-		  ?>				
+		<button id="btn_enviar_condicional" class="btn btn-primary">Enviar</button>			
 	    </div>
 	</div>
+	<!--Boton Rechazado-->
+	<!--
+	<div id="myModal_acond_recha" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
+	    </div>
+	    <div class="modal-body">
+		<p>
+		    <label for="Inspection_subsanacion_date">Subsanación Fecha</label>
+		    <input type="date" name="Inspection[subsanacion_date]" id="Inspection_subsanacion_date">
+		</p>
+	    </div>
+	    <div class="modal-footer">
+		<button id="btn_enviar_rechazado" class="btn btn-primary">Enviar</button>			
+	    </div>
+	</div>
+	-->
 <!--Fin de botones-->
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
 <?php
-$cumple=CController::createUrl('inspection/rechazado');
-$condicional=CController::createUrl('inspection/rechazado');
-$no_cumple=CController::createUrl('inspection/rechazado');
+    $cumple=CController::createUrl('inspection/rechazado');
+    $condicional=CController::createUrl('inspection/condicional');
+    $no_cumple=CController::createUrl('inspection/rechazado');
 ?>
 <script>
-	$('#myModal_btn_apro').addClass('disabled');//Aprobado
-	$('#myModal_btn_condi').addClass('disabled');//Condicional
-	//$('#myModal_btn_recha').addClass('disabled');//Rechazado
-	$('#myModal_btn_apro').modal('hide');//Aprobado
-	$('#myModal_btn_condi').modal('hide');//condicional
-	$('#myModal_btn_condi').on('click', function(){
-	    if (!$('#myModal_btn_condi').hasClass('disabled')) {
-		$('#myModal_acond_conda').modal('show');
-	    }
-	});
-	$('#myModal_btn_apro').on('click', function(){
-	    if (!$('#myModal_btn_apro').hasClass('disabled')) {
-		$('#myModal_acond_apro').modal('show');
-	    }		
-	})
-	//$('#myModal_btn_condi').on('click', function(){$('#myModal_acond_cond').modal('show');})
-	//Fecha Formato
-	$('.arroz_fecha').datepicker({
-	    format: 'dd-mm-yyyy',    
-	})
-	$('.arroz_fecha').datepicker().on('changeDate', function(ev){		
-	    $('#Inspection_arz_area_instalada').trigger('keyup');
-	});
-	$('.arroz').on('blur', function(){
-	    $('#Inspection_arz_area_instalada').val(numeral($('#Inspection_arz_area_instalada').val()).format('0,0.00'));
-	    $('#Inspection_arz_aislamiento').val(numeral($('#Inspection_arz_aislamiento').val()).format('0,0.00'));
-	});
+    $('#btn_apro').on('click', function(){
+	var error='';
+	if ($('#Inspection_arz_fecha_siembra').val()=='') {
+	    error=error+'Debe ingresar la Fecha Siembra<br>';
+	}
+	if ($('#Inspection_arz_fecha_almacigo').val()=='') {
+	    error=error+'Debe ingresar la Fecha Almacigo<br>';
+	}
+	if ($('#Inspection_arz_fecha_transplante').val()=='') {
+	    error=error+'Debe ingresar la Fecha Transplante<br>';
+	}
+	if ($('#Inspection_arz_area_instalada').val()=='') {
+	    error=error+'Debe ingresar la Area Instalada (ha)<br>';
+	}
+	if ($('#Inspection_arz_fuera_tipo').val()=='') {
+	    error=error+'Debe ingresar la Plantas fuera de tipo<br>';
+	}
+	if ($('#Inspection_arz_rojo').val()=='') {
+	    error=error+'Debe ingresar la Arroz rojo<br>';
+	}
+	if ($('#Inspection_arz_plantas_sintomas').val()=='') {
+	    error=error+'Debe ingresar la Plantas con síntomas de enfermedades<br>';
+	}
+	if ($('#Inspection_arz_aislamiento').val()=='') {
+	    error=error+'Debe ingresar el Aislamiento (m)<br>';
+	}
+	if ($('#Inspection_observaciones').val()=='') {
+	    error=error+'Debe ingresar la Observación<br>';
+	}
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
+	$('#myModal_acond_apro').modal('show');
+	return true;
+    });
+    
+    $('#btn_condi').on('click', function(){
+	var error='';
+	if ($('#Inspection_arz_fecha_siembra').val()=='') {
+	    error=error+'Debe ingresar la Fecha Siembra<br>';
+	}
+	if ($('#Inspection_arz_fecha_almacigo').val()=='') {
+	    error=error+'Debe ingresar la Fecha Almacigo<br>';
+	}
+	if ($('#Inspection_arz_fecha_transplante').val()=='') {
+	    error=error+'Debe ingresar la Fecha Transplante<br>';
+	}
+	if ($('#Inspection_arz_area_instalada').val()=='') {
+	    error=error+'Debe ingresar la Area Instalada (ha)<br>';
+	}
+	if ($('#Inspection_arz_fuera_tipo').val()=='') {
+	    error=error+'Debe ingresar la Plantas fuera de tipo<br>';
+	}
+	if ($('#Inspection_arz_rojo').val()=='') {
+	    error=error+'Debe ingresar la Arroz rojo<br>';
+	}
+	if ($('#Inspection_arz_plantas_sintomas').val()=='') {
+	    error=error+'Debe ingresar la Plantas con síntomas de enfermedades<br>';
+	}
+	if ($('#Inspection_arz_aislamiento').val()=='') {
+	    error=error+'Debe ingresar el Aislamiento (m)<br>';
+	}
+	if ($('#Inspection_observaciones').val()=='') {
+	    error=error+'Debe ingresar la Observación<br>';
+	}
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
+	$('#myModal_acond_conda').modal('show');
+	return true;
+    });
+    
+    
+    $('#btn_recha').on('click', function(){
+	var error='';
+	if ($('#Inspection_arz_fecha_siembra').val()=='') {
+	    error=error+'Debe ingresar la Fecha Siembra<br>';
+	}
+	if ($('#Inspection_arz_fecha_almacigo').val()=='') {
+	    error=error+'Debe ingresar la Fecha Almacigo<br>';
+	}
+	if ($('#Inspection_arz_fecha_transplante').val()=='') {
+	    error=error+'Debe ingresar la Fecha Transplante<br>';
+	}
+	if ($('#Inspection_arz_area_instalada').val()=='') {
+	    error=error+'Debe ingresar la Area Instalada (ha)<br>';
+	}
+	if ($('#Inspection_arz_fuera_tipo').val()=='') {
+	    error=error+'Debe ingresar la Plantas fuera de tipo<br>';
+	}
+	if ($('#Inspection_arz_rojo').val()=='') {
+	    error=error+'Debe ingresar la Arroz rojo<br>';
+	}
+	if ($('#Inspection_arz_plantas_sintomas').val()=='') {
+	    error=error+'Debe ingresar la Plantas con síntomas de enfermedades<br>';
+	}
+	if ($('#Inspection_arz_aislamiento').val()=='') {
+	    error=error+'Debe ingresar el Aislamiento (m)<br>';
+	}
+	if ($('#Inspection_observaciones').val()=='') {
+	    error=error+'Debe ingresar la Observación<br>';
+	}
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
 	
-	$('.arroz, .arroz_fecha').on('keyup', function(){
-	    if ($('#Inspection_arz_fecha_siembra').val() != '' && $('#Inspection_arz_fecha_almacigo').val() != '' &&
-		     $('#Inspection_arz_fecha_transplante').val() != '' && $('#Inspection_arz_area_instalada').val() != '' &&
-		     $('#Inspection_arz_fuera_tipo').val() != '' && $('#Inspection_arz_rojo').val() != '' &&
-		     $('#Inspection_arz_plantas_sintomas').val() != '' && $('#Inspection_arz_aislamiento').val() != ''		 
-		    )
-	    {		
-		$('#myModal_btn_apro').removeClass('disabled');
-		$('#myModal_btn_condi').removeClass('disabled');
-		$('#myModal_btn_recha').removeClass('disabled');
-	    }
-	    else {
-		$('#myModal_btn_apro').addClass('disabled');
-		$('#myModal_btn_condi').addClass('disabled');
-		$('#myModal_btn_recha').addClass('disabled');
-	    }
-	});
-	$('#myModal_btn_recha').click(function(){
-	    var error='';
-	    if ($('#Inspection_arz_fecha_siembra').val()=='') {
-		error=error+'Debe ingresar la Fecha Siembra\n';
-	    }
-	    if ($('#Inspection_arz_fecha_almacigo').val()=='') {
-		error=error+'Debe ingresar la Fecha Almacigo\n';
-	    }
-	    if ($('#Inspection_arz_fecha_transplante').val()=='') {
-		error=error+'Debe ingresar la Fecha Transplante\n';
-	    }
-	    if ($('#Inspection_arz_area_instalada').val()=='') {
-		error=error+'Debe ingresar la Area Instalada (ha)\n';
-	    }
-	    if ($('#Inspection_arz_fuera_tipo').val()=='') {
-		error=error+'Debe ingresar la Plantas fuera de tipo\n';
-	    }
-	    if ($('#Inspection_arz_rojo').val()=='') {
-		error=error+'Debe ingresar la Arroz rojo\n';
-	    }
-	    if ($('#Inspection_arz_plantas_sintomas').val()=='') {
-		error=error+'Debe ingresar la Plantas con síntomas de enfermedades\n';
-	    }
-	    if ($('#Inspection_arz_aislamiento').val()=='') {
-		error=error+'Debe ingresar el Aislamiento (m)\n';
-	    }
-	    if ($('#Inspection_observaciones').val()=='') {
-		error=error+'Debe ingresar la Observación\n';
-	    }
-	    if (error!='') {
-		alert(error);
-		return false;
-	    }
-	    
-	    
-	    var txt;
-	    var r = confirm("¿Estas seguro de que no cumple?");
-	    if (r == true) {
-		$.ajax({
-		    url: '<?= $no_cumple ?>',
-		    type: 'POST',
-		    data: $("#inspection-form").serialize(),
-		    success: function(data){
-			location.replace("<?= Yii::app()->getRequest()->getHostInfo() ?>'/semillas/index.php/ivcampo/"+$("#formu").val())
-		    }
-		});
-		return true;
-	    } else {
-		return false;
-	    }
-	});
+	var txt;
+	var r = confirm("¿Estas seguro de que el informe no cumple?");
+	if (r == true) {
+	    $('#hidden').val(3);
+	    return true;
+	} else {
+	    return false;
+	}
+    });
+    
+    //Fecha Formato
+    $('.arroz').on('blur', function(){
+	$('#Inspection_arz_area_instalada').val(numeral($('#Inspection_arz_area_instalada').val()).format('0,0.00'));
+	$('#Inspection_arz_aislamiento').val(numeral($('#Inspection_arz_aislamiento').val()).format('0,0.00'));
+    });
+    
+    
+    
+    $('#btn_enviar_aprobado').click(function(){
+	var error='';
+	if ($('#Inspection_aprobado_fecha_propuesta').val()=='') {
+	    error=error+'Debe ingresar la fecha propuesta\n';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
 	
+	
+	var txt;
+	var r = confirm("¿Estas seguro de enviar la fecha sugerida?");
+	if (r == true) {
+	    $('#hidden').val(1);
+	    return true;
+	} else {
+	    return false;
+	}
+    });
+    
+    $('#btn_enviar_condicional').click(function(){
+	var error='';
+	if ($('#Inspection_subsanacion_date').val()=='') {
+	    error=error+'Debe ingresar la fecha de subsanación\n';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
+	
+	
+	var txt;
+	var r = confirm("¿Estas seguro de enviar la fecha de subsanación?");
+	if (r == true) {
+	    $('#hidden').val(2);
+	    return true;
+	} else {
+	    return false;
+	}
+    });
+    /*
+    $('#btn_enviar_rechazado').click(function(){
+	var error='';
+	if ($('#Inspection_aprobado_fecha_propuesta').val()=='') {
+	    error=error+'Debe ingresar la fecha propuesta\n';
+	}
+	if (error!='') {
+	    alert(error);
+	    return false;
+	}
+	
+	
+	var txt;
+	var r = confirm("¿Estas seguro de enviar la fecha sugerida?");
+	if (r == true) {
+	    $('#btn_apro_hidden').val(1);
+	    return true;
+	} else {
+	    return false;
+	}
+    });*/
 </script>
 
 

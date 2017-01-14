@@ -384,14 +384,17 @@ $(function(){
 										'htmlOptions'=>array('class'=>'well'),						   
 										));						
 										?>
-										<?php echo $form->datepickerRow($inspection,'subsanacion_date',
+										<label for="Inspection_subsanacion_date">Subsanación de fecha</label>
+										<input type="date" autocomplete="off" name="Inspection[subsanacion_date]" id="Inspection_subsanacion_date">
+										    
+										<?php /*echo $form->datepickerRow($inspection,'subsanacion_date',
 												  array(
 													'htmlOptions'=>array('value'=>date("d-m-Y", strtotime($inspection->proposed_date))),
 													'options'=>array( 'format' => 'dd-mm-yyyy',
 													'startDate'=>'',
 													'weekStart'=> 1,
 													'showButtonPanel' => true,
-													'showAnim'=>'fold',))); ?>
+													'showAnim'=>'fold',)));*/ ?>
 										<?php echo	$form->textFieldRow($inspection,'subsanacion_time',array('value'=>date("h:m A",strtotime($inspection->proposed_time)),'data-format'=>'hh:mm A','class'=>'input-small'));	?>	
 										
 										<?php $this->endWidget(); ?>				

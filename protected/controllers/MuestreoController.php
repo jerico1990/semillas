@@ -87,7 +87,7 @@ class MuestreoController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		$this->pageTitle = "Actualizar muestreo";
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 

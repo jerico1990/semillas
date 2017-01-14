@@ -2,6 +2,12 @@
 /* @var $this AcondicionamientoController */
 /* @var $model Acondicionamiento */
 /* @var $form CActiveForm */
+    $departamentos = Location::model()->findAll(array(
+	  'select'   => 't.department, t.department_id',
+	  'group'    => 't.department',
+	  'order'    => 't.department ASC',
+	  'distinct' => true
+     ));
 ?>
 
 <div class="form well span12" style="background: #FFFFFF">
@@ -32,7 +38,34 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 					 <div class="span12"><h4>Almacenamiento Previo al Acondicionamiento</h4></div>      
 	</div> 
 	<div class="row-fluid">
-		<div class="span4"><?php echo $form->dropDownListRow($model, 'departament_id', $list,array('class'=>'span12','ajax' => array(
+		<div class="span4">
+		    <label for="Acondicionamiento_department_id">Departamento</label>
+		    <select name="Acondicionamiento[department_id]" id="Acondicionamiento_department_id" onchange="Provincias($(this).val())">
+			<option value="">Seleccionar</option>
+			<?php foreach($departamentos as $departamento){ ?>
+			<option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+			<?php } ?>
+		    </select>
+		    <div class="help-block error" id="Acondicionamiento_department_id_em_" style="display:none">Departamento no es correcto.</div>
+		</div>
+		<div class="span4">
+		    <label for="Acondicionamiento_province_id">Provincia</label>
+		    <select name="Acondicionamiento[province_id]" id="Acondicionamiento_province_id" onchange="Distritos($(this).val())">
+			<option value="">Seleccionar</option>
+		    </select>
+		    <div class="help-block error" id="Acondicionamiento_province_id_em_" style="display:none">Provincia no es correcto.</div>
+		</div>
+		<div class="span4">
+		    <label for="Acondicionamiento_district_id" class="required">Distrito <span class="required">*</span></label>
+		    <select name="Acondicionamiento[district_id]" id="Acondicionamiento_district_id">
+			<option value="">Seleccionar</option>
+		    </select>
+		    <div class="help-block error" id="Acondicionamiento_district_id_em_" style="display:none">Distrito no es correcto.</div>
+		</div>
+		
+		
+		<!--
+		<div class="span4"><?php /*echo $form->dropDownListRow($model, 'departament_id', $list,array('class'=>'span12','ajax' => array(
 									'type'=>'GET', //request type
 									'url'=>CController::createUrl('location/provinces'), //url to call.
 									'update'=>'#Acondicionamiento_province_id', //selector to update
@@ -44,7 +77,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 									'update' => '#Acondicionamiento_district_id',
 									'data'   => 'js:$("#Acondicionamiento_province_id").val()'
 									))); ?></div>
-		<div class="span4"><?php echo $form->dropDownListRow($model,'district_id',array(), array('class'=>'span12 general',)); ?></div>
+		<div class="span4"><?php echo $form->dropDownListRow($model,'district_id',array(), array('class'=>'span12 general',));*/ ?></div>
+		-->
+		
 	</div>
 	<div class="row-fluid">	
 		<div class="span12"><?php echo $form->textFieldRow($model,'address',array('class'=>'span9 general')); ?></div>
@@ -302,7 +337,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-
+<?php
+$provincias=CController::createUrl('location/provinces');
+$distritos=CController::createUrl('location/districts');
+?>
 
 
 <script>
@@ -371,4 +409,15 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 			
 		}
 	});
+	
+	function Provincias(valor) {
+	    $.get( "<?= $provincias ?>?departamento="+valor, function( data ) {$( "#Acondicionamiento_province_id" ).html( data );});
+	    $("#Acondicionamiento_province_id").find("option").remove().end().append("<option value></option>").val("");
+	    $("#Acondicionamiento_district_id").find("option").remove().end().append("<option value></option>").val("");
+	}
+	
+	function Distritos(valor) {
+	    $.get( "<?= $distritos ?>?provincia="+valor, function( data ) {$( "#Acondicionamiento_district_id" ).html( data );});
+	    $("#Acondicionamiento_district_id").find("option").remove().end().append("<option value></option>").val("");
+	}
 </script>
