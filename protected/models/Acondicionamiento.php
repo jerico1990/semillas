@@ -67,9 +67,10 @@ class Acondicionamiento extends CActiveRecord
 	 * @return string the associated database table name
 	 */
 	public $aprobado_fecha_propuesta;
+	public $y01;
 	public function tableName()
 	{
-		return 'acondicionamiento';
+	    return 'acondicionamiento';
 	}
 
 	/**
@@ -77,20 +78,20 @@ class Acondicionamiento extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('user_id, form_id, inspection_id, number_envases, cantidad_envases, disponibilidad, number_acondicionamiento, district_id, province_id, departament_id, identificacion_lote_semilla,  acondicionamiento_number', 'numerical', 'integerOnly'=>true),
-			array('capacidad_envases, peso_estimado, peso_ingreso, peso_salida, cantidad_lotes, afectadas_erwinia, afectadas_fusarium, afectadas_rhizoctoniasis, afectadas_mezcla_varietal, afectadas_fuera_tamano', 'length', 'max'=>18),
-			array('descripcion_secado, descripcion, operatividad, limpieza, observacion', 'length', 'max'=>300),
-			array('tipo_envase, address', 'length', 'max'=>200),
-			array('registro_planta', 'length', 'max'=>50),
-			
-			array('fecha_cosecha, proposed_date, proposed_time, real_date, real_time, subsanacion, subsanacion_time, subsanacion_date, subsanacion_real_date, subsanacion_real_time, aprobado, observado, rechazado', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, form_id, parent_id,inspection_id, number_envases, capacidad_envases, peso_estimado, descripcion_secado, peso_ingreso, peso_salida, cantidad_lotes, cantidad_envases, tipo_envase, disponibilidad, descripcion, operatividad, limpieza, number_acondicionamiento, district_id, province_id, departament_id, address, fecha_cosecha, observacion, afectadas_erwinia, afectadas_fusarium, afectadas_rhizoctoniasis, afectadas_mezcla_varietal, afectadas_fuera_tamano, registro_planta, identificacion_lote_semilla, proposed_date, proposed_time, real_date, real_time, acondicionamiento_number, subsanacion, subsanacion_time, subsanacion_date, subsanacion_real_date, subsanacion_real_time, aprobado, observado, rechazado', 'safe', 'on'=>'search'),
-		);
+	    // NOTE: you should only define rules for those attributes that
+	    // will receive user inputs.
+	    return array(
+		array('user_id, form_id, inspection_id, number_envases, cantidad_envases, disponibilidad, number_acondicionamiento, district_id, province_id, departament_id, identificacion_lote_semilla,  acondicionamiento_number', 'numerical', 'integerOnly'=>true),
+		array('capacidad_envases, peso_estimado, peso_ingreso, peso_salida, cantidad_lotes, afectadas_erwinia, afectadas_fusarium, afectadas_rhizoctoniasis, afectadas_mezcla_varietal, afectadas_fuera_tamano', 'length', 'max'=>18),
+		array('descripcion_secado, descripcion, operatividad, limpieza, observacion', 'length', 'max'=>300),
+		array('tipo_envase, address', 'length', 'max'=>200),
+		array('registro_planta', 'length', 'max'=>50),
+		
+		array('y01,fecha_cosecha, proposed_date, proposed_time, real_date, real_time, subsanacion, subsanacion_time, subsanacion_date, subsanacion_real_date, subsanacion_real_time, aprobado, observado, rechazado', 'safe'),
+		// The following rule is used by search().
+		// @todo Please remove those attributes that should not be searched.
+		array('id, user_id, form_id, parent_id,inspection_id, number_envases, capacidad_envases, peso_estimado, descripcion_secado, peso_ingreso, peso_salida, cantidad_lotes, cantidad_envases, tipo_envase, disponibilidad, descripcion, operatividad, limpieza, number_acondicionamiento, district_id, province_id, departament_id, address, fecha_cosecha, observacion, afectadas_erwinia, afectadas_fusarium, afectadas_rhizoctoniasis, afectadas_mezcla_varietal, afectadas_fuera_tamano, registro_planta, identificacion_lote_semilla, proposed_date, proposed_time, real_date, real_time, acondicionamiento_number, subsanacion, subsanacion_time, subsanacion_date, subsanacion_real_date, subsanacion_real_time, aprobado, observado, rechazado', 'safe', 'on'=>'search'),
+	    );
 	}
 
 	/**
@@ -98,14 +99,13 @@ class Acondicionamiento extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'form' => array(self::BELONGS_TO, 'Form', 'form_id'),
-			'inspection' => array(self::BELONGS_TO, 'Inspection', 'inspection_id'),
-			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
-			
-		);
+	    // NOTE: you may need to adjust the relation name and the related
+	    // class name for the relations automatically generated below.
+	    return array(
+		'form' => array(self::BELONGS_TO, 'Form', 'form_id'),
+		'inspection' => array(self::BELONGS_TO, 'Inspection', 'inspection_id'),
+		'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+	    );
 	}
 
 	/**

@@ -88,7 +88,7 @@ class LeguminosasController extends Controller
 	{
 		$this->pageTitle = "Leguminosas";
 		$model=$this->loadModel($id);
-		
+		$form=Iform::model()->findByPk($model->form_id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

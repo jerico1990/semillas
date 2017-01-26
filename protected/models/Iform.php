@@ -77,13 +77,15 @@ class Iform extends CActiveRecord
 	public $sources_cantidades;
 	public $documents_references;
 	public $productors;
+	public $sources_ids;
 	
 	public $farmers_nombres;
 	public $farmers_dnis;
+	public $farmers_ids;
 	
 	public function tableName()
 	{
-		return 'form';
+	    return 'form';
 	}
 
 	/**
@@ -91,21 +93,21 @@ class Iform extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('user_id, headquarter_id, crop_id, variety_id, location_id,  farmers_id, last_area', 'numerical', 'integerOnly'=>true),
-			array('category', 'length', 'max'=>30),
-			//array('crop_id,variety_id,seed_date,category,location_id,area,sow_estimate_quantity','required'),
-			array(' location_name, location_annex, last_crop', 'length', 'max'=>100),
-			array(' area, location_lon, location_lat, produccion_area, produccion_total,sow_estimate_quantity', 'length', 'max'=>18),
-			array('observacion_aprobado, observacion_notificado', 'length', 'max'=>250),
-			array('form_number', 'length', 'max'=>120),
-			array('seed_date, registry_date, application_ok, produccion_fecha_cosecha,variety_before_id', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('farmers_dnis,farmers_nombres,productors,documents_references,sources_cantidades,sources_etiquetas,sources_controls,id, user_id, headquarter_id, crop_id, modificacion,lotes,mezclar_categorias,variety_id, category,   location_id, location_name, location_annex, area, location_lon, location_lat, seed_date, sow_estimate_quantity, last_crop, farmers_id, registry_date, application_ok, last_area, observacion_aprobado, observacion_notificado, form_number, produccion_area, produccion_total, produccion_fecha_cosecha', 'safe', 'on'=>'search'),
-		);
+	    // NOTE: you should only define rules for those attributes that
+	    // will receive user inputs.
+	    return array(
+		array('user_id, headquarter_id, crop_id, variety_id, location_id,  farmers_id, last_area', 'numerical', 'integerOnly'=>true),
+		array('category', 'length', 'max'=>30),
+		//array('crop_id,variety_id,seed_date,category,location_id,area,sow_estimate_quantity','required'),
+		array(' location_name, location_annex, last_crop', 'length', 'max'=>100),
+		array(' area, location_lon, location_lat, produccion_area, produccion_total,sow_estimate_quantity', 'length', 'max'=>18),
+		array('observacion_aprobado, observacion_notificado', 'length', 'max'=>250),
+		array('form_number', 'length', 'max'=>120),
+		array('farmers_ids,sources_ids,productors,documents_references,sources_cantidades,sources_etiquetas,sources_controls,farmers_dnis,farmers_nombres,seed_date, registry_date, application_ok, produccion_fecha_cosecha,variety_before_id', 'safe'),
+		// The following rule is used by search().
+		// @todo Please remove those attributes that should not be searched.
+		array('farmers_dnis,farmers_nombres,productors,documents_references,sources_cantidades,sources_etiquetas,sources_controls,id, user_id, headquarter_id, crop_id, modificacion,lotes,mezclar_categorias,variety_id, category,   location_id, location_name, location_annex, area, location_lon, location_lat, seed_date, sow_estimate_quantity, last_crop, farmers_id, registry_date, application_ok, last_area, observacion_aprobado, observacion_notificado, form_number, produccion_area, produccion_total, produccion_fecha_cosecha', 'safe', 'on'=>'search'),
+	    );
 	}
 
 	/**

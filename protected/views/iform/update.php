@@ -18,4 +18,4 @@ $this->menu=array(
 
 <h2>Editar Solicitud <?php //echo $model->id; ?></h2>
 
-<?php $this->renderPartial('_form', array('model'=>$model,'crop'=>$crop)); ?>
+<?php $this->renderPartial('_form_update', array('model'=>$model,'headquarter'=>$headquarter,'cultivares'=>$cultivares,'cultivaresAnteriores'=>$cultivaresAnteriores,'ubigeo'=>$ubigeo,'fuentesOrigen'=>$fuentesOrigen,'agricultores'=>$agricultores,'deshabilitar'=>$deshabilitar)); ?>

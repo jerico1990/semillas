@@ -86,21 +86,53 @@ class PapaController extends Controller
     public function actionUpdate($id)
     {
         $this->pageTitle = "Papa";
-            $model=$this->loadModel($id);
-            
-            // Uncomment the following line if AJAX validation is needed
-            // $this->performAjaxValidation($model);
-            
-            if(isset($_POST['Inspection']))
+        $model=$this->loadModel($id);
+        $form=Iform::model()->findByPk($model->form_id);
+        
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+        
+        if(isset($_POST['Inspection']))
+        {
+            $model->attributes=$_POST['Inspection'];
+            $model->papa_fecha_siembra=date("Y-m-d", strtotime($model->papa_fecha_siembra));
+            $model->size=str_replace(',','',$model->size);
+            $model->papa_campo_comercial=str_replace(',','',$model->papa_campo_comercial);
+            $model->papa_otra_especie=str_replace(',','',$model->papa_otra_especie);
+            $model->papa_otro_cultivar=str_replace(',','',$model->papa_otro_cultivar);
+            $model->afectadas_enrollamiento=str_replace(',','',$model->afectadas_enrollamiento);
+            $model->afectadas_mozaico=str_replace(',','',$model->afectadas_mozaico);
+            $model->afectadas_otros_virus=str_replace(',','',$model->afectadas_otros_virus);
+            $model->afectadas_erwinia=str_replace(',','',$model->afectadas_erwinia);
+            $model->afectadas_mezclas=str_replace(',','',$model->afectadas_mezclas);
+            $fecha=date("Y-m-d", strtotime($model->aprobado_fecha_propuesta));
+		
+            if($model->y01==1)//cumple
             {
-                $model->attributes=$_POST['Inspection'];
-                if($model->save())
-                    $this->redirect(array('view','id'=>$model->id));
+                if($model->select_id==2){
+                    $max=$model->inspection_number+1;
+                    $model->Inspeccion($max,$fecha,$form->user_id,$form->id,$form->headquarter_id);
+                }
+                elseif($model->select_id==1){
+                    $model->Acondicionamiento($fecha,$form->id,$model->id,$form->user_id);
+                }
             }
-            
-            $this->render('update',array(
-            'model'=>$model,
-            ));
+            elseif($model->y01==2)//condicional
+            {
+                $model->subsanacion_date=date("Y-m-d", strtotime($model->subsanacion_date));
+                $model->subsanacion=1;
+            }
+            elseif($model->y01==3)//denegado
+            {
+                $model->rechazado=1;
+            }
+            $model->update();
+            return $this->redirect(array('iform/ivcampo','id'=>$model->form_id));
+        }
+        
+        $this->render('update',array(
+        'model'=>$model,
+        ));
     }
     
     /**

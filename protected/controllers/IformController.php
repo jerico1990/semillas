@@ -34,9 +34,8 @@ class IformController extends Controller
 									  'asolicitud','acampo','aacondicionamiento','amuestreo','aetiquetado','PupdateAcondicionamiento',
 									  'PupdateMuestreo','PupdateEtiquetado',
 									  'ivsolicitud','ivcampo','ivacondicionamiento','ivmuestreo','ivetiquetado','updatemuestreo','send','updateetiquetado',
-
-									  'acondicionamientoview','cultivar','fmodificacion','fmodificacionindex',
-									  'modificacionupdate','produccionindex','movilizacionindex','muestreo','laboratorio','ubicacion'),
+									  'acondicionamientoview','cultivar','fmodificacion','fmodificacionindex','eliminaragricultor','eliminarfuente',
+									  'modificacionupdate','produccionindex','movilizacionindex','muestreo','laboratorio','ubicacion','listadocampo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -113,140 +112,143 @@ class IformController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$this->pageTitle = "Generar Solicitud";
-		$model=new Iform;
-		$inbox=new Inbox;
-		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
-		$ubigeo=Location::model()->find('district_id=:district_id',array(':district_id'=>$user->district_id));
-		if(isset($_POST['Iform']))
-		{	
-		    
-		    $model->attributes=$_POST['Iform'];                        
-		    $model->user_id=$user->id;
-		    /*
-		    if($_REQUEST['location_lon']=="" || $_REQUEST['location_lat']==""){
-			    $_REQUEST['location_lat']=0;
-			    $_REQUEST['location_lon']=0;
-		    }*/
-		    
-		    //$model->location_lon=$_REQUEST['location_lon'];
-		    //$model->location_lat=$_REQUEST['location_lat'];
-		    
-		    $crop_before=Crop::model()->find('id=:id', array(':id'=>$model->variety_before_id));
-		    $model->variety_before_id=$model->variety_before_id;
-		    $model->crop_before_id=$crop_before->parent;
-		    
-		    $crop=Crop::model()->find('id=:id', array(':id'=>$model->variety_id));
-		    $model->crop_id=$crop->parent;
-		    
-		    $model->area=str_replace(',','',$model->area);
-		    $model->sow_estimate_quantity=str_replace(',','',$model->sow_estimate_quantity);
-		    $model->seed_date=date('Y-m-d',strtotime($model->seed_date));
-		    if($model->save())
+	    $this->pageTitle = "Generar Solicitud";
+	    $model=new Iform;
+	    $inbox=new Inbox;
+	    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+	    $ubigeo=Location::model()->find('district_id=:district_id',array(':district_id'=>$user->district_id));
+	    if(isset($_POST['Iform']))
+	    {	
+		
+		$model->attributes=$_POST['Iform'];                        
+		$model->user_id=$user->id;
+		/*
+		if($_REQUEST['location_lon']=="" || $_REQUEST['location_lat']==""){
+			$_REQUEST['location_lat']=0;
+			$_REQUEST['location_lon']=0;
+		}*/
+		
+		//$model->location_lon=$_REQUEST['location_lon'];
+		//$model->location_lat=$_REQUEST['location_lat'];
+		
+		$crop_before=Crop::model()->find('id=:id', array(':id'=>$model->variety_before_id));
+		$model->variety_before_id=$model->variety_before_id;
+		$model->crop_before_id=$crop_before->parent;
+		
+		$crop=Crop::model()->find('id=:id', array(':id'=>$model->variety_id));
+		$model->crop_id=$crop->parent;
+		
+		$model->area=str_replace(',','',$model->area);
+		$model->sow_estimate_quantity=str_replace(',','',$model->sow_estimate_quantity);
+		$model->seed_date=date('Y-m-d',strtotime($model->seed_date));
+		if($model->save())
+		{
+		
+		    if(!$model->farmers_dnis)
 		    {
-			if(!$model->farmers_dnis)
-			{
-			    $countAgricultores=0;
-			}
-			else
-			{
-			    $countAgricultores=count(array_filter($model->farmers_dnis));
-			}
-			for($i=1;$i<$countAgricultores;$i++)
-			{
-			    $farmers=new Farmers;
-			    $farmers->form_id=$model->id;
-			    $farmers->name=$model->farmers_nombres[$i];
-			    $farmers->document_number=$model->farmers_dnis[$i];
-			    $farmers->save();
-			}
-			    /*
-			    //Insertando Farmers
-			    for($i = 0; $i < (count($_REQUEST['Iform'])-10); ++$i)
-			    {				
-				    if(isset( $_REQUEST['Iform']['farmers_nombre_'.$i.'']) && $_REQUEST['Iform']['farmers_nombre_'.$i.'']!=="")
-				    {
-					    $farmers=new Farmers;
-					    $farmers->form_id=$model->id;
-					    $farmers->name=$_REQUEST['Iform']['farmers_nombre_'.$i.''];
-					    $farmers->document_number=$_REQUEST['Iform']['farmers_dni_'.$i.''];
-					    $farmers->save();
-				    }
-			    }*/
-			    
-			if(!$model->productors)
-			{
-			    $countFuentes=0;
-			}
-			else
-			{
-			    $countFuentes=count(array_filter($model->productors));
-			}
-			for($i=1;$i<$countFuentes;$i++)
-			{
-			    $source_doc=new SourceDoc;
-			    $source_doc->form_id=$model->id;
-			    $source_doc->control=$model->sources_controls[$i];
-			    $source_doc->etiqueta=$model->sources_etiquetas[$i];  
-			    $source_doc->cantidad=$model->sources_cantidades[$i]; 
-			    $source_doc->document_reference=$model->documents_references[$i]; 
-			    $source_doc->productor=$model->productors[$i];  
-			    $source_doc->save();
-			}
-			/*
-			    //Insertando Fuentes
-			    for($a = 0; $a < (count($_REQUEST['Iform'])-10); ++$a)
-			    {				
-				    if(isset( $_REQUEST['Iform']['source_control_'.$a.'']) && $_REQUEST['Iform']['source_control_'.$a.'']!=="")
-				    {
-					    $source_doc=new SourceDoc;
-					    //echo $_REQUEST['Iform']['farmers_nombre_'.$i.''];
-					    $source_doc->form_id=$model->id;
-					    $source_doc->control=$_REQUEST['Iform']['source_control_'.$a.''];
-					    $source_doc->etiqueta=$_REQUEST['Iform']['source_etiqueta_'.$a.''];
-					    $source_doc->cantidad=$_REQUEST['Iform']['source_cantidad_'.$a.''];
-					    $source_doc->document_reference=$_REQUEST['Iform']['document_reference_'.$a.''];
-					    $source_doc->productor=$_REQUEST['Iform']['productor_'.$a.''];
-					    $source_doc->save();
-				    }
-			    }
-			*/
-			    $inbox->attributes=$_POST['Iform'];
-			    $inbox->form_id=$model->id;
-			    $inbox->to=$user->id;
-			    $inbox->status_id=1;
-			    $inbox->estado=1;
-			    $inbox->date=date('Y-m-d');		
-			    if($inbox->save())
-			    {
-				    
-				    //Pagos
-				    $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$_POST['Iform']['headquarter_id']));
-				    if($headquarter->tipo_empresa==2)
-				    {
-					    
-					    $concepto = Concept::model()->find('id=:id',array(':id'=>1));					
-					    $payment=new Payment;
-					    $payment->concept_id=$concepto->id;
-					    $payment->date=date('Y-m-d');
-					    $payment->quantity=1;
-					    $payment->ruc=$user->ruc;
-					    $payment->price=$concepto->price;
-					    $payment->form_id=$model->id;
-					    $payment->user_id=$model->user_id;
-					    $payment->descripcion=$concepto->short_name." de ".$model->crop->name;
-					    $payment->document_reference=date('Y-m-d');
-					    $payment->save();
-				    }					
-				    $this->redirect(array('view','id'=>$model->id));
-			    }
+			$countAgricultores=0;
 		    }
+		    else
+		    {
+			$countAgricultores=count(array_filter($model->farmers_dnis));
+		    }
+		    
+		    for($i=0;$i<$countAgricultores;$i++)
+		    {
+			$farmers=new Farmers;
+			$farmers->form_id=$model->id;
+			$farmers->name=$model->farmers_nombres[$i];
+			$farmers->document_number=$model->farmers_dnis[$i];
+			$farmers->save();
+			
+		    }
+			/*
+			//Insertando Farmers
+			for($i = 0; $i < (count($_REQUEST['Iform'])-10); ++$i)
+			{				
+				if(isset( $_REQUEST['Iform']['farmers_nombre_'.$i.'']) && $_REQUEST['Iform']['farmers_nombre_'.$i.'']!=="")
+				{
+					$farmers=new Farmers;
+					$farmers->form_id=$model->id;
+					$farmers->name=$_REQUEST['Iform']['farmers_nombre_'.$i.''];
+					$farmers->document_number=$_REQUEST['Iform']['farmers_dni_'.$i.''];
+					$farmers->save();
+				}
+			}*/
+			
+		    if(!$model->productors)
+		    {
+			$countFuentes=0;
+		    }
+		    else
+		    {
+			$countFuentes=count(array_filter($model->productors));
+		    }
+		    for($i=0;$i<$countFuentes;$i++)
+		    {
+			$source_doc=new SourceDoc;
+			$source_doc->form_id=$model->id;
+			$source_doc->control=$model->sources_controls[$i];
+			$source_doc->etiqueta=$model->sources_etiquetas[$i];  
+			$source_doc->cantidad=$model->sources_cantidades[$i]; 
+			$source_doc->document_reference=$model->documents_references[$i]; 
+			$source_doc->productor=$model->productors[$i];  
+			$source_doc->save();
+		    }
+		    /*
+			//Insertando Fuentes
+			for($a = 0; $a < (count($_REQUEST['Iform'])-10); ++$a)
+			{				
+				if(isset( $_REQUEST['Iform']['source_control_'.$a.'']) && $_REQUEST['Iform']['source_control_'.$a.'']!=="")
+				{
+					$source_doc=new SourceDoc;
+					//echo $_REQUEST['Iform']['farmers_nombre_'.$i.''];
+					$source_doc->form_id=$model->id;
+					$source_doc->control=$_REQUEST['Iform']['source_control_'.$a.''];
+					$source_doc->etiqueta=$_REQUEST['Iform']['source_etiqueta_'.$a.''];
+					$source_doc->cantidad=$_REQUEST['Iform']['source_cantidad_'.$a.''];
+					$source_doc->document_reference=$_REQUEST['Iform']['document_reference_'.$a.''];
+					$source_doc->productor=$_REQUEST['Iform']['productor_'.$a.''];
+					$source_doc->save();
+				}
+			}
+		    */
+			$inbox->attributes=$_POST['Iform'];
+			$inbox->form_id=$model->id;
+			$inbox->to=$user->id;
+			$inbox->status_id=1;
+			$inbox->estado=1;
+			$inbox->date=date('Y-m-d');		
+			if($inbox->save())
+			{
+				
+				//Pagos
+				$headquarter=Headquarter::model()->find('id=:id',array(':id'=>$_POST['Iform']['headquarter_id']));
+				if($headquarter->tipo_empresa==2)
+				{
+					
+					$concepto = Concept::model()->find('id=:id',array(':id'=>1));					
+					$payment=new Payment;
+					$payment->concept_id=$concepto->id;
+					$payment->date=date('Y-m-d');
+					$payment->quantity=1;
+					$payment->ruc=$user->ruc;
+					$payment->price=$concepto->price;
+					$payment->form_id=$model->id;
+					$payment->user_id=$model->user_id;
+					$payment->descripcion=$concepto->short_name." de ".$model->crop->name;
+					$payment->document_reference=date('Y-m-d');
+					$payment->save();
+				}					
+				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
+	    }
 
-		$this->render('create',array(
-			'model'=>$model,
-			'ubigeo'=>$ubigeo
-		));
+	    $this->render('create',array(
+		    'model'=>$model,
+		    'ubigeo'=>$ubigeo
+	    ));
 	}
 
 	/**
@@ -256,22 +258,113 @@ class IformController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$this->pageTitle = "Editar Solicitud";
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		$crop = Crop::model()->findAll('parent is null');
-		if(isset($_POST['Iform']))
+	    $this->pageTitle = "Editar Solicitud";
+	    $model=$this->loadModel($id);
+	    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+	    $headquarter=Location::model()->find('district_id=:district_id',array(':district_id'=>$user->district_id));
+	    $cultivares = Crop::model()->findAll('parent=:parent and status=1',array(':parent'=>$model->crop_id));
+	    $cultivaresAnteriores = Crop::model()->findAll('parent=:parent and status=1',array(':parent'=>$model->crop_before_id));
+	    $crop = Crop::model()->findAll('parent is null');
+	    $ubigeo=Location::model()->find('district_id=:district_id',array(':district_id'=>$model->location_id));
+	    $fuentesOrigen=SourceDoc::model()->findAll('form_id=:form_id',array(':form_id'=>$id));
+	    $agricultores=Farmers::model()->findAll('form_id=:form_id',array(':form_id'=>$id));
+	    $inbox=Inbox::model()->find('form_id=:form_id and status_id=1 and estado=0',array(':form_id'=>$id));
+	    $deshabilitar=0;
+	    if($inbox)
+	    {
+		$deshabilitar=1;
+	    }
+	    
+	    if(isset($_POST['Iform']))
+	    {
+		$model->attributes=$_POST['Iform'];
+		
+		if(!$model->farmers_dnis)
 		{
-			$model->attributes=$_POST['Iform'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		    $countAgricultores=0;
 		}
+		else
+		{
+		    $countAgricultores=count(array_filter($model->farmers_dnis));
+		}
+		
+		for($i=0;$i<$countAgricultores;$i++)
+		{
+		    if(isset($model->farmers_ids[$i]))
+		    {
+			$farmers=Farmers::model()->find('id=:id',array(':id'=>$model->farmers_ids[$i]));
+			$farmers->form_id=$model->id;
+			$farmers->name=$model->farmers_nombres[$i];
+			$farmers->document_number=$model->farmers_dnis[$i];
+			$farmers->update();
+		    }
+		    else
+		    {
+			$farmers=new Farmers;
+			$farmers->form_id=$model->id;
+			$farmers->name=$model->farmers_nombres[$i];
+			$farmers->document_number=$model->farmers_dnis[$i];
+			$farmers->save();
+		    }
+		}
+		    /*
+		    //Insertando Farmers
+		    for($i = 0; $i < (count($_REQUEST['Iform'])-10); ++$i)
+		    {				
+			    if(isset( $_REQUEST['Iform']['farmers_nombre_'.$i.'']) && $_REQUEST['Iform']['farmers_nombre_'.$i.'']!=="")
+			    {
+				    $farmers=new Farmers;
+				    $farmers->form_id=$model->id;
+				    $farmers->name=$_REQUEST['Iform']['farmers_nombre_'.$i.''];
+				    $farmers->document_number=$_REQUEST['Iform']['farmers_dni_'.$i.''];
+				    $farmers->save();
+			    }
+		    }*/
+		    
+		if(!$model->productors)
+		{
+		    $countFuentes=0;
+		}
+		else
+		{
+		    $countFuentes=count(array_filter($model->productors));
+		}
+		for($i=0;$i<$countFuentes;$i++)
+		{
+		    if(isset($model->sources_ids[$i]))
+		    {
+			$source_doc=SourceDoc::model()->find('id=:id',array(':id'=>$model->sources_ids[$i]));
+			$source_doc->form_id=$model->id;
+			$source_doc->control=$model->sources_controls[$i];
+			$source_doc->etiqueta=$model->sources_etiquetas[$i];  
+			$source_doc->cantidad=$model->sources_cantidades[$i]; 
+			$source_doc->document_reference=$model->documents_references[$i]; 
+			$source_doc->productor=$model->productors[$i];  
+			$source_doc->update();
+		    }
+		    else
+		    {
+			$source_doc=new SourceDoc;
+			$source_doc->form_id=$model->id;
+			$source_doc->control=$model->sources_controls[$i];
+			$source_doc->etiqueta=$model->sources_etiquetas[$i];  
+			$source_doc->cantidad=$model->sources_cantidades[$i]; 
+			$source_doc->document_reference=$model->documents_references[$i]; 
+			$source_doc->productor=$model->productors[$i];  
+			$source_doc->save();
+		    }
+		    
+		}
+		    
+		$model->save();
+		return $this->refresh();
+	    }
 
-		$this->render('update',array(
-			'model'=>$model,'crop'=>$crop
-		));
+	    $this->render('update',array(
+		    'model'=>$model,'headquarter'=>$headquarter,'cultivares'=>$cultivares,
+		    'cultivaresAnteriores'=>$cultivaresAnteriores,'ubigeo'=>$ubigeo,
+		    'fuentesOrigen'=>$fuentesOrigen,'agricultores'=>$agricultores,'deshabilitar'=>$deshabilitar
+	    ));
 	}
 
 	/**
@@ -294,7 +387,7 @@ class IformController extends Controller
 	public function actionIndex()
 	{
 	    $this->pageTitle = "Solicitudes";
-		if(Yii::app()->user->name=='admin')
+	    if(Yii::app()->user->name=='admin')
             {
                 $dataProvider=new CActiveDataProvider('Iform');
             }
@@ -323,10 +416,7 @@ class IformController extends Controller
 	}
 	
 	public function actionSend() {
-
 		$ds = DIRECTORY_SEPARATOR;  //1
-
-		
 		$model = new Files;
 		$model->form_id = $_GET['id'];
 		$model->url = $_GET['url'];
@@ -334,14 +424,10 @@ class IformController extends Controller
 		$model->save();
 		
 		if (!empty($_FILES)) {
-         $tempFile = $_FILES['Iform']['tmp_name']['file'];          //3             
-         //$targetPath = Yii::getPathOfAlias('webroot.files');  //4
-			$targetPath = 'c:\\xampp\\htdocs\\inia\\files\\'; 
-
-		   $targetFile =  $targetPath. $_FILES['Iform']['name']['file'];  //5
-
-
-			move_uploaded_file($tempFile,$targetFile); //6
+		    $tempFile = $_FILES['Iform']['tmp_name']['file'];    
+		    $targetPath = 'c:\\xampp\\htdocs\\inia\\files\\';
+		    $targetFile =  $targetPath. $_FILES['Iform']['name']['file'];
+		    move_uploaded_file($tempFile,$targetFile); //6
 		}
 	}
 
@@ -350,15 +436,15 @@ class IformController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Iform('search');                
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Iform']))
-			$model->attributes=$_GET['Iform'];
-                $user = User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
-                $model->user_id = $user->id;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+	    $model=new Iform('search');                
+	    $model->unsetAttributes();  // clear any default values
+	    if(isset($_GET['Iform']))
+		    $model->attributes=$_GET['Iform'];
+	    $user = User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+	    $model->user_id = $user->id;
+	    $this->render('admin',array(
+		    'model'=>$model,
+	    ));
 	}
 
 	/**
@@ -370,24 +456,24 @@ class IformController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		 if(Yii::app()->user->name=='administrador_inia'  || Yii::app()->user->checkAccess('estacion'))
-                {
-                     $model=Iform::model()->findByPk($id);                    
-                }
-		elseif(Yii::app()->user->checkAccess('inspector'))
-		{			
-			$model=Iform::model()->find('id=:id', array(':id'=>$id));
-		}
-                else
-                {
-                    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
-                    $model=Iform::model()->find('user_id=:user_id and id=:id', array(':user_id'=>$user->id,':id'=>$id));                   
-                }
-		
-                //$model=Form::model()->findByPk($id);
-		if($model==null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+	    if(Yii::app()->user->name=='administrador_inia'  || Yii::app()->user->checkAccess('estacion'))
+	    {
+		 $model=Iform::model()->findByPk($id);                    
+	    }
+	    elseif(Yii::app()->user->checkAccess('inspector'))
+	    {			
+		    $model=Iform::model()->find('id=:id', array(':id'=>$id));
+	    }
+	    else
+	    {
+		$user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+		$model=Iform::model()->find('user_id=:user_id and id=:id', array(':user_id'=>$user->id,':id'=>$id));                   
+	    }
+	    
+	    //$model=Form::model()->findByPk($id);
+	    if($model==null)
+		    throw new CHttpException(404,'The requested page does not exist.');
+	    return $model;
 	}
 
 	/**
@@ -396,11 +482,11 @@ class IformController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']=='iform-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
+	    if(isset($_POST['ajax']) && $_POST['ajax']=='iform-form')
+	    {
+		echo CActiveForm::validate($model);
+		Yii::app()->end();
+	    }
 	}
 	
 	
@@ -421,46 +507,46 @@ class IformController extends Controller
 	
 	public function actionAview($id)
 	{
-		$this->render('aview',array(
-			'model'=>$this->loadModel($id),
-		));
+	    $this->render('aview',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionAsolicitud($id)
 	{
-		  $this->pageTitle = "Solicitud";
-		  $this->render('asolicitud',array(
-			  'model'=>$this->loadModel($id),
-		  ));
+	    $this->pageTitle = "Solicitud";
+	    $this->render('asolicitud',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionAcampo($id)
 	{
-		  $this->pageTitle = "Campo";
-		  $this->render('acampo',array(
-			  'model'=>$this->loadModel($id),
-		  ));
+	    $this->pageTitle = "Campo";
+	    $this->render('acampo',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionAacondicionamiento($id)
 	{
-		  $this->pageTitle = "Acondicionamiento";
-		  $this->render('aacondicionamiento',array(
-			  'model'=>$this->loadModel($id),
-		  ));
+	    $this->pageTitle = "Acondicionamiento";
+	    $this->render('aacondicionamiento',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionAmuestreo($id)
 	{
-		  $this->pageTitle = "Muestreo";
-		  $data="";
-		  $this->render('amuestreo',array(
-			  'model'=>$this->loadModel($id),'myValue'=>$data,
-		  ));
+	    $this->pageTitle = "Muestreo";
+	    $data="";
+	    $this->render('amuestreo',array(
+		    'model'=>$this->loadModel($id),'myValue'=>$data,
+	    ));
 	}
 	public function actionAetiquetado($id)
 	{
-		  $this->pageTitle = "Etiquetado";
-		  $data="";
-		  $this->render('aetiquetado',array(
-			  'model'=>$this->loadModel($id),'myValue'=>$data,
-		  ));
+	    $this->pageTitle = "Etiquetado";
+	    $data="";
+	    $this->render('aetiquetado',array(
+		    'model'=>$this->loadModel($id),'myValue'=>$data,
+	    ));
 	}
 	public function actionAsignarinsp()
 	{
@@ -478,221 +564,128 @@ class IformController extends Controller
 	
 	public function actionIindex()
 	{
-		 /* $this->pageTitle = "Expedientes";
-		  $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
-               $dataProvider=new CActiveDataProvider('Iform', array(
-								'criteria' => array(
-								    'condition'=>'status_id=3',
-								    'join' => 'INNER JOIN inbox  ON inbox.form_id=t.id and inbox.to='.$user->id,
-								)
-							    ));
-		$this->render('iindex',array(
-			 'dataProvider'=>$dataProvider,
-		));*/
-      $this->pageTitle = "Administrar Expedientes";
-		$model=new Iform('searchi');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Iform']))
-			$model->attributes=$_GET['Iform'];
-		$this->render('iindex',array(
-			'model'=>$model
-		));
+	    $this->pageTitle = "Administrar Expedientes";
+	    $model=new Iform('searchi');
+	    $model->unsetAttributes();  // clear any default values
+	    if(isset($_GET['Iform']))
+		    $model->attributes=$_GET['Iform'];
+	    $this->render('iindex',array(
+		    'model'=>$model
+	    ));
 	}
 	
 	
 	
 	public function actionIview($id)
 	{
-		  $this->pageTitle = "Detalle de expediente";
-		  die;
-		  $this->render('ivsolicitud',array(
-			  'model'=>$this->loadModel($id),
-		  ));
+	    $this->pageTitle = "Detalle de expediente";
+	    $this->render('ivsolicitud',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionIvsolicitud($id)
 	{
-		  $this->pageTitle = "Solicitud";
-		  $this->render('ivsolicitud',array(
-			  'model'=>$this->loadModel($id),
-		  ));
+	    $this->pageTitle = "Solicitud";
+	    $this->render('ivsolicitud',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionIvcampo($id)
 	{
-		  $this->pageTitle = "Campo";
-		  $this->render('ivcampo',array(
-			  'model'=>$this->loadModel($id),
-		  ));
+	    $this->pageTitle = "Campo";
+	    $this->render('ivcampo',array(
+		    'model'=>$this->loadModel($id),
+	    ));
 	}
 	public function actionIvacondicionamiento($id)
 	{
-		  $data="";
-		  $update_acondicionamiento="";
-		  $this->pageTitle = "Acondicionamiento";
-		  $this->render('ivacondicionamiento',array(
-			  'model'=>$this->loadModel($id),'myValue'=>$data,'update_acondicionamiento'=>$update_acondicionamiento
-		  ));
+	    $data="";
+	    $update_acondicionamiento="";
+	    $this->pageTitle = "Acondicionamiento";
+	    $this->render('ivacondicionamiento',array(
+		    'model'=>$this->loadModel($id),'myValue'=>$data,'update_acondicionamiento'=>$update_acondicionamiento
+	    ));
 	}
 	public function actionIvmuestreo($id)
 	{
-		  $this->pageTitle = "Muestreo";
-		  $data="";
-		  $this->render('ivmuestreo',array(
-			  'model'=>$this->loadModel($id),'myValue'=>$data,
-		  ));
+	    $this->pageTitle = "Muestreo";
+	    $data="";
+	    $this->render('ivmuestreo',array(
+		    'model'=>$this->loadModel($id),'myValue'=>$data,
+	    ));
 	}
 	public function actionIvetiquetado($id)
 	{
-		  $this->pageTitle = "Etiquetado";
-		  $data="";
-		  $this->render('ivetiquetado',array(
-			  'model'=>$this->loadModel($id),'myValue'=>$data,
-		  ));
+	    $this->pageTitle = "Etiquetado";
+	    $data="";
+	    $this->render('ivetiquetado',array(
+		    'model'=>$this->loadModel($id),'myValue'=>$data,
+	    ));
 	}  
 	public function actionObservacion()
 	{
-		
-		$observacion=$_REQUEST['observacion'];
-		$form=Iform::model()->find('id=:id', array(':id'=>(int)$_REQUEST['form']));
-		$inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>3));
-		$user=User::model()->find('id=:id',array(':id'=>$form->user_id));
-		  //APROBADO
-		if($_REQUEST['id']=='1')
-		{
-			
-			$inbox->estado=0;
-			$inbox->save();
-			
-			//Expediente
-			
-			$location=Location::model()->find('district_id=:district_id',array(':district_id'=>$form->location_id));
-			$headquarter=Headquarter::model()->find('parent_id=:parent_id and location_id=:location_id',
-																 array(':parent_id'=>$form->headquarter_id,':location_id'=>$location->department_id));
-			
-			//Fechaa para diferentes anio
-			$correlativo=$headquarter->correlativo+1;				
-			$headquarter->correlativo=$correlativo;
-			$headquarter->save();
-			
-			$expediente=$headquarter->codigo_simple."-".$correlativo."-".date('y');
-			
-			$form->form_number=$expediente;
-			$form->save();
-			
-		
-			
-			//Aprobado
-			$aprobado=new Inbox;		
-			$aprobado->date=date('Y-m-d');
-			$aprobado->form_id=$form->id;
-			$aprobado->to=$form->user_id;
-			$aprobado->status_id=4;
-			$aprobado->estado=1;
-			$aprobado->aprobado=$observacion;
-			$aprobado->save();
-			
-			$inspeccion=new Inspection;
-			$inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha_visita']));
-			$inspeccion->user_id=$form->user_id;
-			$inspeccion->form_id=$form->id;
-			$inspeccion->inspection_number=1;
-			$inspeccion->save();
-		
-			
-			$headquarter=Headquarter::model()->find('id=:id',array(':id'=>$form->headquarter_id));
-			
-			if($headquarter->tipo_empresa==2)
-			{				
-				$quantity=round($form->area);					
-				$concepto = Concept::model()->find('id=:id',array(':id'=>2));					
-				$payment=new Payment;
-				$payment->concept_id=$concepto->id;
-				$payment->date=date('Y-m-d');
-				$payment->quantity=$quantity;
-				$payment->ruc=$user->ruc;
-				$payment->price=$concepto->price;
-				$payment->form_id=$form->id;
-				$payment->user_id=$form->user_id;
-				$payment->document_reference=$form->form_number;
-				$payment->descripcion="1ra Inspección de campo de multiplicación de ".$form->crop->name;
-				$payment->save();			
-			}
-			else if($headquarter->tipo_empresa==1)//Particular
-			{
-				$inboxp=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>4));
-				$inboxp->estado=0;
-				$inboxp->save();
-				//Solicitada
-				$inspectionp=Inspection::model()->find('id=:id',array(':id'=>$inspeccion->id));
-				if($inspectionp->inspection_number==1)
-				{
-					$solicitada=new Inbox;
-					$solicitada->date=date('Y-m-d');
-					$solicitada->form_id=$form->id;
-					$solicitada->to=$form->user_id;
-					$solicitada->status_id=7;
-					$solicitada->estado=1;
-					$solicitada->save();
-				}
-				//Inspeccion
-				$inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',
-														  array(':form_id'=>$form->id,':user_id'=>$inboxp->to,':inspection_number'=>$inspectionp->inspection_number));
-				$inspeccion->proposed_time=date("H:i",strtotime('12:00 PM'));
-				$inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha_visita']));
-				$inspeccion->save();
-			}
+	    //$model->attributes=$_POST['Iform'];
+	    $observacion=$_REQUEST['observacion'];
+	    $form=Iform::model()->find('id=:id', array(':id'=>(int)$_REQUEST['form']));
+	    $inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>3));
+	    $user=User::model()->find('id=:id',array(':id'=>$form->user_id));
+	    //var_dump($observacion);die;
+	    //APROBADO
+	    if($_REQUEST['id']=='1')
+	    {
+		$inbox->estado=0;
+		$inbox->save();
+		//Expediente
+		$location=Location::model()->find('district_id=:district_id',array(':district_id'=>$form->location_id));
+		$headquarter=Headquarter::model()->find('parent_id=:parent_id and location_id=:location_id',array(':parent_id'=>$form->headquarter_id,':location_id'=>$location->department_id));
+		//Fechaa para diferentes anio
+		$correlativo=$headquarter->correlativo+1;				
+		$headquarter->correlativo=$correlativo;
+		$headquarter->save();
+		$expediente=$headquarter->codigo_simple."-".$correlativo."-".date('y');
+		$form->form_number=$expediente;
+		$form->save();
+		//Aprobado
+		$aprobado=new Inbox;		
+		$aprobado->date=date('Y-m-d');
+		$aprobado->form_id=$form->id;
+		$aprobado->to=$form->user_id;
+		$aprobado->status_id=4;
+		$aprobado->estado=1;
+		$aprobado->aprobado=$observacion;
+		$aprobado->save();
+		$inspeccion=new Inspection;
+		$inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha_visita']));
+		$inspeccion->user_id=$form->user_id;
+		$inspeccion->form_id=$form->id;
+		$inspeccion->inspection_number=1;
+		$inspeccion->save();
+		$headquarter=Headquarter::model()->find('id=:id',array(':id'=>$form->headquarter_id));
+		if($headquarter->tipo_empresa==2)
+		{				
+		    $quantity=round($form->area);					
+		    $concepto = Concept::model()->find('id=:id',array(':id'=>2));					
+		    $payment=new Payment;
+		    $payment->concept_id=$concepto->id;
+		    $payment->date=date('Y-m-d');
+		    $payment->quantity=$quantity;
+		    $payment->ruc=$user->ruc;
+		    $payment->price=$concepto->price;
+		    $payment->form_id=$form->id;
+		    $payment->user_id=$form->user_id;
+		    $payment->document_reference=$form->form_number;
+		    $payment->descripcion="1ra Inspección de campo de multiplicación de ".$form->crop->name;
+		    $payment->save();			
 		}
-		//OBSERVACION
-		else if($_REQUEST['id']=='2')
+		else if($headquarter->tipo_empresa==1)//Particular
 		{
-			$inbox->estado=0;
-			$inbox->save();
-			
-			$observar=new Inbox;		
-			$observar->date=date('Y-m-d');
-			$observar->form_id=$form->id;
-			$observar->to=$form->user_id;
-			$observar->status_id=6;
-			$observar->estado=1;
-			$observar->observado=$observacion;
-			$observar->save();	
-		}
-		//RECHAZO
-		else if($_REQUEST['id']=='3')
-		{
-			$inbox->estado=0;
-			$inbox->save();
-			$rechazar=new Inbox;		
-			$rechazar->date=date('Y-m-d');
-			$rechazar->form_id=$form->id;
-			$rechazar->to=$form->user_id;
-			$rechazar->status_id=5;
-			$rechazar->estado=1;
-			$rechazar->rechazado=$observacion;
-			$rechazar->save();	
-		}
-		//Ins. Observada
-		else if($_REQUEST['id']=='6')
-		{
-			$inbox->estado=0;
-			$inbox->save();
-			$rechazar=new Inbox;		
-			$rechazar->date=date('Y-m-d');
-			$rechazar->form_id=$form->id;
-			$rechazar->to=$form->user_id;
-			$rechazar->status_id=5;
-			$rechazar->estado=1;
-			$rechazar->rechazado=$observacion;
-			$rechazar->save();	
-		}
-		//SOLICITAR INSPECCIÓN
-		else if($_REQUEST['id']=='7')
-		{		
-			$inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>4));
-			$inbox->estado=0;
-			$inbox->save();
-			//Solicitada
-			if($_REQUEST['inspeccion']==1)
-			{
+		    $inboxp=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>4));
+		    $inboxp->estado=0;
+		    $inboxp->save();
+		    //Solicitada
+		    $inspectionp=Inspection::model()->find('id=:id',array(':id'=>$inspeccion->id));
+		    if($inspectionp->inspection_number==1)
+		    {
 			$solicitada=new Inbox;
 			$solicitada->date=date('Y-m-d');
 			$solicitada->form_id=$form->id;
@@ -700,146 +693,194 @@ class IformController extends Controller
 			$solicitada->status_id=7;
 			$solicitada->estado=1;
 			$solicitada->save();
-			}
-			//Inspeccion
-		   $inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',
-													  array(':form_id'=>$_REQUEST['form'],':user_id'=>$inbox->to,':inspection_number'=>$_REQUEST['inspeccion']));
-			$inspeccion->proposed_time=date("H:i",strtotime($_REQUEST['hora']));
-			$inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$inspeccion->save();
-			
-		}
-		//NOTIFICAR VISITA iform/iview
-		else if($_REQUEST['id']=='8')
-		{
-			
-		  //CREANDO N° DE EXPEDIENTE
-			$criteria=new CDbCriteria;
-			$criteria->select='max(form_number) as form_number';
-			$max = Iform::model()->find($criteria);
-			$max = $max->form_number + 1;
-		  
-		  //ACTUALIZANDO FECHA Y HORA PROGRAMADA
-		  $inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',
-															 array(':form_id'=> $_REQUEST['form'],':user_id'=>$form->user_id,':inspection_number'=>(int)$_REQUEST['ninspeccion']));
-		  $inspeccion->real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-		  //$inspection->subsanacion=0;
-		  //$inspection->rechazado=0;
-		  $inspeccion->real_time=date("H:i",strtotime($_REQUEST['hora']));
-		  $inspeccion->save();
-		  //CREANDO INBOX DE INSPECCION PROGRAMADA
-		  if($_REQUEST['ninspeccion']==1)
-		  {
-		   $programada=new Inbox;
-			$programada->date=date('Y-m-d');
-			$programada->form_id=$form->id;
-			$programada->to=$form->user_id;
-			$programada->status_id=11;
-			$programada->estado=1;
-			$programada->save();
-			
-			$progra=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$programada->form_id,':status_id'=>11));
-			if($progra!==null)
-			{
-				$solicitada=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$programada->form_id,':status_id'=>7));
-				$solicitada->estado=0;
-				$solicitada->save();
-			}
-		  }
-			
-		}
-		else if($_REQUEST['id']=='9')
-		{
-			$criteria=new CDbCriteria;			
-			$criteria->condition='id=:id';
-			$criteria->params=array(':id'=>$_REQUEST['inspeccion']);
-			$inspeccion = Inspection::model()->find($criteria);			
-			$inspeccion->subsanacion_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$inspeccion->subsanacion_time=date("H:i",strtotime($_REQUEST['hora']));
-			$inspeccion->save();
-			
-			
-		}
-		else if($_REQUEST['id']=='10')
-		{
-			
-			//Guarda Fecha Propuesta
-			$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
-			$acondicionamiento->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$acondicionamiento->proposed_time=date("H:i",strtotime($_REQUEST['hora']));
-			$acondicionamiento->save();
-			
-			//Actualiza estado
-			$solicitado=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$form->id,':status_id'=>12));
-			$solicitado->estado=0;
-			$solicitado->save();
-			
-			//Creando inbox solicitud
-			$solicitar=new Inbox;
-			$solicitar->date=date('Y-m-d');
-			$solicitar->form_id=$form->id;
-			$solicitar->to=$form->user_id;
-			$solicitar->status_id=13;
-			$solicitar->estado=1;
-			$solicitar->save();
-		}
-		else if($_REQUEST['id']=='11')//Notificar Acondicionamient
-		{
-			
-			//Solicitada
-			if($_REQUEST['acondicionamiento_number']==1)
-			{
-			$programada=new Inbox;
-			$programada->date=date('Y-m-d');
-			$programada->form_id=$form->id;
-			$programada->to=$form->user_id;
-			$programada->status_id=17;
-			$programada->estado=1;
-			$programada->save();
-			}
-			if($_REQUEST['acondicionamiento_number']==20)//Privados
-			{
-				$muestreo=Muestreo::model()->find('acondicionamiento_id=:acondicionamiento_id',array(':acondicionamiento_id'=>$_REQUEST['acondicionamiento']));
-				$muestreo->notificacion_acondicionamiento=1;
-				$muestreo->save();
-			}
-			//acondicionamient
-			$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
-			$acondicionamiento->real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$acondicionamiento->real_time=date("H:i",strtotime($_REQUEST['hora']));
-			$acondicionamiento->save();
-			
-			
-		}
-		else if($_REQUEST['id']=='12')//Inspeccion Subsanacion
-		{
-			
-			$inspeccion=Inspection::model()->find('form_id=:form_id and inspection_number=:inspection_number and subsanacion=TRUE',
-															  array(':form_id'=>$_REQUEST['form'],
-																	  ':inspection_number'=>$_REQUEST['ninspeccion']));
-			$inspeccion->subsanacion_real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$inspeccion->subsanacion_real_time=date("H:i",strtotime($_REQUEST['hora']));
-			$inspeccion->save();
-		}
-		else if($_REQUEST['id']=='13')//Acondicionamiento Subsanacion
-		{
-			
-			$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
-			$acondicionamiento->subsanacion_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$acondicionamiento->subsanacion_time=date("H:i",strtotime($_REQUEST['hora']));
-			$acondicionamiento->save();
-		}
-		else if($_REQUEST['id']=='14')//Acondicionamiento Subsanacion
-		{
-			
-			$acondicionamiento=Acondicionamiento::model()->find('form_id=:form_id and acondicionamiento_number=:acondicionamiento_number and subsanacion=TRUE',
-															  array(':form_id'=>$_REQUEST['form'],
-																	  ':acondicionamiento_number'=>$_REQUEST['nacondicionamiento']));
-			$acondicionamiento->subsanacion_real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-			$acondicionamiento->subsanacion_real_time=date("H:i",strtotime($_REQUEST['hora']));
-			$acondicionamiento->save();
+		    }
+		    //Inspeccion
+		    $inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',array(':form_id'=>$form->id,':user_id'=>$inboxp->to,':inspection_number'=>$inspectionp->inspection_number));
+		    $inspeccion->proposed_time=date("H:i",strtotime('12:00 PM'));
+		    $inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha_visita']));
+		    $inspeccion->save();
 		}
 		
+	    }
+	    //OBSERVACION
+	    else if($_REQUEST['id']=='2')
+	    {
+		$inbox->estado=0;
+		$inbox->save();
+		$observar=new Inbox;		
+		$observar->date=date('Y-m-d');
+		$observar->form_id=$form->id;
+		$observar->to=$form->user_id;
+		$observar->status_id=6;
+		$observar->estado=1;
+		$observar->observado=$observacion;
+		$observar->save();	
+	    }
+	    //RECHAZO
+	    else if($_REQUEST['id']=='3')
+	    {
+		$inbox->estado=0;
+		$inbox->save();
+		$rechazar=new Inbox;		
+		$rechazar->date=date('Y-m-d');
+		$rechazar->form_id=$form->id;
+		$rechazar->to=$form->user_id;
+		$rechazar->status_id=5;
+		$rechazar->estado=1;
+		$rechazar->rechazado=$observacion;
+		$rechazar->save();	
+	    }
+	    //Ins. Observada
+	    else if($_REQUEST['id']=='6')
+	    {
+		$inbox->estado=0;
+		$inbox->save();
+		$rechazar=new Inbox;		
+		$rechazar->date=date('Y-m-d');
+		$rechazar->form_id=$form->id;
+		$rechazar->to=$form->user_id;
+		$rechazar->status_id=5;
+		$rechazar->estado=1;
+		$rechazar->rechazado=$observacion;
+		$rechazar->save();	
+	    }
+	    //SOLICITAR INSPECCIÓN
+	    else if($_REQUEST['id']=='7')
+	    {		
+		$inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>4));
+		$inbox->estado=0;
+		$inbox->save();
+		//Solicitada
+		if($_REQUEST['inspeccion']==1)
+		{
+		    $solicitada=new Inbox;
+		    $solicitada->date=date('Y-m-d');
+		    $solicitada->form_id=$form->id;
+		    $solicitada->to=$form->user_id;
+		    $solicitada->status_id=7;
+		    $solicitada->estado=1;
+		    $solicitada->save();
+		}
+		//Inspeccion
+		$inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',array(':form_id'=>$_REQUEST['form'],':user_id'=>$inbox->to,':inspection_number'=>$_REQUEST['inspeccion']));
+		$inspeccion->proposed_time=date("H:i",strtotime($_REQUEST['hora']));
+		$inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$inspeccion->save();
+	    }
+	    //NOTIFICAR VISITA iform/iview
+	    else if($_REQUEST['id']=='8')
+	    {
+		//CREANDO N° DE EXPEDIENTE
+		$criteria=new CDbCriteria;
+		$criteria->select='max(form_number) as form_number';
+		$max = Iform::model()->find($criteria);
+		$max = $max->form_number + 1;
+	      
+		//ACTUALIZANDO FECHA Y HORA PROGRAMADA
+		$inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',array(':form_id'=> $_REQUEST['form'],':user_id'=>$form->user_id,':inspection_number'=>(int)$_REQUEST['ninspeccion']));
+		$inspeccion->real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		//$inspection->subsanacion=0;
+		//$inspection->rechazado=0;
+		$inspeccion->real_time=date("H:i",strtotime($_REQUEST['hora']));
+		$inspeccion->save();
+		//CREANDO INBOX DE INSPECCION PROGRAMADA
+		if($_REQUEST['ninspeccion']==1)
+		{
+		    $programada=new Inbox;
+		    $programada->date=date('Y-m-d');
+		    $programada->form_id=$form->id;
+		    $programada->to=$form->user_id;
+		    $programada->status_id=11;
+		    $programada->estado=1;
+		    $programada->save();
+		    $progra=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$programada->form_id,':status_id'=>11));
+		    if($progra!==null)
+		    {
+			$solicitada=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$programada->form_id,':status_id'=>7));
+			$solicitada->estado=0;
+			$solicitada->save();
+		    }
+		}
+	    }
+	    else if($_REQUEST['id']=='9')
+	    {
+		$criteria=new CDbCriteria;			
+		$criteria->condition='id=:id';
+		$criteria->params=array(':id'=>$_REQUEST['inspeccion']);
+		$inspeccion = Inspection::model()->find($criteria);			
+		$inspeccion->subsanacion_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$inspeccion->subsanacion_time=date("H:i",strtotime($_REQUEST['hora']));
+		$inspeccion->save();
+	    }
+	    else if($_REQUEST['id']=='10')
+	    {
+		//Guarda Fecha Propuesta
+		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
+		$acondicionamiento->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$acondicionamiento->proposed_time=date("H:i",strtotime($_REQUEST['hora']));
+		$acondicionamiento->save();
+		
+		//Actualiza estado
+		$solicitado=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$form->id,':status_id'=>12));
+		$solicitado->estado=0;
+		$solicitado->save();
+		
+		//Creando inbox solicitud
+		$solicitar=new Inbox;
+		$solicitar->date=date('Y-m-d');
+		$solicitar->form_id=$form->id;
+		$solicitar->to=$form->user_id;
+		$solicitar->status_id=13;
+		$solicitar->estado=1;
+		$solicitar->save();
+		return $this->redirect(array('vacondicionamiento','id'=>$form->id));
+	    }
+	    else if($_REQUEST['id']=='11')//Notificar Acondicionamient
+	    {
+		//Solicitada
+		if($_REQUEST['acondicionamiento_number']==1)
+		{
+		$programada=new Inbox;
+		$programada->date=date('Y-m-d');
+		$programada->form_id=$form->id;
+		$programada->to=$form->user_id;
+		$programada->status_id=17;
+		$programada->estado=1;
+		$programada->save();
+		}
+		if($_REQUEST['acondicionamiento_number']==20)//Privados
+		{
+		    $muestreo=Muestreo::model()->find('acondicionamiento_id=:acondicionamiento_id',array(':acondicionamiento_id'=>$_REQUEST['acondicionamiento']));
+		    $muestreo->notificacion_acondicionamiento=1;
+		    $muestreo->save();
+		}
+		//acondicionamient
+		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
+		$acondicionamiento->real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$acondicionamiento->real_time=date("H:i",strtotime($_REQUEST['hora']));
+		$acondicionamiento->save();
+	    }
+	    else if($_REQUEST['id']=='12')//Inspeccion Subsanacion
+	    {
+		$inspeccion=Inspection::model()->find('form_id=:form_id and inspection_number=:inspection_number and subsanacion=TRUE',array(':form_id'=>$_REQUEST['form'],':inspection_number'=>$_REQUEST['ninspeccion']));
+		$inspeccion->subsanacion_real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$inspeccion->subsanacion_real_time=date("H:i",strtotime($_REQUEST['hora']));
+		$inspeccion->save();
+	    }
+	    else if($_REQUEST['id']=='13')//Acondicionamiento Subsanacion
+	    {
+		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
+		$acondicionamiento->subsanacion_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$acondicionamiento->subsanacion_time=date("H:i",strtotime($_REQUEST['hora']));
+		$acondicionamiento->save();
+	    }
+	    else if($_REQUEST['id']=='14')//Acondicionamiento Subsanacion
+	    {
+		$acondicionamiento=Acondicionamiento::model()->find('form_id=:form_id and acondicionamiento_number=:acondicionamiento_number and subsanacion=TRUE',array(':form_id'=>$_REQUEST['form'],':acondicionamiento_number'=>$_REQUEST['nacondicionamiento']));
+		$acondicionamiento->subsanacion_real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
+		$acondicionamiento->subsanacion_real_time=date("H:i",strtotime($_REQUEST['hora']));
+		$acondicionamiento->save();
+	    }
 	}
 	
 	public function actionAcondicionamiento()
@@ -1094,4 +1135,40 @@ class IformController extends Controller
 		$this->renderPartial('_ajaxPetiquetado', array('myValue'=>$data), false, true);
 	}
 	
+	public function actionListadoCampo()
+	{
+	    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+	    $resultados = Yii::app()->db->createCommand()
+		    ->select('form.*,inbox.date,crop.name,a.name variety,maestro.descripcion')
+		    ->from('form')
+		    ->join('inbox','inbox.form_id = form.id')
+		    ->join('crop','crop.id = form.crop_id')
+		    ->join('crop a','a.id = form.variety_id')
+		    ->join('maestro','maestro.codigo="005" and maestro.codigo_detalle=form.category')
+		    ->where('status_id=1 and inbox.to='.$user->id)
+		    ->queryAll();
+		    
+	    $nro=0;
+	    foreach($resultados as $result)
+	    {
+		$nro++;
+		echo "<tr>";
+		echo "<td>" .date("d-m-Y",strtotime($result["date"])) . "</td>";
+		echo "<td>".$result["name"]." / ".$result["variety"]."</td>";
+		echo "<td>".$result["descripcion"]."</td>";
+		echo "<td></td>";
+		echo "<td><a href='vsolicitud/".$result["id"]."'><i class='icon-eye-open'></i></a> <a href='../iform/update/".$result["id"]."'><i class='icon-pencil'></i></a></td>";
+		echo "</tr>";
+	    }
+	}
+	
+	public function actionEliminarAgricultor($id=null)
+	{
+	    Farmers::model()->find('id=:id',array(':id'=>$id))->delete();
+	}
+	
+	public function actionEliminarFuente($id=null)
+	{
+	    SourceDoc::model()->find('id=:id',array(':id'=>$id))->delete();
+	}
 }

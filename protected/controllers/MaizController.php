@@ -86,27 +86,56 @@ class MaizController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		
-		
-		
-		$this->pageTitle = "Maíz";
-		$model=$this->loadModel($id);
+	    $this->pageTitle = "Maíz";
+	    $model=$this->loadModel($id);
+	    $form=Iform::model()->findByPk($model->form_id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Inspection']))
+	    if(isset($_POST['Inspection']))
+	    {
+		$model->attributes=$_POST['Inspection'];
+		$model->maiz_fecha_siembra=date("Y-m-d", strtotime($model->maiz_fecha_siembra));
+		$model->maiz_emergencia_fecha=date("Y-m-d", strtotime($model->maiz_emergencia_fecha));
+		$model->maiz_floracion_fecha=date("Y-m-d", strtotime($model->maiz_floracion_fecha));
+		$model->maiz_fecha_cosecha=date("Y-m-d", strtotime($model->maiz_fecha_cosecha));
+		$model->size=str_replace(',','',$model->size);
+		$model->maiz_floracion=str_replace(',','',$model->maiz_floracion);
+		$model->maiz_llenado_grano=str_replace(',','',$model->maiz_llenado_grano);
+		$model->maiz_distanciamiento_surcos=str_replace(',','',$model->maiz_distanciamiento_surcos);
+		$model->maiz_mata=str_replace(',','',$model->maiz_mata);
+		$model->maiz_campo_comercial=str_replace(',','',$model->maiz_campo_comercial);
+		$model->maiz_otra_especie=str_replace(',','',$model->maiz_otra_especie);
+		$model->maiz_otro_cultivar=str_replace(',','',$model->maiz_otro_cultivar);
+		$fecha=date("Y-m-d", strtotime($model->aprobado_fecha_propuesta));
+		
+		if($model->y01==1)//cumple
 		{
-			
-			$model->attributes=$_POST['Inspection'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-			
+		    if($model->select_id==2){
+			$max=$model->inspection_number+1;
+			$model->Inspeccion($max,$fecha,$form->user_id,$form->id,$form->headquarter_id);
+		    }
+		    elseif($model->select_id==1){
+			$model->Acondicionamiento($fecha,$form->id,$model->id,$form->user_id);
+		    }
 		}
+		elseif($model->y01==2)//condicional
+		{
+		    $model->subsanacion_date=date("Y-m-d", strtotime($model->subsanacion_date));
+		    $model->subsanacion=1;
+		}
+		elseif($model->y01==3)//denegado
+		{
+		    $model->rechazado=1;
+		}
+		$model->update();
+		return $this->redirect(array('iform/ivcampo','id'=>$model->form_id));
+	    }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+	    $this->render('update',array(
+		    'model'=>$model,
+	    ));
 	}
 
 	/**

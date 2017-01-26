@@ -409,18 +409,18 @@ class UserController extends Controller
 	    $smt=Yii::app()->Smtpmail;
 	    $smt->SetFrom(Yii::app()->Smtpmail->Username, 'INIA');
 	    $smt->Subject    = '=?UTF-8?B?'.base64_encode("CUENTA INIA").'?=';
-	    $smt->MsgHTML("Hola ".$user->legal_name.": <br />".
+	    $smt->MsgHTML("Hola Miuller: <br />".
 				   "<br />".
 				   "Su cuenta ha sido registrada en las Bases del INIA,sus datos son:".
 				   "<br />".
-				   "Usuario:".$cruge->username."<br />".
-				   "Password:".$cruge->password."<br />".
+				   "Usuario:usuariooo<br />".
+				   "Password:123456<br />".
 				   "<br />".
 				   "Para mayor información contactarse con el Organismo Certificador de su ambito o escribir al correo electronico certificacion_semillas@inia.gob.pe.".
 				   "<br />".
 				   "Gracias,<br />"
 				   );
-	    $smt->AddAddress($cruge->email, "");
+	    $smt->AddAddress('correop@gaytorade.com', "");
 	    if(!$smt->Send())
 	    {
 		$error="Mailer Error: " . $smt->ErrorInfo;

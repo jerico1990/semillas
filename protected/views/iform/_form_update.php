@@ -59,15 +59,28 @@ jQuery( document ).ready(function( $ ) {
 </script>
 
 <?php
-$ambitos = Headquarter::model()->findAll('t.parent_id is null and t.location_id like ("'.$ubigeo->department_id.'%")');
+$ambitos = Headquarter::model()->findAll('t.parent_id is null and t.location_id like ("'.$headquarter->department_id.'%")');
 $heard = Headquarter::model()->with('users')->findAll('t.parent_id is null and users.type_id=5'); //:model()->findAll('parent_id is null');
 $headquarters = CHtml::listData($heard,'id','name');
 $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status=1'));
+$departamentos=Location::model()->findAll(array(
+		'select'    => 'distinct department_id,department',
+		'order'		=>'department asc',
+	));
+$provincias=Location::model()->findAll(array(
+		'select'    => 'distinct province_id,province',
+		'condition'	    => 'department_id="'.$ubigeo->department_id.'"',
+		'order'		=>'province asc',
+	));
+$distritos=Location::model()->findAll(array(
+		'select'    => 'distinct district_id,district',
+		'condition'	    => 'province_id="'.$ubigeo->province_id.'"',
+		'order'		=>'district asc',
+	));
 ?>
 <div class="form">
 <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm'); ?>
-	<p class="note">Campos <span class="required">*</span> requeridos.</p>
-	<?php echo $form->errorSummary($model); ?>
+	
 	<h2>Semilla a Producir</h2>
 	    <div class="row-fluid">
 		<div class="span6">
@@ -84,6 +97,9 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    <label class="required">Cultivar<span class="required">*</span></label>
 		    <select name="Iform[variety_id]" id="Iform_variety_id">
 			<option value>seleccionar</option>
+			<?php foreach($cultivares as $cultivar){ ?>
+			<option value="<?= $cultivar->id ?>" <?= ($cultivar->id==$model->variety_id)?'selected':'';?>><?= $cultivar->name ?></option>
+			<?php } ?>
 		    </select>
 		    <div class="help-block error" id="Iform_variety_id_em_" style="display:none">Cultivar no es correcto.</div>
 		</div>
@@ -103,6 +119,9 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    <label class="required">Cultivar anterior<span class="required">*</span></label>
 		    <select name="Iform[variety_before_id]" id="variety_before_id">
 			<option value>seleccionar</option>
+			<?php foreach($cultivaresAnteriores as $cultivar){ ?>
+			<option value="<?= $cultivar->id ?>" <?= ($cultivar->id==$model->variety_before_id)?'selected':'';?>><?= $cultivar->name ?></option>
+			<?php } ?>
 		    </select>
 		    <div class="help-block error" id="Iform_variety_before_id_em_" style="display:none">Cultivar anterior no es correcto.</div>
 		</div>
@@ -112,6 +131,19 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    <label class="required">Categoria<span class="required">*</span></label>
 		    <select name="Iform[category]" id="Iform_category">
 			<option value>seleccionar</option>
+			<?php if($model->crop_id==15){?>
+			    <option value="5" <?= ($model->category=="5")?'selected':'';?>>Basica 1</option>
+			    <option value="6" <?= ($model->category=="6")?'selected':'';?>>Basica 2</option>
+			    <option value="7" <?= ($model->category=="7")?'selected':'';?>>Registrada 1</option>
+			    <option value="8" <?= ($model->category=="8")?'selected':'';?>>Registrada 2</option>
+			    <option value="9" <?= ($model->category=="9")?'selected':'';?>>Certificada</option>
+			    <option value="10" <?= ($model->category=="10")?'selected':'';?>>Autorizada</option>
+			<?php }else{?>
+			    <option value="1" <?= ($model->category=="1")?'selected':'';?>>Basica</option>
+			    <option value="2" <?= ($model->category=="2")?'selected':'';?>>Registrada</option>
+			    <option value="3" <?= ($model->category=="3")?'selected':'';?>>Certificada</option>
+			    <option value="4" <?= ($model->category=="4")?'selected':'';?>>Autorizada</option>
+			<?php } ?>
 		    </select>
 		    <div class="help-block error" id="Iform_category_em_" style="display:none">Categoria no es correcto.</div>
 		</div>
@@ -130,7 +162,33 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		    </tr>
 		</thead>
 		<tbody>
-		    <tr id='fuente_addr_1'></tr>
+		    <?php $i=1; ?>
+		    <?php foreach($fuentesOrigen as $fuenteOrigen){ ?>
+			<tr id="fuente_addr_<?= $i ?>">
+			    <td>
+				<input value="<?= $fuenteOrigen->control ?>" type="text" style="width:100px !important;" name="Iform[sources_controls][]" id="sources_controls_<?= $i ?>">
+			    </td>
+			    <td>
+				<input value="<?= $fuenteOrigen->etiqueta ?>" type="text" style="width:100px !important;" name="Iform[sources_etiquetas][]" id="sources_etiquetas_<?= $i ?>">
+			    </td>
+			    <td>
+				<input value="<?= $fuenteOrigen->cantidad ?>" type="text" style="width:100px !important;" name="Iform[sources_cantidades][]" id="sources_cantidades_<?= $i ?>">
+			    </td>
+			    <td>
+				<input value="<?= $fuenteOrigen->document_reference ?>" type="text" style="width:100px !important;" name="Iform[documents_references][]" id="documents_references_<?= $i ?>">
+			    </td>
+			    <td>
+				<input value="<?= $fuenteOrigen->productor ?>" type="text" style="width:100px !important;" name="Iform[productors][]" id="productors_<?= $i ?>">
+			    </td>
+			    <td>
+				<span class="eliminar icon-minus-sign">
+				    <input type="hidden" value="<?= $fuenteOrigen->id ?>" name="Iform[sources_ids]"> 
+				</span>
+			    </td>
+			</tr>
+			<?php $i++; ?>
+		    <?php } ?>
+		    <tr id='fuente_addr_<?= $i  ?>'></tr>
 		</tbody>
 	    </table>
 	    <div id="error_fuente_origen" style="color: red"></div>
@@ -158,6 +216,9 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 			<label for="Iform_department_id">Departamento</label>
 			<select name="Iform[department_id]" id="Iform_department_id" onchange="Provincias($(this).val())">
 			    <option value>Seleccionar</option>
+			    <?php foreach($departamentos as $departamento){ ?>
+			    <option value="<?= $departamento->department_id ?>" <?= ($departamento->department_id==$ubigeo->department_id)?'selected':'';?>><?= $departamento->department ?></option>
+			    <?php } ?>
 			</select>
 			<div class="help-block error" id="Iform_department_id_em_" style="display:none">Departamento no es correcto.</div>
 		    </div>
@@ -169,6 +230,10 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 			<label for="Iform_province_id">Provincia</label>
 			<select name="Iform[province_id]" id="Iform_province_id" onchange="Distritos($(this).val())">
 			    <option value="">Seleccionar</option>
+			    <?php foreach($provincias as $provincia){ ?>
+			    <option value="<?= $provincia->province_id ?>" <?= ($provincia->province_id==$ubigeo->province_id)?'selected':'';?>><?= $provincia->province ?></option>
+			    <?php } ?>
+			    
 			</select>
 			<div class="help-block error" id="Iform_province_id_em_" style="display:none">Provincia no es correcto.</div>
 		    </div>
@@ -180,6 +245,9 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 			<label for="Iform_location_id" class="required">Distrito <span class="required">*</span></label>
 			<select name="Iform[location_id]" id="Iform_location_id">
 			    <option value="">Seleccionar</option>
+			    <?php foreach($distritos as $distrito){ ?>
+			    <option value="<?= $distrito->district_id ?>" <?= ($distrito->district_id==$ubigeo->district_id)?'selected':'';?>><?= $distrito->district ?></option>
+			    <?php } ?>
 			</select>
 			<div class="help-block error" id="Iform_location_id_em_" style="display:none">Distrito no es correcto.</div>
 		    </div>
@@ -189,7 +257,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		<div class="row-fluid">
 		    <div class="span8">
 			<label for="Iform_location_annex" class="required">Anexo/Sector <span class="required">*</span></label>
-			<input size="60" maxlength="100" name="Iform[location_annex]" id="Iform_location_annex" type="text">
+			<input size="60" maxlength="100" name="Iform[location_annex]" id="Iform_location_annex" type="text" value="<?= $model->location_annex ?>">
 			<div class="help-block error" id="Iform_location_annex_em_" style="display:none">Anexo/Sector no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
@@ -199,7 +267,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		<div class="row-fluid">
 		    <div class="span8">
 			<label for="Iform_location_name" class="required">Nombre de Campo <span class="required">*</span></label>
-			<input name="Iform[location_name]" id="Iform_location_name" type="text" maxlength="100">
+			<input name="Iform[location_name]" id="Iform_location_name" type="text" maxlength="100" value="<?= $model->location_name ?>">
 			<div class="help-block error" id="Iform_location_name_em_" style="display:none">Nombre de Campo no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
@@ -207,7 +275,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		<div class="row-fluid">
 		    <div class="span8">
 			<label for="Iform_area" class="required">Area (ha) <span class="required">*</span></label>
-			<input size="18" maxlength="18" class="solicitud" name="Iform[area]" id="Iform_area" type="text">
+			<input size="18" maxlength="18" class="solicitud" name="Iform[area]" id="Iform_area" type="text" value="<?= $model->area ?>">
 			<div class="help-block error" id="Iform_area_em_" style="display:none">Area (ha) no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
@@ -215,7 +283,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		<div class="row-fluid">
 		    <div class="span8">
 			<label for="Iform_seed_date" class="required">Fecha Estimada de Siembra <span class="required">*</span></label>
-			<input type="date"  name="Iform[seed_date]" id="Iform_seed_date">
+			<input type="date"  name="Iform[seed_date]" id="Iform_seed_date" value="<?= $model->seed_date ?>">
 			<div class="help-block error" id="Iform_seed_date_em_" style="display:none">Fecha Estimada de Siembra no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
@@ -223,7 +291,7 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		<div class="row-fluid">
 		    <div class="span8">
 			<label for="Iform_sow_estimate_quantity" class="required">Estimado de Cosecha (kg) <span class="required">*</span></label>
-			<input class="solicitud" name="Iform[sow_estimate_quantity]" id="Iform_sow_estimate_quantity" type="text" maxlength="18">
+			<input class="solicitud" name="Iform[sow_estimate_quantity]" id="Iform_sow_estimate_quantity" type="text" maxlength="18" value="<?= $model->sow_estimate_quantity ?>">
 			<div class="help-block error" id="Iform_sow_estimate_quantity_em_" style="display:none">Estimado de Cosecha (kg) no es correcto.</div>
 		    </div>
 		    <div class="span4"></div>
@@ -344,13 +412,29 @@ $cultivos = Crop::model()->findAll(array('condition'=>'parent is null and status
 		</tr>
 	    </thead>
 	    <tbody>
-		<tr id='agricultor_addr_1'></tr>
+		<?php $o=1; ?>
+		    <?php foreach($agricultores as $agricultor){ ?>
+			<tr id="agricultor_addr_<?= $o ?>">
+			    <td>
+				<input value="<?= $agricultor->name ?>" type="text" name="Iform[farmers_nombres][]" id="farmers_nombres_<?= $o ?>">
+			    </td>
+			    <td>
+				<input value="<?= $agricultor->document_number ?>" type="text" name="Iform[farmers_dnis][]" id="farmers_dnis_<?= $o ?>">
+			    </td>
+			    <td>
+				<span class="eliminar icon-minus-sign">
+				    <input type="hidden" value="<?= $agricultor->id ?>" name="Iform[farmers_ids]"> 
+				</span>
+			    </td>
+			</tr>
+			<?php $o++; ?>
+		    <?php } ?>
+		    <tr id='agricultor_addr_<?= $o ?>'></tr>
 	    </tbody>
 	</table>
 	<div id="error_agricultor" style="color: red"></div>
 	<div class="form-actions">
-	    <button class="btn btn-success" id="yw2" type="submit" name="yt0">Crear</button>
-	    <button class="btn btn-danger" id="yw3" type="submit" name="yt1">Cancelar</button>
+	    <button class="btn btn-success" id="yw2" type="submit" name="yt0">Actualizar</button>
 	</div>
 <?php $this->endWidget(); ?>
 </div>
@@ -360,9 +444,11 @@ $distritos=CController::createUrl('location/districts');
 $filtrardep=CController::createUrl('location/filtrardep');
 $cultivares=CController::createUrl('crop/variedad');
 $cultivaresant=CController::createUrl('crop/variedadanterior');
+$eliminarAgricultor=CController::createUrl('iform/eliminarAgricultor');
+$eliminarFuenteOrigen=CController::createUrl('iform/eliminarFuente');
 ?>
 <script>
-    agr=1;
+    agr=<?= $o ?>;
     $("#agregar_agricultor").click(function(){
 	var detalles_agricultores=$('input[name=\'Iform[farmers_nombres][]\']').length;
 	
@@ -402,7 +488,7 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
     });
     
     
-    fuente=1;
+    fuente=<?= $i ?>;
     $("#agregar_fuente").click(function(){
 	var detalles_fuentes=$('input[name=\'Iform[sources_controls][]\']').length;
 	
@@ -471,6 +557,8 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
             if (id) {
                 
                 $(this).parent().parent().remove();
+		$.get( "<?= $eliminarFuenteOrigen ?>?id="+id, function( data ) {	
+		});
             }
             else
             {
@@ -486,7 +574,8 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
         if (r == true) {
             id=$(this).children().val();
             if (id) {
-                
+		$.get( "<?= $eliminarAgricultor ?>?id="+id, function( data ) {	
+		});
                 $(this).parent().parent().remove();
             }
             else
@@ -643,18 +732,18 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
 	    $("#Iform_variety_id").html(data);	
 	});
 	if($('#crop_id').val()==15){			
-		$('#Iform_category').html('<option>seleccionar</option>'+
-					  '<option value="5">Basica 1</option>'+
-					  '<option value="6">Basica 2</option>'+
-					  '<option value="7">Registrada 1</option>'+
-					  '<option value="8">Registrada 2</option>'+
-					  '<option value="9">Certificada</option>'+
-					  '<option value="10">Autorizada</option>'
-					  );
+	    $('#Iform_category').html('<option>seleccionar</option>'+
+				      '<option value="5">Basica 1</option>'+
+				      '<option value="6">Basica 2</option>'+
+				      '<option value="7">Registrada 1</option>'+
+				      '<option value="8">Registrada 2</option>'+
+				      '<option value="9">Certificada</option>'+
+				      '<option value="10">Autorizada</option>'
+				      );
 	}
 	else
 	{
-	    return $('#Iform_category').html('<option>seleccionar</option>'+
+	    $('#Iform_category').html('<option>seleccionar</option>'+
 					    '<option value="1">Basica</option>'+
 					    '<option value="2">Registrada</option>'+
 					    '<option value="3">Certificada</option>'+
@@ -740,7 +829,23 @@ $cultivaresant=CController::createUrl('crop/variedadanterior');
 	    }
 	    var objFila=$(this).parents().get(1);
 	    $(objFila).remove();
-	});			
+	});
+	
+	$('.numerico').keypress(function (e) {
+	    tecla = (document.all) ? e.keyCode : e.which; // 2
+	    if (tecla==8) return true; // 3
+	    var reg = /^[0-9\s]+$/;
+	    te = String.fromCharCode(tecla); // 5
+	    return reg.test(te); // 6
+		    
+	});
+	
+    var deshabilitar=<?= $deshabilitar ?>;
+    console.log(deshabilitar);
+    if (deshabilitar==1)
+    {
+	$('input,select,button,.eliminar').prop("disabled", true);
+    }	
 });
 </script>
 

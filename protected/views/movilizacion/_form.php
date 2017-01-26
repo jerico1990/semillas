@@ -8,247 +8,182 @@ $criteria1->condition='form_id=:form_id';
 $criteria1->params=array(':form_id'=>$id);
 $movilizaciones = Movilizacion::model()->findAll($criteria1);
 ?>
-
-<div class="row-fluid well">
-	<div class='row-fluid'>
-		<div class='span2'>Fecha</div>
-		<div class='span2'>Cantidad(kg)</div>
-		<div class='span6'></div>
-	</div>
-	<?php
-		foreach($movilizaciones as $movilizacion){
-			echo "<div class='row-fluid'>
-					<div class='span2'>".date('d-m-Y',strtotime($movilizacion->fecha))."</div>
-					<div class='span2'>$movilizacion->cantidad_movilizar</div>
-					<div class='span6'>".CHtml::link('Descargar',array('pdf/movilizacion','id'=>$movilizacion->id))."</div>
-				</div>";
-			//echo $produccion->area." ".$produccion->produccion." ".$produccion->fecha_cosecha."</br>";		
-		}
-	?>
+<div class="row-fluid span12" id="error" style="color: red">
 </div>
-
-
+<div class="row-fluid well span12">
+	<div class='row-fluid'>
+	    <div class='span2'>Fecha</div>
+	    <div class='span2'>Cantidad(kg)</div>
+	    <div class='span6'></div>
+	</div>
+	<?php foreach($movilizaciones as $movilizacion) { ?>
+	    <div class='row-fluid'>
+		<div class='span2'><?= date('d-m-Y',strtotime($movilizacion->fecha)) ?></div>
+		<div class='span2'><?= $movilizacion->cantidad_movilizar ?></div>
+		<div class='span6'><?= CHtml::link('Descargar',array('pdf/movilizacion','id'=>$movilizacion->id)) ?> </div>
+	    </div>
+	<?php } ?>
+</div>
 <div class="form well span12" >
 
 
 
 
 
-<?php
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-    'id'=>'acondicionamiento-form',
-   // 'htmlOptions'=>array('class'=>'well span13'),
-   
-));
-
-?>
+<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm'); ?>
 <?php echo CHtml::hiddenField('form_id',$id); ?>
-   <?php
-		$departamentos = Location::model()->findAll(array(
+    <?php $departamentos = Location::model()->findAll(array(
 			  'select'   => 't.department, t.department_id',
 			  'group'    => 't.department',
 			  'order'    => 't.department ASC',
 			  'distinct' => true
 		     ));
-		//$list = CHtml::listData($departments,'department_id','department');
-	?>
+    ?>
 
-   <div class="row-fluid">
-					 <div class="span12"><h4>Semilla a movilizar</h4></div>      
-	</div> 
-   <div class="row-fluid">
-      <div class="span3"><?php echo $form->textFieldRow($model,'cantidad_envases',array('class'=>'movilizacion span12')); ?></div>
-      <div class="span3"><?php echo $form->textFieldRow($model,'capacidad_envases',array('class'=>'movilizacion span12')); ?></div>
-      <div class="span3"><?php echo $form->textFieldRow($model,'cantidad_movilizar',array('class'=>'movilizacion span12')); ?></div>
-      <div class="span3"><?php echo $form->datepickerRow($model,'fecha',
-						                          array(	
-									  'htmlOptions'=>array('class'=>'span12'),
-									  //'prepend'=>'<i class="icon-calendar"></i>',
-									  'options'=>array( 'format' => 'dd-mm-yyyy', 
-									  'weekStart'=> 1,
-									  'showButtonPanel' => true,
-									  'showAnim'=>'fold',))); ?></div>
-	</div>								  
-	 <div class="row-fluid">
-					 <div class="span12"><h4>Origen de la movilización</h4></div>      
+    <div class="row-fluid">
+	<div class="span12"><h4>Semilla a movilizar</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div class="span3">
+	    <label for="Movilizacion_cantidad_envases">Cantidad Envases</label>
+	    <input class="movilizacion span12" name="Movilizacion[cantidad_envases]" id="Movilizacion_cantidad_envases" type="text" maxlength="18">
 	</div>
-   <div class="row-fluid">
-		<div class="span12">					 
-			<?php echo $form->radioButtonListRow($model, 'origen', array(
-			'Planta de acondicionamiento',
-			'Almacén',
-			'Campo de multiplicación',
-			)); ?>
-			
-		   <?php //echo $form->checkBoxListInlineRow($model, 'movilizacion_origen', array('Planta de acondicionamiento', 'Almacén', 'Campo de multiplicación'),array('name'=>'check')); ?>
-		</div >
+	<div class="span3">
+	    <label for="Movilizacion_capacidad_envases">Capacidad Envases (kg)</label>
+	    <input class="movilizacion span12" name="Movilizacion[capacidad_envases]" id="Movilizacion_capacidad_envases" type="text" maxlength="18">
 	</div>
-	<div class="row-fluid">
-      <div class="span12"></div>     
+	<div class="span3">
+	    <label for="Movilizacion_cantidad_movilizar">Cantidad Movilizar (kg)</label>
+	    <input class="movilizacion span12" name="Movilizacion[cantidad_movilizar]" id="Movilizacion_cantidad_movilizar" type="text" maxlength="18">
 	</div>
-	<div class="row-fluid">
-      <div class="span12"><?php echo $form->textFieldRow($model,'origen_nombre_predio',array('class'=>'span6')); ?></div>
+	<div class="span3">
+	    <label for="Movilizacion_fecha">Fecha de movilización</label><input class="span12" type="text" autocomplete="off" name="Movilizacion[fecha]" id="Movilizacion_fecha">
 	</div>
-	<div class="row-fluid">
-	    <div class="span4">
-		<label for="Movilizacion_odepartment_id">Departamento</label>
-		<select name="Movilizacion[odepartment_id]" id="Movilizacion_odepartment_id" onchange="Provincias($(this).val(),1)">
-		    <option value="">Seleccionar</option>
-		    <?php foreach($departamentos as $departamento){ ?>
-		    <option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
-		    <?php } ?>
-		</select>
-		<div class="help-block error" id="Movilizacion_odepartment_id_em_" style="display:none">Departamento no es correcto.</div>
-	    </div>
-	    <div class="span4">
-		<label for="Movilizacion_oprovince_id">Provincia</label>
-		<select name="Movilizacion[oprovince_id]" id="Movilizacion_oprovince_id" onchange="Distritos($(this).val(),1)">
-		    <option value="">Seleccionar</option>
-		</select>
-		<div class="help-block error" id="Movilizacion_oprovince_id_em_" style="display:none">Provincia no es correcto.</div>
-	    </div>
-	    <div class="span4">
-		<label for="Movilizacion_origen_district_id" class="required">Distrito <span class="required">*</span></label>
-		<select name="Movilizacion[origen_district_id]" id="Movilizacion_origen_district_id">
-		    <option value="">Seleccionar</option>
-		</select>
-		<div class="help-block error" id="Movilizacion_origen_district_id_em_" style="display:none">Distrito no es correcto.</div>
-	    </div>
+    </div>								  
+    <div class="row-fluid">
+	<div class="span12"><h4>Origen de la movilización</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div class="span12">					 
+	    <label for="Movilizacion_origen">Origen</label>
+	    <input id="ytMovilizacion_origen" type="hidden" value="" name="Movilizacion[origen]">
+	    <span id="Movilizacion_origen">
+		<label class="radio">
+		    <input id="Movilizacion_origen_0" value="0" type="radio" name="Movilizacion[origen]">Planta de acondicionamiento
+		</label>
+		<label class="radio">
+		    <input id="Movilizacion_origen_1" value="1" type="radio" name="Movilizacion[origen]">Almacén
+		</label>
+		<label class="radio">
+		    <input id="Movilizacion_origen_2" value="2" type="radio" name="Movilizacion[origen]">Campo de multiplicación
+		</label>
+	    </span>
 	</div>
-    <?php /*
-   <div class="row-fluid">     
-      <div class="span4">Región<?php echo CHtml::dropDownList('odepartment_id','', $list,
-																		  array(
-																					 'class'=>'span12',
-																					 'ajax' => array(
-																							 'type'=>'GET', //request type
-																							 'url'=>CController::createUrl('location/provinces'), //url to call.
-																							 'update'=>'#oprovince_id', //selector to update
-																							 'data'   => 'js:$("#odepartment_id").val()'
-																							 )));?></div>
-      <div class="span4">Provincia<?php  echo CHtml::dropDownList('oprovince_id','', array(),
-						    array(
-								'class'=>'span12',
-							   'ajax' => array(
-									'type'=>'GET', //request type
-									'url'=>CController::createUrl('location/districts'), //url to call.
-									'update' => '#Movilizacion_origen_district_id',
-									'data'   => 'js:$("#oprovince_id").val()'
-									)));?></div>
-      <div class="span4"><?php echo $form->dropDownListRow($model,'origen_district_id',array(), array('class'=>'span12',));?></div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"></div>     
+    </div>
+    <div class="row-fluid">
+	<div class="span12">
+	    <label for="Movilizacion_origen_nombre_predio">Nombre del Predio</label>
+	    <input class="span6" name="Movilizacion[origen_nombre_predio]" id="Movilizacion_origen_nombre_predio" type="text" maxlength="150">
 	</div>
-	*/ ?>
-   <div class="row-fluid">
-					 <div class="span12"><h4>Destino de la movilización</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div class="span4">
+	    <label for="Movilizacion_odepartment_id">Departamento</label>
+	    <select name="Movilizacion[odepartment_id]" id="Movilizacion_odepartment_id" onchange="Provincias($(this).val(),1)">
+		<option value="">Seleccionar</option>
+		<?php foreach($departamentos as $departamento){ ?>
+		<option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+		<?php } ?>
+	    </select>
+	    <div class="help-block error" id="Movilizacion_odepartment_id_em_" style="display:none">Departamento no es correcto.</div>
 	</div>
-   <div class="row-fluid">
-      <div id="destino" class="span12">
-		<?php echo $form->radioButtonListRow($model, 'destino', array(
-			'Planta de acondicionamiento',
-			'Almacén',
-			'Campo de multiplicación',
-			)); ?>
-			
-		<?php //echo $form->checkBoxListInlineRow($model, 'movilizacion_destino', array('Planta de acondicionamiento', 'Almacén'),array()); ?>
+	<div class="span4">
+	    <label for="Movilizacion_oprovince_id">Provincia</label>
+	    <select name="Movilizacion[oprovince_id]" id="Movilizacion_oprovince_id" onchange="Distritos($(this).val(),1)">
+		<option value="">Seleccionar</option>
+	    </select>
+	    <div class="help-block error" id="Movilizacion_oprovince_id_em_" style="display:none">Provincia no es correcto.</div>
+	</div>
+	<div class="span4">
+	    <label for="Movilizacion_origen_district_id" class="required">Distrito <span class="required">*</span></label>
+	    <select name="Movilizacion[origen_district_id]" id="Movilizacion_origen_district_id">
+		<option value="">Seleccionar</option>
+	    </select>
+	    <div class="help-block error" id="Movilizacion_origen_district_id_em_" style="display:none">Distrito no es correcto.</div>
+	</div>
+    </div> 
+    <div class="row-fluid">
+	<div class="span12"><h4>Destino de la movilización</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div id="destino" class="span12">
+	    <label for="Movilizacion_destino">Destino</label>
+	    <input id="ytMovilizacion_destino" type="hidden" value="" name="Movilizacion[destino]">
+	    <span id="Movilizacion_destino">
+		<label class="radio">
+		    <input id="Movilizacion_destino_0" value="0" type="radio" name="Movilizacion[destino]">Planta de acondicionamiento
+		</label>
+		<label class="radio">
+		    <input id="Movilizacion_destino_1" value="1" type="radio" name="Movilizacion[destino]">Almacén
+		</label>
+		<label class="radio">
+		    <input id="Movilizacion_destino_2" value="2" type="radio" name="Movilizacion[destino]">Campo de multiplicación
+		</label>
+	    </span>
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span6">
+	    <label for="Movilizacion_destino_nombre_predio">Nombre del Predio</label>
+	    <input class="span12" name="Movilizacion[destino_nombre_predio]" id="Movilizacion_destino_nombre_predio" type="text" maxlength="150">
+	</div>
+	<div class="span6">
+	    <label for="Movilizacion_destino_registro" class="required">N° Registro</label>
+	    <input type="text" id="destino_registro" name="Movilizacion[destino_registro]">
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span4">
+	    <label for="Movilizacion_ddepartment_id">Departamento</label>
+	    <select name="Movilizacion[ddepartment_id]" id="Movilizacion_ddepartment_id" onchange="Provincias($(this).val(),2)">
+		<option value="">Seleccionar</option>
+		<?php foreach($departamentos as $departamento){ ?>
+		<option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
+		<?php } ?>
+	    </select>
+	    <div class="help-block error" id="Movilizacion_ddepartment_id_em_" style="display:none">Departamento no es correcto.</div>
+	</div>
+	<div class="span4">
+	    <label for="Movilizacion_dprovince_id">Provincia</label>
+	    <select name="Movilizacion[dprovince_id]" id="Movilizacion_dprovince_id" onchange="Distritos($(this).val(),2)">
+		<option value="">Seleccionar</option>
+	    </select>
+	    <div class="help-block error" id="Movilizacion_dprovince_id_em_" style="display:none">Provincia no es correcto.</div>
+	</div>
+	<div class="span4">
+	    <label for="Movilizacion_destino_district_id" class="required">Distrito <span class="required">*</span></label>
+	    <select name="Movilizacion[destino_district_id]" id="Movilizacion_destino_district_id">
+		<option value="">Seleccionar</option>
+	    </select>
+	    <div class="help-block error" id="Movilizacion_destino_district_id_em_" style="display:none">Distrito no es correcto.</div>
+	</div>
+    </div>
+    <?php echo CHtml::hiddenField('id_acondicionamiento',$model->id); ?>
+    <?php echo CHtml::hiddenField('formu',$model->form_id); ?>
+
+    <div class="row-fluid">
+	<div class="span12">
+	    <div class="form-actions">
+		<div class="span8"></div>
+		<div class="span4">														  
+                    <button class="span12  btn btn-success" id="yw2" type="submit" name="yt0">Reportar</button>
 		</div>
-		<div id="destino" class="span12">
-			
-		</div>
-		
-	
-	</div>
-	
-	<div class="row-fluid">
-      <div class="span6"><?php echo $form->textFieldRow($model,'destino_nombre_predio',array('class'=>'span12')); ?></div>
-		<div class="span6">
-		<?php //echo $form->textFieldRow($model,'destino_registro',array('class'=>'span12')); ?>
-		<?php echo $form->labelEx($model,'destino_registro');?>
-		<?php $this->widget('bootstrap.widgets.TbTypeahead', array(
-                     'model'=>$model, // instance of model 'User'
-                     'name'=>'destino_registro',
-                     //'attribute'=>'destino_registro', // foreign key field
-                     'options'=>array(
-                         'source'=>CJSON::decode($plantas),                        
-                         'items'=>3,
-                         'matcher'=>"js:function(item) {return ~item.toLowerCase().indexOf(this.query.toLowerCase());}",
-                         ),                     )
-                 );
-                 ?>
-		</div>
-	</div>
-	<div class="row-fluid">
-	    <div class="span4">
-		<label for="Movilizacion_ddepartment_id">Departamento</label>
-		<select name="Movilizacion[ddepartment_id]" id="Movilizacion_ddepartment_id" onchange="Provincias($(this).val(),2)">
-		    <option value="">Seleccionar</option>
-		    <?php foreach($departamentos as $departamento){ ?>
-		    <option value="<?= $departamento->department_id ?>"><?= $departamento->department ?></option>
-		    <?php } ?>
-		</select>
-		<div class="help-block error" id="Movilizacion_ddepartment_id_em_" style="display:none">Departamento no es correcto.</div>
-	    </div>
-	    <div class="span4">
-		<label for="Movilizacion_dprovince_id">Provincia</label>
-		<select name="Movilizacion[dprovince_id]" id="Movilizacion_dprovince_id" onchange="Distritos($(this).val(),2)">
-		    <option value="">Seleccionar</option>
-		</select>
-		<div class="help-block error" id="Movilizacion_dprovince_id_em_" style="display:none">Provincia no es correcto.</div>
-	    </div>
-	    <div class="span4">
-		<label for="Movilizacion_destino_district_id" class="required">Distrito <span class="required">*</span></label>
-		<select name="Movilizacion[destino_district_id]" id="Movilizacion_destino_district_id">
-		    <option value="">Seleccionar</option>
-		</select>
-		<div class="help-block error" id="Movilizacion_destino_district_id_em_" style="display:none">Distrito no es correcto.</div>
 	    </div>
 	</div>
-    <?php /*
-   <div class="row-fluid">     
-      <div class="span4">Departamento<?php echo CHtml::dropDownList('ddepartment_id','', $list,
-																		  array(
-																					 'class'=>'span12',
-																					 'ajax' => array(
-																							 'type'=>'GET', //request type
-																							 'url'=>CController::createUrl('location/provinces'), //url to call.
-																							 'update'=>'#dprovince_id', //selector to update
-																							 'data'   => 'js:$("#ddepartment_id").val()'
-																							 )));?></div>
-      <div class="span4">Provincia<?php  echo CHtml::dropDownList('dprovince_id','', array(),
-						    array(
-								'class'=>'span12',
-							   'ajax' => array(
-									'type'=>'GET', //request type
-									'url'=>CController::createUrl('location/districts'), //url to call.
-									'update' => '#Movilizacion_destino_district_id',
-									'data'   => 'js:$("#dprovince_id").val()'
-									)));?></div>
-      <div  class="span4"><?php echo $form->dropDownListRow($model,'destino_district_id',array(), array('class'=>'span12',));?></div>-->
-	*/ ?>
-	<?php echo CHtml::hiddenField('id_acondicionamiento',$model->id); ?>
-	<?php echo CHtml::hiddenField('formu',$model->form_id); ?>
-	</div>
-	
-		  <div class="row-fluid">
-            <div class="span12">
-               <div class="form-actions">
-                  <div class="span4">                             
-                  </div>
-                  <div class="span4">
-						
-							
-                  </div>
-                  <div class="span4">														  
-                       <?php $this->widget('bootstrap.widgets.TbButton',
-															  array('type'=>'success',
-																	  'buttonType'=>'submit',
-																	  'label'=>$model->isNewRecord ? 'Reportar' : 'Aceptar',
-																	  'htmlOptions'=>array('class'=>'span12 ',))); ?>
-						</div>
-               </div>
-            </div>
-        </div>
-	
-	
+    </div>
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
@@ -256,8 +191,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 $provincias=CController::createUrl('location/provinces');
 $distritos=CController::createUrl('location/districts');
 ?>
-
-
 <script>
     function Provincias(valor,tipo) {
 	$.get( "<?= $provincias ?>?departamento="+valor, function( data ) {
@@ -301,7 +234,52 @@ $distritos=CController::createUrl('location/districts');
 	$('#Movilizacion_capacidad_envases').val(numeral($('#Movilizacion_capacidad_envases').val()).format('0,0.00'));
 	$('#Movilizacion_cantidad_movilizar').val(numeral($('#Movilizacion_cantidad_movilizar').val()).format('0,0.00'));
     });
+    $('#Movilizacion_fecha').datepicker({format: 'dd-mm-yyyy'})
+    $('#yw2').on('click', function(){
+	var error='';
+	if ($('#Movilizacion_cantidad_envases').val()=='') {
+	    error=error+'Debe ingresar la Cantidad Envases<br>';
+	}
+	if ($('#Movilizacion_capacidad_envases').val()=='') {
+		error=error+'Debe ingresar la Capacidad Envases (kg)<br>';
+	    }
+	if ($('#Movilizacion_cantidad_movilizar').val()=='') {
+	    error=error+'Debe ingresar cantidad la cantidad a movilizar<br>';
+	}
+	if ($('#Movilizacion_origen_nombre_predio').val()=='') {
+	    error=error+'Debe ingresar el Nombre del Predio origen<br>';
+	}
+	if ($('#Movilizacion_odepartment_id').val()=='') {
+	    error=error+'Debe ingresar el departamento de origen<br>';
+	}
+	if ($('#Movilizacion_oprovince_id').val()=='') {
+	    error=error+'Debe ingresar la provincia de origen<br>';
+	}
+	if ($('#Movilizacion_origen_district_id').val()=='') {
+	    error=error+'Debe ingresar el distrito de origen<br>';
+	}
+	if ($('#Movilizacion_destino_nombre_predio').val()=='') {
+	    error=error+'Debe ingresar el Nombre del Predio destino<br>';
+	}
+	if ($('#destino_registro').val()=='') {
+	    error=error+'Debe ingresar el N° Registro del destino<br>';
+	}
+	if ($('#Movilizacion_ddepartment_id').val()=='') {
+	    error=error+'Debe ingresar el departamento de destino<br>';
+	}
+	if ($('#Movilizacion_dprovince_id').val()=='') {
+	    error=error+'Debe ingresar la provincia de destino<br>';
+	}
+	if ($('#Movilizacion_destino_district_id').val()=='') {
+	    error=error+'Debe ingresar el distrito de destino<br>';
+	}
 	
+	if (error!='') {
+	    //alert(error);
+	    $('#error').html(error);
+	    return false;
+	}
 	
-	
+	return true;
+    });
 </script>

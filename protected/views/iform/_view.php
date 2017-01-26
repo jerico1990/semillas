@@ -21,78 +21,78 @@ $contador=0;
 
 <div class="row-fluid well span12">			  
 		 
-		  <div class="row-fluid">
-				<div class="span8">
-				    <?php
-					if($data->form_number==null)
-					{
-					    echo CHtml::link(date("d-m-Y", strtotime($inbox->date)),array('vsolicitud', 'id'=>$data->id));
-					}
-					else
-					{
-					    echo CHtml::link($data->form_number,array('vsolicitud', 'id'=>$data->id));
-					}
-				    ?>
+    <div class="row-fluid">
+      <div class="span8">
+	  <?php
+	      if($data->form_number==null)
+	      {
+		  echo CHtml::link(date("d-m-Y", strtotime($inbox->date)),array('vsolicitud', 'id'=>$data->id));
+	      }
+	      else
+	      {
+		  echo CHtml::link($data->form_number,array('vsolicitud', 'id'=>$data->id));
+	      }
+	  ?>
+      </div>
+      <div class="span4 text-right" >
+	  <?php
+	      foreach($etiquetas as $etiqueta){
+		  if($etiqueta->to==$user->id)
+		  {
+		      $this->widget('bootstrap.widgets.TbLabel', array(
+								    'type'=>'important', 
+								    'label'=>$etiqueta->status->status_name,
+						      ));
+		  }
+		  else
+		  {
+		      $this->widget('bootstrap.widgets.TbLabel', array(
+								    'type'=>'success',
+								    'label'=>$etiqueta->status->status_name,
+						      ));
+		  }
+	      }
+	  ?>
+      </div>
+    </div>
+    <div class="row-fluid">		 
+	  <div class="span9">
+	      <div class="row-fluid">
+				<div class="span4"><b><?php echo CHtml::encode($data->getAttributeLabel('crop_id')." / ".$data->getAttributeLabel('variety_id')); ?>:</b>
 				</div>
-				<div class="span4 text-right" >
-				    <?php
-					foreach($etiquetas as $etiqueta){
-					    if($etiqueta->to==$user->id)
-					    {
-						$this->widget('bootstrap.widgets.TbLabel', array(
-											      'type'=>'important', 
-											      'label'=>$etiqueta->status->status_name,
-										));
-					    }
-					    else
-					    {
-						$this->widget('bootstrap.widgets.TbLabel', array(
-											      'type'=>'success',
-											      'label'=>$etiqueta->status->status_name,
-										));
-					    }
-					}
-				    ?>
+				<div class="span8"><?php echo CHtml::encode($data->crop->name." / ".$data->variety->name); ?>
 				</div>
+	      </div>
+	      <div class="row-fluid">
+				<div class="span4"><b><?php echo CHtml::encode($data->getAttributeLabel('category')); ?>:</b>
+				</div>
+				<div class="span8"><?php echo CHtml::encode($maestro->descripcion); ?>
+				</div>
+	      </div>
+	  </div>
+	  <div class="span3">
+	      <div class="row-fluid">
+				<div class="span12" >
+						       
+				</div>										  
+	      </div>
+	      <div class="row-fluid">
+				<div class="span4"><b><?php echo CHtml::encode($inbox->getAttributeLabel('date')); ?>:</b>
+				</div>
+				<div class="span8"><?php echo CHtml::encode(date("d-m-Y", strtotime($inbox->date))); ?>
+				</div>
+	      </div>								
+	  </div>
+	    </div>
+    
+    <div class="row-fluid">
+	  <div class="span12">
+		  <div class="span2"><b>Ubicación:</b>
 		  </div>
-		  <div class="row-fluid">		 
-					 <div class="span9">
-								<div class="row-fluid">
-										  <div class="span4"><b><?php echo CHtml::encode($data->getAttributeLabel('crop_id')." / ".$data->getAttributeLabel('variety_id')); ?>:</b>
-										  </div>
-										  <div class="span8"><?php echo CHtml::encode($data->crop->name." / ".$data->variety->name); ?>
-										  </div>
-								</div>
-								<div class="row-fluid">
-										  <div class="span4"><b><?php echo CHtml::encode($data->getAttributeLabel('category')); ?>:</b>
-										  </div>
-										  <div class="span8"><?php echo CHtml::encode($maestro->descripcion); ?>
-										  </div>
-								</div>
-					 </div>
-					 <div class="span3">
-								<div class="row-fluid">
-										  <div class="span12" >
-													 
-										  </div>										  
-								</div>
-								<div class="row-fluid">
-										  <div class="span4"><b><?php echo CHtml::encode($inbox->getAttributeLabel('date')); ?>:</b>
-										  </div>
-										  <div class="span8"><?php echo CHtml::encode(date("d-m-Y", strtotime($inbox->date))); ?>
-										  </div>
-								</div>								
-					 </div>
-			  </div>
-		  
-		  <div class="row-fluid">
-					 <div class="span12">
-								<div class="span2"><b>Ubicación:</b>
-								</div>
-								<div class="span10"><?php //echo CHtml::encode($location->department." / ".$location->province." / ".$location->district); ?>
-								</div>
-					 </div>
+		  <div class="span10"><?php //echo CHtml::encode($location->department." / ".$location->province." / ".$location->district); ?>
 		  </div>
+	  </div>
+    </div>
 		  	  
 </div>
 </div>

@@ -1,350 +1,238 @@
-
-<?php
-$forma=Iform::model()->find('id=:form_id',array(':form_id'=>$model->form_id));
-$user=User::model()->find('id=:id',array(':id'=>$model->user_id));
-$location=Location::model()->find('district_id=:district_id',array(':district_id'=>$forma->location_id));
-?>
-
 <div class="form well span12" style="background: #FFFFFF">
 
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'inspection-form',
-	//'htmlOptions'=>array('class'=>'well'),
-	'enableAjaxValidation'=>false,
-));
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm');?>
 
-?>
-
-<?php echo $form->errorSummary($model); ?>
-<?php echo CHtml::hiddenField('formu',$model->form_id); ?>
-<?php echo CHtml::hiddenField('condicional_inspection_id',$model->id); ?>
-
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Campo de Multiplicación</h4></div>      
-		  </div> 
-		  <div class="row-fluid">
-			  <div class="span3"><?php echo $form->textFieldRow($model,'size',array('class'=>'papa span12')); ?></div>
-		     <div class="span9"><?php echo $form->datepickerRow($model,'papa_fecha_siembra',
-																 array(	
-																'htmlOptions'=>array('class'=>'papa_fecha'),
-																'options'=>array( 'format' => 'dd-mm-yyyy', 
-																'weekStart'=> 1,
-																'showButtonPanel' => true,
-																'showAnim'=>'fold',))); ?></div>
-		  </div>
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Aislamiento</h4></div>      
-		  </div> 
-		  <div class="row-fluid">
-			  <div class="span4"><?php echo $form->textFieldRow($model,'papa_campo_comercial',array('class'=>'papa span12','maxlength'=>18)); ?></div>
-			  <div class="span4"><?php echo $form->textFieldRow($model,'papa_otra_especie',array('class'=>'papa span12','maxlength'=>18)); ?></div>
-			  <div class="span4"><?php echo $form->textFieldRow($model,'papa_otro_cultivar',array('class'=>'papa span12','maxlength'=>18)); ?></div>
-		  </div>
-		  <div class="row-fluid">
-			  <div class="span12" >			
-			     <table width="744" height="344" border="1px">
-			
-               <tr>
-                 <td colspan="7">PLAGAS EN EL CULTIVO</td>
-               </tr>
-               <tr>
-                 <td width="223" rowspan="2">Plagas</td>
-                 <td width="125" rowspan="2">Factor Importancia</td>
-                 <td width="26" rowspan="2">Por</td>
-                 <td height="29" colspan="2">Evaluación</td>
-                <?php // <td colspan="2">Segunda Evaluación</td>?>
-               </tr>
-               <tr>
-                 <td width="123" height="28">%PI. Afectadas</td>
-                 <td width="58">Puntos</td>
-               <?php /*  <td width="98">%PI. Afectadas</td>
-                 <td width="45">Puntos</td>*/?>
-               </tr>
-               <tr>
-                 <td>Enrollamiento (PLRV) y  Mozaico Severo (PYV)</td>
-                 <td align="right">10</td>
-                 <td>X</td>
-                 <td><?php echo $form->textFieldRow($model,'afectadas_enrollamiento',array('class'=>'papa span12')); ?></td>
-                 <td>&nbsp;</td>
-              <?php /*   <td>&nbsp;</td>
-                 <td>&nbsp;</td> */ ?>
-               </tr>
-               <tr>
-                 <td>Mozaico suave (PVS y PVX) y Rhizoctonia</td>
-                 <td>4</td>
-                 <td>X</td>
-                 <td><?php echo $form->textFieldRow($model,'afectadas_mozaico',array('class'=>'papa span12')); ?></td>
-                 <td>&nbsp;</td>
-              <?php   //   <td>&nbsp;</td> ?>
-              <?php   //<td>&nbsp;</td> ?>
-               </tr>
-               <tr>
-                 <td>Otros virus</td>
-                 <td>2</td>
-                 <td>X</td>
-                 <td><?php echo $form->textFieldRow($model,'afectadas_otros_virus',array('class'=>'papa span12')); ?></td>
-                 <td>&nbsp;</td>
-              <?php /*  <td>&nbsp;</td>
-                 <td>&nbsp;</td> */ ?>
-               </tr>
-               <tr>
-                 <td>Erwinia</td>
-                 <td>6</td>
-                 <td>X</td>
-                 <td><?php echo $form->textFieldRow($model,'afectadas_erwinia',array('class'=>'papa span12')); ?></td>
-                 <td>&nbsp;</td>
-              <?php /*  <td>&nbsp;</td>
-                 <td>&nbsp;</td> */ ?>
-               </tr>
-               <tr>
-                 <td>Mezcla</td>
-                 <td>1</td>
-                 <td>X</td>
-                 <td><?php echo $form->textFieldRow($model,'afectadas_mezclas',array('class'=>'papa span12')); ?></td>
-                 <td>&nbsp;</td>
-             <?php /*    <td>&nbsp;</td>
-                 <td>&nbsp;</td> */ ?>
-               </tr>
-               <tr>
-                 <td height="29" colspan="3">&nbsp;</td>
-                 <td>Total</td>
-                 <td>&nbsp;</td>
-            <?php /*     <td>Total</td>
-                 <td>&nbsp;</td> */ ?>
-               </tr>
-             </table>
-			  </div>
-		  </div>
-		  
-		  <div class="row-fluid">
-					<div class="span12"><h4>Puntaje Máximo de Tolerancia</h4></div>      
-		  </div>
-		  <div class="row-fluid">
-					<div class="span4">
-								<b><u>Categoria de semilla</u></b><br>
-								Certificada o Autorizada<br>
-								Registrada<br>
-								Básica
-					</div>
-					<div class="span4">
-								<b><u>Puntaje Límite(1ra Insp.)</u></b><br>
-							   150<br>
-								100<br>
-								60
-					</div>
-					<div class="span4">
-								<b><u>Puntaje Límite(2da Insp.)</u></b><br>
-							   80<br>
-								60<br>
-								30	
-					</div>
-		  </div>
-		  
-		  <div class="row-fluid">
-					<div class="span12"><h4>Enfermedades que no se permiten</h4></div>      
-		  </div> 
-		  <div class="row-fluid">
-					 <div class="span12">	 
-								<b><u>Virus de Amarillamiento de las venas de la papa</u></b><br>			  
-								- No debe existir ninguna planta con sintomalogia del virus
-								- En caso de detectarse plantas con sintomalogía, el campo será rechazado como semillero e inspeccionar todo el <br>
-								  campo, determinando el grado de incidencia y notificar al SENASA de la juridicción.<br>
-								Marchitez bacteriana.....
-					 </div>
-		  </div>		  
-		  <div class="row-fluid">
-					 <div class="span12"><h4>Observaciones </h4></div>      
-		  </div> 
-		  <div class="row-fluid">
-			  <div class="span12"><?php echo $form->textAreaRow($model,'observaciones',array('class'=>'papa span12','maxlength'=>300,'rows'=>6)); ?></div>		
-		  </div>
-		
-	
-		  <div class="row-fluid">
-				<div class="span12">
-					<div class="form-actions">
-						<div class="span4">
-						<!--Aprobado-->
-							<a id="myModal_btn_apro" role="button" class="btn btn-success span12">
-								Cumple
-							</a>
-						<!--Fin de Aprobado-->	
-						</div>
-						<div class="span4">
-							<!--Condicional-->
-								<a id="myModal_btn_condi" role="button" class="btn btn-primary span12">
-									condicional
-								</a>
-							<!--Fin de Condicional-->							 										 
-						</div>
-						<!--Boton de No cumples-->
-						<div class="span4">														  
-								  <?php $this->widget('bootstrap.widgets.TbButton', array(
-													'id'=>'myModal_btn_recha',
-													'type'=>'danger',
-													'buttonType'=>'ajaxButton',
-													'label'=>'No Cumple',
-													'url'=>Yii::app()->createUrl( 'inspection/rechazado' ),
-													'ajaxOptions'=>array(
-																				'type'=>'POST',
-																				'data' => 'js:$("#inspection-form").serialize()',
-																				'success' =>'function( data ){
-																				location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-																				}'
-																				),													
-													'htmlOptions'=>array('class'=>'span12',
-																				'url' => Yii::app()->createUrl( 'iform/rechazado' ),))); ?>																		 
-						</div>	
-					</div>
-				</div>
-		  </div>
-
-		  
-
-<!--Botones-->
-	<!--Aprobado-->
-	<div id="myModal_acond_apro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						  <div class="modal-header">
-							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							 <h4 id="myModalLabel">Pasar a Inspeccion de Acondicionamiento</h4>
-						  </div>
-						  <div class="modal-body">
-							 <p>
-									<div class="form">
-										<?php 
-										$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-											'id'=>'inbox-form',										
-										));						
-										?>	
-										<div class="row-fluid">
-											<div class="span5">Continuar con la Inspección de</div>
-											<div class="span7"><?php echo $form->dropDownListRow($model,'select_id', array('1'=>'Acondicionamiento','2'=>'Campo'),array('empty'=>' ','class'=>'validar')); ?></div>
-										</div>
-										<div class="row-fluid">
-											<div class="span5">Fecha propuesta</div>
-											<div class="span7"><?php echo $form->datepickerRow($model,'aprobado_fecha_propuesta',
-																array(
-																 'htmlOptions'=>array('class'=>'validar'),
-																 'options'=>array( 'format' => 'dd-mm-yyyy', 
-																 'weekStart'=> 1,
-																 'showButtonPanel' => true,
-																 'showAnim'=>'fold',))); ?>
-											</div>
-										</div>
-										<?php $this->endWidget(); ?>	
-																		
-									</div><!-- form -->															  
-							 </p>
-						 
-						  <div class="modal-footer">
-								<!--Boton de Si cumple-->
-								<?php $this->widget('bootstrap.widgets.TbButton', array(
-								'id'=>'btn_aprobado_si',
-								'type'=>'primary',
-								'label'=>'Aceptar',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'inspection/cumple' ),
-								'ajaxOptions'=>array(			     
-								'type'=>'POST',	
-								'data' => array(
-											'size'=>'js:$("#Inspection_size").val()',
-											'papa_fecha_siembra'=>'js:$("#Inspection_papa_fecha_siembra").val()',
-											'papa_campo_comercial'=>'js:$("#Inspection_papa_campo_comercial").val()',
-											'papa_otra_especie'=>'js:$("#Inspection_papa_otra_especie").val()',
-											'papa_otro_cultivar'=>'js:$("#Inspection_papa_otro_cultivar").val()',
-											'afectadas_enrollamiento'=>'js:$("#Inspection_afectadas_enrollamiento").val()',
-											'afectadas_mozaico'=>'js:$("#Inspection_afectadas_mozaico").val()',
-											'afectadas_otros_virus'=>'js:$("#Inspection_afectadas_otros_virus").val()',
-											'afectadas_erwinia'=>'js:$("#Inspection_afectadas_erwinia").val()',
-											'afectadas_mezclas'=>'js:$("#Inspection_afectadas_mezclas").val()',
-											'observaciones'=>'js:$("#Inspection_observaciones").val()',				 
-										   'btn'=>'js:$("#Inspection_select_id").val()',
-										   'id'=>$model->id,
-										   'fecha'=>'js:$("#Inspection_aprobado_fecha_propuesta").val()'
-										  ),
-								'success' => 'function(data){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
-								),								
-								'htmlOptions'=>array('data-dismiss'=>'modal',
-								'url' => Yii::app()->createUrl( 'inspection/cumple' ),
-								),));
-								?>
-													
-						  </div>
-						</div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Campo de Multiplicación</h4></div>      
+    </div> 
+    <div class="row-fluid">
+	<div class="span3">
+	    <label for="Inspection_size">Area(m2)</label>
+	    <input class="papa span12" name="Inspection[size]" id="Inspection_size" type="text" maxlength="18">
 	</div>
-	
-	
-	<!--Boton Condicional-->	
-	<div id="myModal_acond_conda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
-							</div>
-							<div class="modal-body">
-							 	<p>	
-								<?php echo $form->datepickerRow($model,'subsanacion_date',
-														array(
-														 'options'=>array( 'format' => 'dd-mm-yyyy', 
-														 'weekStart'=> 1,
-														 'showButtonPanel' => true,
-														 'showAnim'=>'fold',))); ?>
-								</p>
-							</div>
-							<div class="modal-footer">
-								 <!--Boton de Condicional-->
-								<?php $this->widget('bootstrap.widgets.TbButton', array(	
-								'type'=>'primary',
-								'label'=>'Enviar',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'inspection/condicional' ),
-								'ajaxOptions'=>array(
-								//'dataType'=> 'jsonp',		  
-								'type'=>'POST',	
-								'data' => "js:$('#inspection-form').serializeArray()",
-								'success' =>'function( data ){location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
-								),
-								'htmlOptions'=>array('data-dismiss'=>'modal',
-								'url' => Yii::app()->createUrl( 'inspection/condicional' ),
-								),));
-								?>		
-								 				
-						  </div>
+	<div class="span9">
+	    <label for="Inspection_papa_fecha_siembra">Fecha Siembra</label>
+	    <input class="papa_fecha" type="text" autocomplete="off" name="Inspection[papa_fecha_siembra]" id="Inspection_papa_fecha_siembra">
 	</div>
-	<!--Fin de botones-->
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Aislamiento</h4></div>      
+    </div> 
+    <div class="row-fluid">
+	<div class="span4">
+	    <label for="Inspection_papa_campo_comercial">Campo Comercial (m)</label>
+	    <input class="papa span12" maxlength="18" name="Inspection[papa_campo_comercial]" id="Inspection_papa_campo_comercial" type="text">
+	</div>
+	<div class="span4">
+	    <label for="Inspection_papa_otra_especie">Otra Especies (m)</label>
+	    <input class="papa span12" maxlength="18" name="Inspection[papa_otra_especie]" id="Inspection_papa_otra_especie" type="text">
+	</div>
+	<div class="span4">
+	    <label for="Inspection_papa_otro_cultivar">Otro Cultivar (m)</label>
+	    <input class="papa span12" maxlength="18" name="Inspection[papa_otro_cultivar]" id="Inspection_papa_otro_cultivar" type="text">
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12" >			
+	    <table width="744" height="344" border="1px">
+		<tr>
+		    <td colspan="7">PLAGAS EN EL CULTIVO</td>
+		</tr>
+		<tr>
+		    <td width="223" rowspan="2">Plagas</td>
+		    <td width="125" rowspan="2">Factor Importancia</td>
+		    <td width="26" rowspan="2">Por</td>
+		    <td height="29" colspan="2">Evaluación</td>
+		</tr>
+		<tr>
+		    <td width="123" height="28">%PI. Afectadas</td>
+		    <td width="58">Puntos</td>
+		</tr>
+		<tr>
+		    <td>Enrollamiento (PLRV) y  Mozaico Severo (PYV)</td>
+		    <td align="right">10</td>
+		    <td>X</td>
+		    <td>
+			<label for="Inspection_afectadas_enrollamiento"></label>
+			<input class="papa span12" name="Inspection[afectadas_enrollamiento]" id="Inspection_afectadas_enrollamiento" type="text" maxlength="18">
+		    </td>
+		    <td>&nbsp;</td>
+		</tr>
+		<tr>
+		    <td>Mozaico suave (PVS y PVX) y Rhizoctonia</td>
+		    <td>4</td>
+		    <td>X</td>
+		    <td>
+			<label for="Inspection_afectadas_mozaico"></label>
+			<input class="papa span12" name="Inspection[afectadas_mozaico]" id="Inspection_afectadas_mozaico" type="text" maxlength="18">
+		    </td>
+		    <td>&nbsp;</td>
+		</tr>
+		<tr>
+		    <td>Otros virus</td>
+		    <td>2</td>
+		    <td>X</td>
+		    <td>
+			<label for="Inspection_afectadas_otros_virus"></label>
+			<input class="papa span12" name="Inspection[afectadas_otros_virus]" id="Inspection_afectadas_otros_virus" type="text" maxlength="18">
+		    </td>
+		    <td>&nbsp;</td>
+		</tr>
+		<tr>
+		    <td>Erwinia</td>
+		    <td>6</td>
+		    <td>X</td>
+		    <td>
+			<label for="Inspection_afectadas_erwinia"></label>
+			<input class="papa span12" name="Inspection[afectadas_erwinia]" id="Inspection_afectadas_erwinia" type="text" maxlength="18">
+		    </td>
+		    <td>&nbsp;</td>
+		</tr>
+		<tr>
+		    <td>Mezcla</td>
+		    <td>1</td>
+		    <td>X</td>
+		    <td>
+			<label for="Inspection_afectadas_mezclas"></label>
+			<input class="papa span12" name="Inspection[afectadas_mezclas]" id="Inspection_afectadas_mezclas" type="text" maxlength="18">
+		    </td>
+		    <td>&nbsp;</td>
+		</tr>
+		<tr>
+		    <td height="29" colspan="3">&nbsp;</td>
+		    <td>Total</td>
+		    <td>&nbsp;</td>
+		</tr>
+            </table>
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12"><h4>Puntaje Máximo de Tolerancia</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div class="span4">
+	    <b><u>Categoria de semilla</u></b><br>
+	    Certificada o Autorizada<br>
+	    Registrada<br>
+	    Básica
+	</div>
+	<div class="span4">
+	    <b><u>Puntaje Límite(1ra Insp.)</u></b><br>
+	    150<br>
+	    100<br>
+	    60
+	</div>
+	<div class="span4">
+	    <b><u>Puntaje Límite(2da Insp.)</u></b><br>
+	    80<br>
+	    60<br>
+	    30	
+	</div>
+    </div>
+      
+    <div class="row-fluid">
+	<div class="span12"><h4>Enfermedades que no se permiten</h4></div>      
+    </div> 
+    <div class="row-fluid">
+	<div class="span12">	 
+	    <b><u>Virus de Amarillamiento de las venas de la papa</u></b><br>			  
+	    - No debe existir ninguna planta con sintomalogia del virus
+	    - En caso de detectarse plantas con sintomalogía, el campo será rechazado como semillero e inspeccionar todo el <br>
+	      campo, determinando el grado de incidencia y notificar al SENASA de la juridicción.<br>
+	    Marchitez bacteriana.....
+	</div>
+    </div>		  
+    <div class="row-fluid">
+	<div class="span12"><h4>Observaciones </h4></div>      
+    </div> 
+    <div class="row-fluid">
+	<div class="span12">
+	    <label for="Inspection_observaciones"> </label>
+	    <textarea class="papa span12" maxlength="300" rows="6" name="Inspection[observaciones]" id="Inspection_observaciones"></textarea>
+	</div>
+    </div>
+    <div class="row-fluid">
+	<div class="span12">
+	    <div class="form-actions">
+		<div class="span4">
+		<!--Aprobado-->
+		    <button id="btn_apro" class="btn btn-success span12" data-toggle="modal">Cumple</button>
+		    <input name="Inspection[y01]" id="hidden" type="hidden">
+		<!--Fin de Aprobado-->	
+		</div>
+		<div class="span4">
+		<!--Condicional-->
+		    <button id="btn_condi"  class="btn btn-primary span12" data-toggle="modal">condicional</button>
+		<!--Fin de Condicional-->
+		</div>
+		<!--Boton de No cumples-->
+		<div class="span4">
+		    <button id="btn_recha"  class="btn btn-danger span12" >No cumple</button>
+		</div>
+	    </div>
+	</div>
+    </div>
+    <!--Botones-->
+    <!--Aprobado-->
+    <div id="myModal_acond_apro" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >	
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 id="myModalLabel">Pasar a Inspeccion de Acondicionamiento</h4>
+	</div>
+	<div class="modal-body">
+	    <p>
+		<div class="form">
+		    <div class="row-fluid">
+			<div class="span5">Continuar con la Inspección de</div>
+			<div class="span7">
+			    <select class="validar" name="Inspection[select_id]" id="Inspection_select_id">
+				<option value>Seleccionar</option>
+				<option value="1">Acondicionamiento</option>
+				<option value="2">Campo</option>
+			    </select>
+			</div>
+		    </div>
+		    <div class="row-fluid">
+			<div class="span5">Fecha propuesta</div>
+			<div class="span7">
+			    <input type="date" name="Inspection[aprobado_fecha_propuesta]" id="Inspection_aprobado_fecha_propuesta">
+			</div>
+		    </div>
+		</div><!-- form -->
+	    </p>
+	</div>
+	<div class="modal-footer">
+	    <button id="btn_enviar_aprobado" class="btn btn-primary">Enviar</button>
+	</div>
+    </div>
+    <!--Boton Condicional-->	
+    <div id="myModal_acond_conda" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+	<div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
+	</div>
+	<div class="modal-body">
+	    <p>
+		<label for="Inspection_subsanacion_date">Subsanación Fecha</label>
+		<input type="date" name="Inspection[subsanacion_date]" id="Inspection_subsanacion_date">
+	    </p>
+	</div>
+	<div class="modal-footer">
+	    <button id="btn_enviar_condicional" class="btn btn-primary">Enviar</button>			
+	</div>
+    </div>
+    <!--Boton Rechazado-->
 <?php $this->endWidget(); ?>
-</div>
-
-
-
-
+</div><!-- form -->
+<?php
+    $cumple=CController::createUrl('inspection/rechazado');
+    $condicional=CController::createUrl('inspection/condicional');
+    $no_cumple=CController::createUrl('inspection/rechazado');
+?>
 <script>
-	//yw3
-	
-	$('#myModal_btn_apro').addClass('disabled');//Aprobado
-	$('#myModal_btn_condi').addClass('disabled');//Condicional
-	$('#myModal_btn_recha').addClass('disabled');//Rechazado
-	
-	
-	$('#myModal_btn_apro').modal('hide');//Aprobado
-	$('#myModal_btn_condi').modal('hide');//condicional
-	
-	$('#myModal_btn_condi').on('click', function(){
-		if (!$('#myModal_btn_condi').hasClass('disabled')) {
-			$('#myModal_acond_conda').modal('show');
-		}	
-	
-	})
-	
-	$('#myModal_btn_apro').on('click', function(){
-		if (!$('#myModal_btn_apro').hasClass('disabled')) {
-			$('#myModal_acond_apro').modal('show');
-		}		
-	})
-	
-	
 	//Fecha Formato
 	$('.papa_fecha').datepicker({
-    format: 'dd-mm-yyyy',    
+	    format: 'dd-mm-yyyy',    
 	})
 	$('.papa_fecha').datepicker()
 	.on('changeDate', function(ev){		
@@ -363,30 +251,192 @@ $location=Location::model()->find('district_id=:district_id',array(':district_id
 		$('#Inspection_afectadas_mezclas').val(numeral($('#Inspection_afectadas_mezclas').val()).format('0,0.00'));	
 	})
 	
-	$('.papa, .papa_fecha').on('keyup', function(){
-		console.log('trigger')		
-		
-		
-		
-		if ($('#Inspection_size').val() != '' && $('#Inspection_papa_fecha_siembra').val() != '' &&
-			 $('#Inspection_papa_campo_comercial').val() != '' && $('#Inspection_papa_otra_especie').val() != '' &&
-			 $('#Inspection_papa_otro_cultivar').val() != '' && $('#Inspection_afectadas_enrollamiento').val() != '' &&
-			 $('#Inspection_afectadas_mozaico').val() != '' && $('#Inspection_afectadas_otros_virus').val() != '' &&
-			 $('#Inspection_afectadas_erwinia').val() != '' && $('#Inspection_afectadas_mezclas').val() != ''
-
-			)
-		{		
-			$('#myModal_btn_apro').removeClass('disabled');
-			$('#myModal_btn_condi').removeClass('disabled');
-			$('#myModal_btn_recha').removeClass('disabled');
-			
-		}
-		else {
-			$('#myModal_btn_apro').addClass('disabled');
-			$('#myModal_btn_condi').addClass('disabled');
-			$('#myModal_btn_recha').addClass('disabled');
-			
-		}
-	})
+	$('#btn_apro').on('click', function(){
+	    var error='';
+	    if ($('#Inspection_size').val()=='') {
+		error=error+'Debe ingresar Area(m2)<br>';
+	    }
+	    if ($('#Inspection_papa_fecha_siembra').val()=='') {
+		error=error+'Debe ingresar la Fecha de Siembra<br>';
+	    }
+	    if ($('#Inspection_papa_campo_comercial').val()=='') {
+		error=error+'Debe ingresar el Campo Comercial (m)<br>';
+	    }
+	    if ($('#Inspection_papa_otra_especie').val()=='') {
+		error=error+'Debe ingresar la Otra Especies (m)<br>';
+	    }
+	    if ($('#Inspection_papa_otro_cultivar').val()=='') {
+		error=error+'Debe ingresar la Otro Cultivar (m)<br>';
+	    }
+	    if ($('#Inspection_afectadas_enrollamiento').val()=='') {
+		error=error+'Debe ingresar el Enrollamiento (PLRV) y Mozaico Severo (PYV)<br>';
+	    }
+	    if ($('#Inspection_afectadas_mozaico').val()=='') {
+		error=error+'Debe ingresar el Mozaico suave (PVS y PVX) y Rhizoctonia<br>';
+	    }
+	    if ($('#Inspection_afectadas_otros_virus').val()=='') {
+		error=error+'Debe ingresar Otros virus<br>';
+	    }
+	    if ($('#Inspection_afectadas_erwinia').val()=='') {
+		error=error+'Debe ingresar el Erwinia<br>';
+	    }
+	    if ($('#Inspection_afectadas_mezclas').val()=='') {
+		error=error+'Debe ingresar Mezcla<br>';
+	    }
+	    
+	    
+	    if ($('#Inspection_observaciones').val()=='') {
+		error=error+'Debe ingresar los resultados<br>';
+	    }
+	    if (error!='') {
+		//alert(error);
+		$('#error').html(error);
+		return false;
+	    }
+	    $('#myModal_acond_apro').modal('show');
+	    return true;
+	});
+	
+	$('#btn_condi').on('click', function(){
+	    var error='';
+	    if ($('#Inspection_size').val()=='') {
+		error=error+'Debe ingresar Area(m2)<br>';
+	    }
+	    if ($('#Inspection_papa_fecha_siembra').val()=='') {
+		error=error+'Debe ingresar la Fecha de Siembra<br>';
+	    }
+	    if ($('#Inspection_papa_campo_comercial').val()=='') {
+		error=error+'Debe ingresar el Campo Comercial (m)<br>';
+	    }
+	    if ($('#Inspection_papa_otra_especie').val()=='') {
+		error=error+'Debe ingresar la Otra Especies (m)<br>';
+	    }
+	    if ($('#Inspection_papa_otro_cultivar').val()=='') {
+		error=error+'Debe ingresar la Otro Cultivar (m)<br>';
+	    }
+	    if ($('#Inspection_afectadas_enrollamiento').val()=='') {
+		error=error+'Debe ingresar el Enrollamiento (PLRV) y Mozaico Severo (PYV)<br>';
+	    }
+	    if ($('#Inspection_afectadas_mozaico').val()=='') {
+		error=error+'Debe ingresar el Mozaico suave (PVS y PVX) y Rhizoctonia<br>';
+	    }
+	    if ($('#Inspection_afectadas_otros_virus').val()=='') {
+		error=error+'Debe ingresar Otros virus<br>';
+	    }
+	    if ($('#Inspection_afectadas_erwinia').val()=='') {
+		error=error+'Debe ingresar el Erwinia<br>';
+	    }
+	    if ($('#Inspection_afectadas_mezclas').val()=='') {
+		error=error+'Debe ingresar Mezcla<br>';
+	    }
+	    
+	    
+	    if ($('#Inspection_observaciones').val()=='') {
+		error=error+'Debe ingresar los resultados<br>';
+	    }
+	    if (error!='') {
+		//alert(error);
+		$('#error').html(error);
+		return false;
+	    }
+	    $('#myModal_acond_conda').modal('show');
+	    return true;
+	});
+	
+	
+	$('#btn_recha').on('click', function(){
+	    var error='';
+	    if ($('#Inspection_size').val()=='') {
+		error=error+'Debe ingresar Area(m2)<br>';
+	    }
+	    if ($('#Inspection_papa_fecha_siembra').val()=='') {
+		error=error+'Debe ingresar la Fecha de Siembra<br>';
+	    }
+	    if ($('#Inspection_papa_campo_comercial').val()=='') {
+		error=error+'Debe ingresar el Campo Comercial (m)<br>';
+	    }
+	    if ($('#Inspection_papa_otra_especie').val()=='') {
+		error=error+'Debe ingresar la Otra Especies (m)<br>';
+	    }
+	    if ($('#Inspection_papa_otro_cultivar').val()=='') {
+		error=error+'Debe ingresar la Otro Cultivar (m)<br>';
+	    }
+	    if ($('#Inspection_afectadas_enrollamiento').val()=='') {
+		error=error+'Debe ingresar el Enrollamiento (PLRV) y Mozaico Severo (PYV)<br>';
+	    }
+	    if ($('#Inspection_afectadas_mozaico').val()=='') {
+		error=error+'Debe ingresar el Mozaico suave (PVS y PVX) y Rhizoctonia<br>';
+	    }
+	    if ($('#Inspection_afectadas_otros_virus').val()=='') {
+		error=error+'Debe ingresar Otros virus<br>';
+	    }
+	    if ($('#Inspection_afectadas_erwinia').val()=='') {
+		error=error+'Debe ingresar el Erwinia<br>';
+	    }
+	    if ($('#Inspection_afectadas_mezclas').val()=='') {
+		error=error+'Debe ingresar Mezcla<br>';
+	    }
+	    
+	    
+	    if ($('#Inspection_observaciones').val()=='') {
+		error=error+'Debe ingresar los resultados<br>';
+	    }
+	    if (error!='') {
+		//alert(error);
+		$('#error').html(error);
+		return false;
+	    }
+	    
+	    var txt;
+	    var r = confirm("¿Estas seguro de que el informe no cumple?");
+	    if (r == true) {
+		$('#hidden').val(3);
+		return true;
+	    } else {
+		return false;
+	    }
+	});
+	
+	$('#btn_enviar_aprobado').click(function(){
+	    var error='';
+	    if ($('#Inspection_aprobado_fecha_propuesta').val()=='') {
+		error=error+'Debe ingresar la fecha propuesta\n';
+	    }
+	    if (error!='') {
+		alert(error);
+		return false;
+	    }
+	    
+	    
+	    var txt;
+	    var r = confirm("¿Estas seguro de enviar la fecha sugerida?");
+	    if (r == true) {
+		$('#hidden').val(1);
+		return true;
+	    } else {
+		return false;
+	    }
+	});
+	
+	$('#btn_enviar_condicional').click(function(){
+	    var error='';
+	    if ($('#Inspection_subsanacion_date').val()=='') {
+		error=error+'Debe ingresar la fecha de subsanación\n';
+	    }
+	    if (error!='') {
+		alert(error);
+		return false;
+	    }
+	    
+	    
+	    var txt;
+	    var r = confirm("¿Estas seguro de enviar la fecha de subsanación?");
+	    if (r == true) {
+		$('#hidden').val(2);
+		return true;
+	    } else {
+		return false;
+	    }
+	});
 </script>
 

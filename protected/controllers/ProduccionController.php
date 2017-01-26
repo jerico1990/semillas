@@ -64,21 +64,15 @@ class ProduccionController extends Controller
 	{
 	    $this->pageTitle = "Producción";
 	    $model=new Produccion;
-	    
-	    // Uncomment the following line if AJAX validation is needed
-	    // $this->performAjaxValidation($model);
-
 	    if(isset($_POST['Produccion']))
 	    {			
 		$model->attributes=$_POST['Produccion'];
 		$model->form_id=$id;
-		$model->fecha_cosecha=date('Y-m-d',strtotime($_REQUEST['Produccion']['fecha_cosecha']));
-		$model->area=str_replace(',','',$_REQUEST['Produccion']['area']);
-		$model->produccion=str_replace(',','',$_REQUEST['Produccion']['produccion']);
-		if($model->save())
-		{
-		    $this->redirect(array('iform/produccionindex'));
-		}
+		$model->fecha_cosecha=date('Y-m-d',strtotime($model->fecha_cosecha));
+		$model->area=str_replace(',','',$model->area);
+		$model->produccion=str_replace(',','',$model->produccion);
+		$model->save();
+		return $this->refresh();
 	    }
 
 	    $this->render('create',array(

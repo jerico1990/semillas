@@ -15,7 +15,7 @@
     <div class="span8">
 	<div class="row-fluid">
 	    <div class="span6"><label for="Inspection_leg_floracion">Floración (%)</label><input class="leguminosas span12" name="Inspection[leg_floracion]" id="Inspection_leg_floracion" type="text" maxlength="18"></div>				
-	    <div class="span6"><label for="Inspection_leg_floracion_fecha"></label><input class="leguminosas_fecha span10" type="text" autocomplete="off" name="Inspection[leg_floracion_fecha]" id="Inspection_leg_floracion_fecha"></div>
+	    <div class="span6"><label for="Inspection_leg_floracion_fecha">&nbsp</label><input class="leguminosas_fecha span10" type="text" autocomplete="off" name="Inspection[leg_floracion_fecha]" id="Inspection_leg_floracion_fecha"></div>
 	</div>
     </div>
 </div>

@@ -214,52 +214,45 @@ class InboxController extends Controller
 	
 	public function actionMensaje($id)
 	{	
-		$inboxs=Inbox::model()->find('id=:id', array(':id'=>$id));
-		//Observado
-		$rech=Inbox::model()->find('form_id=:form_id and status_id=:status_id', array(':form_id'=>$inboxs->form_id,':status_id'=>6));
-		//Asginada
-		$insp=Inbox::model()->find('form_id=:form_id and status_id=:status_id', array(':form_id'=>$inboxs->form_id,':status_id'=>3));
-			
-		if($rech===null)
-		{
-			
-			$estacion=Iform::model()->find('user_id=:user_id and id=:form_id',
-													array(':user_id'=>$inboxs->to,':form_id'=>$inboxs->form_id));
-			$headquarter=Headquarter::model()->find('id=:id and tipo_usuario=:tipo_usuario',
-																 array(':id'=>$estacion->headquarter_id,':tipo_usuario'=>2));	
-			
-			$inspector=User::model()->find('type_id=5 and headquarter_id=:headquarter_id',array(':headquarter_id'=>$headquarter->id));
-			//Edita primer registro a estado 0
-			$inboxs->estado=0;
-			$inboxs->save();
-			
-			$model=new Inbox;
-			$model->date=date('Y-m-d');
-			$model->form_id=$inboxs->form_id;
-			$model->to=$inspector->id;//$inspector->id;//Organismo certificador
-			$model->status_id=2;
-			$model->estado=1;
-			$model->save();	
-		}
-		else
-		{
-			$form=Iform::model()->find('id=:id',array(':id'=>$inboxs->form_id));
-			$productor_inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id and t.to=:to',
-			array(':form_id'=>$inboxs->form_id,':status_id'=>6,':to'=>$form->user_id));
-			$productor_inbox->estado=0;
-			$productor_inbox->save();				
-			$insp->estado=1;
-			$insp->save();
-			
-			$inbox=new Inbox;
-			$inbox->date=date('Y-m-d');
-			$inbox->form_id=$inboxs->form_id;
-			$inbox->to=$insp->to;
-			$inbox->status_id=6;
-			$inbox->estado=1;
-			$inbox->save();				
-		}
-		$this->redirect(array('iform/view','id'=>$inboxs->form_id));		
+	    $inboxs=Inbox::model()->find('id=:id', array(':id'=>$id));
+	    //Observado
+	    $rech=Inbox::model()->find('form_id=:form_id and status_id=:status_id', array(':form_id'=>$inboxs->form_id,':status_id'=>6));
+	    //Asginada
+	    $insp=Inbox::model()->find('form_id=:form_id and status_id=:status_id', array(':form_id'=>$inboxs->form_id,':status_id'=>3));
+	    
+	    if($rech==null)
+	    {
+		$estacion=Iform::model()->find('user_id=:user_id and id=:form_id',array(':user_id'=>$inboxs->to,':form_id'=>$inboxs->form_id));
+		$headquarter=Headquarter::model()->find('id=:id and tipo_usuario=:tipo_usuario',array(':id'=>$estacion->headquarter_id,':tipo_usuario'=>2));	
+		$inspector=User::model()->find('type_id=5 and headquarter_id=:headquarter_id',array(':headquarter_id'=>$headquarter->id));
+		//Edita primer registro a estado 0
+		$inboxs->estado=0;
+		$inboxs->save();
+		$model=new Inbox;
+		$model->date=date('Y-m-d');
+		$model->form_id=$inboxs->form_id;
+		$model->to=$inspector->id;//$inspector->id;//Organismo certificador
+		$model->status_id=2;
+		$model->estado=1;
+		$model->save();	
+	    }
+	    else
+	    {
+		$form=Iform::model()->find('id=:id',array(':id'=>$inboxs->form_id));
+		$productor_inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id and t.to=:to',array(':form_id'=>$inboxs->form_id,':status_id'=>6,':to'=>$form->user_id));
+		$productor_inbox->estado=0;
+		$productor_inbox->save();				
+		$insp->estado=1;
+		$insp->save();
+		$inbox=new Inbox;
+		$inbox->date=date('Y-m-d');
+		$inbox->form_id=$inboxs->form_id;
+		$inbox->to=$insp->to;
+		$inbox->status_id=6;
+		$inbox->estado=1;
+		$inbox->save();				
+	    }
+	    $this->redirect(array('iform/view','id'=>$inboxs->form_id));		
 	}
 	
 	public function actionBandeja()
