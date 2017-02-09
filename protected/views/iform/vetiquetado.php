@@ -100,52 +100,67 @@ $(function(){
 			</div>
 	  </div>
 <?php if($headquarter->tipo_empresa=="1" || $model->crop_id==15){ ?>
-<div class="row-fluid span12">		  
-				<div class="span12 well">
-					
-				<!--1° Fila de la Solicutd-->	 
-					<div class="row-fluid">				
-						<div class="span12">
-							<div class="form">
-								<?php
-									$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-										'id'=>'muestreo-form',
-									));
-								?>
-								<?php echo CHtml::hiddenField('id',$model->id); ?>
-								<?php echo CHtml::hiddenField('bandera_etiquetado',$model->id); ?>
-								<div class="row-fluid">
-									
-									<?php //<div class="span3"> echo $form->textFieldRow($model,'lotes',array('class'=>'produccion span12')); </div>?>
-									<div class="span4"><?php echo $form->textFieldRow($model,'peso_total',array('class'=>'produccion span12')); ?></div>
-									<div class="span4"><?php echo $form->textFieldRow($model,'peso_envase',array('class'=>'produccion span12')); ?></div>
-									<div class="span4"><?php echo $form->textFieldRow($model,'nro_envases',array('class'=>'produccion span12')); ?></div>
-									
-								</div>         
-								<div class="row-fluid">
-									
-										<?php $this->widget('bootstrap.widgets.TbButton', array(	
-											'type'=>'primary',
-											'label'=>'Aceptar',
-											'buttonType'=>'ajaxButton',
-											'url'=>Yii::app()->createUrl( 'muestreo/lotes' ),
-											'ajaxOptions'=>array(	  
-											'type'=>'POST',	
-											'data' => "js:$('#muestreo-form').serializeArray()",
-											'success' =>"function( data ){location.reload();}"
-											),
-											'htmlOptions'=>array('data-dismiss'=>'modal',
-											'url' => Yii::app()->createUrl( 'muestreo/lotes' ),
-											),));
-										?>		
-								  
-								</div>         
-								<?php $this->endWidget(); ?>
-							</div><!-- form -->
-							
-						</div>
-					</div>
+			<div class="row-fluid span12">		  
+			    <div class="span12 well">
+			    <!--1Â° Fila de la Solicutd-->	 
+				<div class="row-fluid">				
+				    <div class="span12">
+					<div class="form">
+					    <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array('id'=>'muestreo-form',)); ?>
+					    <?php echo CHtml::hiddenField('id',$model->id); ?>
+					    <?php echo CHtml::hiddenField('bandera_etiquetado',$model->id); ?>
+					    <div class="row-fluid">
+						<div id="error" style="color: red"></div>
+					    </div>
+					    <div class="row-fluid">
+						<?php //<div class="span3"> echo $form->textFieldRow($model,'lotes',array('class'=>'produccion span12')); </div>?>
+						<div class="span4"><?php echo $form->textFieldRow($model,'peso_total',array('class'=>'produccion span12')); ?></div>
+						<div class="span4"><?php echo $form->textFieldRow($model,'peso_envase',array('class'=>'produccion span12')); ?></div>
+						<div class="span4"><?php echo $form->textFieldRow($model,'nro_envases',array('class'=>'produccion span12')); ?></div>
+					    </div>         
+					    <div class="row-fluid">
+						<?php $this->widget('bootstrap.widgets.TbButton', array(	
+							'type'=>'primary',
+							'label'=>'Aceptar',
+							'buttonType'=>'ajaxButton',
+							'url'=>Yii::app()->createUrl( 'muestreo/lotes' ),
+							'ajaxOptions'=>array(
+							'beforeSend' => "js:function(request){
+							    var error='';
+							    if($('#Iform_peso_total').val()=='')
+							    {
+								error=error+'Debes ingresar el peso total <br>';
+							    }
+							    if($('#Iform_peso_envase').val()=='')
+							    {
+								error=error+'Debes ingresar el peso del envase <br>';
+							    }
+							    if($('#Iform_nro_envases').val()=='')
+							    {
+								error=error+'Debes ingresar el nro de envases <br>';
+							    }
+							    
+							    if(error!='')
+							    {
+								$('#error').html(error);
+								return false;
+							    }
+							    
+							}",
+							'type'=>'POST',	
+							'data' => "js:$('#muestreo-form').serializeArray()",
+							'success' =>"function( data ){location.reload();}"
+							),
+							'htmlOptions'=>array('data-dismiss'=>'modal',
+							'url' => Yii::app()->createUrl( 'muestreo/lotes' ),
+							),));
+						?>
+					    </div>         
+					    <?php $this->endWidget(); ?>
+					</div><!-- form -->
+				    </div>
 				</div>
+			    </div>
 			</div>
 			<div class='row-fluid span12 well'>
 				<?php
@@ -169,39 +184,30 @@ $(function(){
 			</div>
 <?php }else {?>
 	<div class="row-fluid span12 well">		  
-		<div class="span12">
-		  </br>
-		  <?php
-		  foreach($etiquetados as $etiquetado):
-			  if(Yii::app()->user->checkAccess('productor'))
-						  {
-						  echo "<div class='row-fluid'>
-									  <div class='span4'><b>Codigo de Lote:</b> ".CHtml::AjaxLink($etiquetado->muestreo->codigo_lote,array('iform/UpdateEtiquetado','id'=>$etiquetado->id),array('update' => '#data'))."</div>
-								  </div>";
-						  }
-		  endforeach;?>
-		</div>
+	    <div class="span12">
+	      </br>
+	      <?php foreach($etiquetados as $etiquetado):
+		      if(Yii::app()->user->checkAccess('productor'))
+					      {
+					      echo "<div class='row-fluid'>
+								      <div class='span4'><b>Codigo de Lote:</b> ".CHtml::AjaxLink($etiquetado->muestreo->codigo_lote,array('iform/UpdateEtiquetado','id'=>$etiquetado->id),array('update' => '#data'))."</div>
+							      </div>";
+					      }
+	      endforeach;?>
+	    </div>
 	</div>
-
 	<div class="row-fluid span12 well">		  
-		<div class="span12">
-			<div id="data">
-				<?php $this->renderPartial('_ajaxContentaetiquetado', array('myValue'=>$myValue)); ?>
-			</div>
+	    <div class="span12">
+		<div id="data">
+		    <?php $this->renderPartial('_ajaxContentaetiquetado', array('myValue'=>$myValue)); ?>
 		</div>
+	    </div>
 	</div>
 <?php } ?>
-	
-
-
-
-
-
-
 <script>
-	$('.produccion').on('blur', function(){
-		$('#Iform_peso_total').val(numeral($('#Iform_peso_total').val()).format('0,0.00'));
-		$('#Iform_peso_envase').val(numeral($('#Iform_peso_envase').val()).format('0,0.00'));
-		$('#Iform_nro_envases').val(numeral($('#Iform_nro_envases').val()).format('0,0.00'));		
-	});
+    /*$('.produccion').on('blur', function(){
+	//$('#Iform_peso_total').val(numeral($('#Iform_peso_total').val()).format('0,0.00'));
+	//$('#Iform_peso_envase').val(numeral($('#Iform_peso_envase').val()).format('0,0.00'));
+	//$('#Iform_nro_envases').val(numeral($('#Iform_nro_envases').val()).format('0,0.00'));		
+    });*/
 </script>

@@ -86,47 +86,44 @@ class MuestreoController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
-		$this->pageTitle = "Actualizar muestreo";
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+	    $model=$this->loadModel($id);
+	    $this->pageTitle = "Actualizar muestreo";
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Muestreo']))
+	    if(isset($_POST['Muestreo']))
+	    {
+	    
+		$model->attributes=$_POST['Muestreo'];
+		if($model->y01==1)
 		{
-		
-			$model->attributes=$_POST['Muestreo'];
-			if($_REQUEST['btn']=='aceptar')
-			{
-				$model->informe=1;
-				$model->fecha_informe=date('Y-m-d');
-				$model->fecha_muestreo=date('Y-m-d',strtotime($_POST['Muestreo']['fecha_muestreo']));
-				$model->tipo_analisis_germinacion=(int)$_POST['Muestreo']['tipo_analisis_germinacion'];
-				$model->tipo_analisis_humedad=(int)$_POST['Muestreo']['tipo_analisis_humedad'];
-				$model->tipo_analisis_pureza=(int)$_POST['Muestreo']['tipo_analisis_pureza'];
-				$model->tipo_analisis_otras_especies=(int)$_POST['Muestreo']['tipo_analisis_otras_especies'];
-				$model->peso_muestra=(int)$_POST['Muestreo']['peso_muestra'];
-				
-				$this->Laboratorio($_POST['Muestreo']['laboratorio_id'],$model->id);
-			}
-			else if($_REQUEST['btn']=='rechazar')
-			{
-				$model->fecha_muestreo=date('Y-m-d',strtotime($_POST['Muestreo']['fecha_muestreo']));
-				$model->tipo_analisis_germinacion=(int)$_POST['Muestreo']['tipo_analisis_germinacion'];
-				$model->tipo_analisis_humedad=(int)$_POST['Muestreo']['tipo_analisis_humedad'];
-				$model->tipo_analisis_pureza=(int)$_POST['Muestreo']['tipo_analisis_pureza'];
-				$model->tipo_analisis_otras_especies=(int)$_POST['Muestreo']['tipo_analisis_otras_especies'];
-				$model->peso_muestra=(int)$_POST['Muestreo']['peso_muestra'];
-				$model->rechazo=1;
-				$model->fecha_rechazo=date('Y-m-d');
-			}
-			
-			if($model->save())
-				$this->redirect(array('iform/ivmuestreo','id'=>$model->form_id));
+		    $model->informe=1;
+		    $model->fecha_informe=date('Y-m-d');
+		    $model->fecha_muestreo=date('Y-m-d',strtotime($_POST['Muestreo']['fecha_muestreo']));
+		    $model->tipo_analisis_germinacion=(int)$model->tipo_analisis_germinacion;
+		    $model->tipo_analisis_humedad=(int)$model->tipo_analisis_humedad;
+		    $model->tipo_analisis_pureza=(int)$model->tipo_analisis_pureza;
+		    $model->tipo_analisis_otras_especies=(int)$model->tipo_analisis_otras_especies;
+		    $model->peso_muestra=(int)$model->peso_muestra;
+		    $this->Laboratorio($_POST['Muestreo']['laboratorio_id'],$model->id);
 		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+		else if($model->y01==2)
+		{
+		    $model->fecha_muestreo=date('Y-m-d',strtotime($_POST['Muestreo']['fecha_muestreo']));
+		    $model->tipo_analisis_germinacion=(int)$model->tipo_analisis_germinacion;
+		    $model->tipo_analisis_humedad=(int)$model->tipo_analisis_humedad;
+		    $model->tipo_analisis_pureza=(int)$model->tipo_analisis_pureza;
+		    $model->tipo_analisis_otras_especies=(int)$model->tipo_analisis_otras_especies;
+		    $model->peso_muestra=(int)$model->peso_muestra;
+		    $model->rechazo=1;
+		    $model->fecha_rechazo=date('Y-m-d');
+		}
+		$model->save();
+		$this->redirect(array('iform/ivmuestreo','id'=>$model->form_id));
+	    }
+	    $this->render('update',array(
+		'model'=>$model,
+	    ));
 	}
 
 	/**
@@ -307,14 +304,14 @@ class MuestreoController extends Controller
 		$muestreo=Muestreo::model()->find('id=:id',array(':id'=>$muestreo_id));
 		$inbox=Inbox::model()->find('t.form_id=:form_id and t.to=:to and status_id=:status_id',
 											 array(':form_id'=>$muestreo->form_id,':to'=>$user->id,':status_id'=>23,));
-		if($inbox===null){
-		$laboratorio=new Inbox;
-		$laboratorio->date=date('Y-m-d');
-		$laboratorio->form_id=$muestreo->form_id;
-		$laboratorio->to=$user->id;
-		$laboratorio->status_id=23;
-		$laboratorio->estado=1;
-		$laboratorio->save();
+		if($inbox==null){
+		    $laboratorio=new Inbox;
+		    $laboratorio->date=date('Y-m-d');
+		    $laboratorio->form_id=$muestreo->form_id;
+		    $laboratorio->to=$user->id;
+		    $laboratorio->status_id=23;
+		    $laboratorio->estado=1;
+		    $laboratorio->save();
 		}
 		$laboratory=new Laboratory;
 		$laboratory->form_id=$muestreo->form_id;

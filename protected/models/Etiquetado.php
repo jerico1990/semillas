@@ -28,22 +28,24 @@ class Etiquetado extends CActiveRecord
 	{
 		return 'etiquetado';
 	}
-
+	public $inicios;
+	public $fines;
+	public $cantidades;
 	/**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('user_id, form_id, muestreo_id, cantidad', 'numerical', 'integerOnly'=>true),
-			array('peso_total', 'length', 'max'=>18),
-			array('fecha_solicitud, solicitud, fecha_notificado, notificado, fecha_informe, informe, fecha_rechazado, rechazado', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, form_id, muestreo_id, fecha_solicitud, solicitud, cantidad, fecha_notificado, notificado, fecha_informe, informe, fecha_rechazado, rechazado, peso_total', 'safe', 'on'=>'search'),
-		);
+	    // NOTE: you should only define rules for those attributes that
+	    // will receive user inputs.
+	    return array(
+		    array('user_id, form_id, muestreo_id, cantidad', 'numerical', 'integerOnly'=>true),
+		    array('peso_total', 'length', 'max'=>18),
+		    array('inicios,fines,cantidades,fecha_solicitud, solicitud, fecha_notificado, notificado, fecha_informe, informe, fecha_rechazado, rechazado', 'safe'),
+		    // The following rule is used by search().
+		    // @todo Please remove those attributes that should not be searched.
+		    array('id, user_id, form_id, muestreo_id, fecha_solicitud, solicitud, cantidad, fecha_notificado, notificado, fecha_informe, informe, fecha_rechazado, rechazado, peso_total', 'safe', 'on'=>'search'),
+	    );
 	}
 
 	/**

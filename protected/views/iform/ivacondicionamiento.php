@@ -92,7 +92,8 @@ $(function(){
 	$('#Acondicionamiento_real_time').clockface();
 	$('#Inspection_real_time').clockface();
 	$('#Inspection_subsanacion_real_time').clockface();
-
+	$('#Acondicionamiento_subsanacion_real_time').clockface();
+	
 	
 	
 });
@@ -336,70 +337,61 @@ foreach($acondicionamientos as $acondicionamiento)
 					</div>
 				</div>
 				<?php
-			} 
-				
-			if($inbox->status_id==17 && $inbox->estado==1 && $acondicionamiento->real_date!==null  &&
-				$acondicionamiento->subsanacion==0 && $acondicionamiento->rechazado==0)
+			}
+			if($inbox->status_id==17 && $inbox->estado==1 && $acondicionamiento->real_date!==null && $acondicionamiento->subsanacion==0 && $acondicionamiento->rechazado==0)
 			{  
-				echo '<div class="row-fluid">
-						<div class="span2"></div><div class="span10">';
-				if($model->crop_id==1 || $model->crop_id==2 || $model->crop_id==3 || $model->crop_id==4 || $model->crop_id==5 ||
-					$model->crop_id==6 || $model->crop_id==7 || $model->crop_id==8 || $model->crop_id==9 ||
-					$model->crop_id==10 ||$model->crop_id==11 || $model->crop_id==12 || $model->crop_id==13)
-				{
+			    echo '<div class="row-fluid">
+					    <div class="span2"></div><div class="span10">';
+			    if($model->crop_id==1 || $model->crop_id==2 || $model->crop_id==3 || $model->crop_id==4 || $model->crop_id==5 || $model->crop_id==6 || $model->crop_id==7 || $model->crop_id==8 || $model->crop_id==9 || $model->crop_id==10 ||$model->crop_id==11 || $model->crop_id==12 || $model->crop_id==13)
+			    {
 				$this->widget('bootstrap.widgets.TbButton', array(
-								'buttonType'=>'link',
-								'size'=>'small',
-								'type'=>'primary',
-								'label'=>'Realizar Acondiconamiento',
-								'url'=>array('acondicionamiento/general',
-												 'id'=>$acondicionamiento->id)));
-				}			
-				
-				if($model->crop_id==15)//Papa
-				{
+							    'buttonType'=>'link',
+							    'size'=>'small',
+							    'type'=>'primary',
+							    'label'=>'Realizar Acondicionamiento',
+							    'url'=>array('acondicionamiento/general',
+											     'id'=>$acondicionamiento->id)));
+			    }			
+			    
+			    if($model->crop_id==15)//Papa
+			    {
 				$this->widget('bootstrap.widgets.TbButton', array(
-								'buttonType'=>'link',
-								'size'=>'small',
-								'type'=>'primary',
-								'label'=>'Realizar Acondicionamiento',
-								'url'=>array('acondicionamiento/papa',
-												 'id'=>$acondicionamiento->id)));
-				}
-				echo '</div></div>';
+							    'buttonType'=>'link',
+							    'size'=>'small',
+							    'type'=>'primary',
+							    'label'=>'Realizar Acondicionamiento',
+							    'url'=>array('acondicionamiento/papa',
+											     'id'=>$acondicionamiento->id)));
+			    }
+			    echo '</div></div>';
 			}
 			
 			//Subsanacion
-			if($inbox->status_id==17 && $acondicionamiento->real_date!==null  &&
-				$acondicionamiento->subsanacion==1 && $acondicionamiento->rechazado==0 && $acondicionamiento->subsanacion_real_date!==null)
-			{  
-				echo '<div class="row-fluid">
-						<div class="span2"></div><div class="span10">';
-				if($model->crop_id==1 || $model->crop_id==2 || $model->crop_id==3 || $model->crop_id==4 || $model->crop_id==5 ||
-					$model->crop_id==6 || $model->crop_id==7 || $model->crop_id==8 || $model->crop_id==9 ||
-					$model->crop_id==10 ||$model->crop_id==11 || $model->crop_id==12 || $model->crop_id==13
-					)
-				{
+			if($inbox->status_id==17 && $inbox->estado==1 && $acondicionamiento->real_date!==null  && $acondicionamiento->subsanacion==1 && $acondicionamiento->rechazado==0 && $acondicionamiento->subsanacion_real_date!=null){
+			    echo '<div class="row-fluid">
+					    <div class="span2"></div><div class="span10">';
+			    if($model->crop_id==1 || $model->crop_id==2 || $model->crop_id==3 || $model->crop_id==4 || $model->crop_id==5 || $model->crop_id==6 || $model->crop_id==7 || $model->crop_id==8 || $model->crop_id==9 || $model->crop_id==10 ||$model->crop_id==11 || $model->crop_id==12 || $model->crop_id==13 )
+			    {
 				$this->widget('bootstrap.widgets.TbButton', array(
-								'buttonType'=>'link',
-								'size'=>'small',
-								'type'=>'primary',
-								'label'=>'Realizar Acondiconamiento',
-								'url'=>array('acondicionamiento/general',
-												 'id'=>$acondicionamiento->id)));
-				}			
-				
-				if($model->crop_id==15)//Papa
-				{
+							    'buttonType'=>'link',
+							    'size'=>'small',
+							    'type'=>'primary',
+							    'label'=>'Realizar Acondicionamiento',
+							    'url'=>array('acondicionamiento/general',
+											     'id'=>$acondicionamiento->id)));
+			    }			
+			    
+			    if($model->crop_id==15)//Papa
+			    {
 				$this->widget('bootstrap.widgets.TbButton', array(
-								'buttonType'=>'link',
-								'size'=>'small',
-								'type'=>'primary',
-								'label'=>'Realizar Acondicionamiento',
-								'url'=>array('acondicionamiento/papa',
-												 'id'=>$acondicionamiento->id)));
-				}
-				echo '</div></div>';
+							    'buttonType'=>'link',
+							    'size'=>'small',
+							    'type'=>'primary',
+							    'label'=>'Realizar Acondicionamiento',
+							    'url'=>array('acondicionamiento/papa',
+											     'id'=>$acondicionamiento->id)));
+			    }
+			    echo '</div></div>';
 			}
 			if($inbox->status_id==18)
 			{?>
@@ -445,53 +437,56 @@ foreach($acondicionamientos as $acondicionamiento)
 								<h4 id="myModalLabel">Notificar Visita de Subsanación</h4>
 							</div>
 							<div class="modal-body">
-								<p>
-									<div class="form">
-											<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm',
-																						array(
-																								'id'=>'inbox-form',
-																								'enableClientValidation'=>true,
-																								'clientOptions'=>array('validateOnSubmit'=>true),
-																								'htmlOptions'=>array('class'=>'well'),
-																								));?>
-											<?php echo $form->datepickerRow($acondicionamiento,'subsanacion_real_date',
-																					  array(//'prepend'=>'<li class="icon-calendar"></li>',
-																							  'value'=>date("d-m-Y",strtotime($acondicionamiento->subsanacion_date)),
-																							  'options'=>
-																								array( 'format' => 'dd-mm-yyyy',
-																									'weekStart'=> 1,
-																									'showButtonPanel' => true,
-																									'showAnim'=>'fold',))); ?>
-											<?php echo $form->textFieldRow($acondicionamiento,'subsanacion_real_time',
-																					array(
-																					'value'=>date("h:m A",strtotime($acondicionamiento->subsanacion_time)),
-																					'data-format'=>'hh:mm A',
-																					'class'=>'input-small'));	?>
-											<?php $this->endWidget(); ?>
-										</div><!-- form -->
-									</p>
-								</div>
-								<div class="modal-footer">
-										  <?php $this->widget('bootstrap.widgets.TbButton', array(
-															 'type'=>'primary',
-															 'label'=>'Aceptar',
-															 'buttonType'=>'ajaxButton',
-															 'url'=>Yii::app()->createUrl( 'iform/observacion' ),
-															 'ajaxOptions'=>array(
-																						 'type'=>'POST',
-																						 'data' => array(
-																										'nacondicionamiento'=>$acondicionamiento->acondicionamiento_number,																											
-																										'id'=>14,
-																										'form'=>$acondicionamiento->form_id,
-																										'hora'=>'js:$("#Acondicionamiento_subsanacion_real_time").val()',
-																										'observacion'=>'observacion',
-																										'fecha' => 'js:$("#Acondicionamiento_subsanacion_real_date").val()' ),
-																						 'success' => "function( data ){location.reload();}"
-																						 ),
-															 'htmlOptions'=>array('data-dismiss'=>'modal',
-																						 'url' => Yii::app()->createUrl( 'iform/observacion' ),
-																						 ),)); ?>
-								</div>
+							    <p>
+								<div class="form">
+								    <?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm',
+									array(
+											'id'=>'inbox-form',
+											'enableClientValidation'=>true,
+											'clientOptions'=>array('validateOnSubmit'=>true),
+											'htmlOptions'=>array('class'=>'well'),
+											));?>
+									<label for="Acondicionamiento_subsanacion_real_date">Fecha</label>
+									<input type="text" autocomplete="off" name="Acondicionamiento[subsanacion_real_date]" id="Acondicionamiento_subsanacion_real_date">
+									
+								    <?php /*echo $form->datepickerRow($acondicionamiento,'subsanacion_real_date',
+																		      array(//'prepend'=>'<li class="icon-calendar"></li>',
+																				      'value'=>date("d-m-Y",strtotime($acondicionamiento->subsanacion_date)),
+																				      'options'=>
+																					    array( 'format' => 'dd-mm-yyyy',
+																						    'weekStart'=> 1,
+																						    'showButtonPanel' => true,
+																						    'showAnim'=>'fold',)));*/ ?>
+								    <?php echo $form->textFieldRow($acondicionamiento,'subsanacion_real_time',
+																		    array(
+																		    'value'=>date("h:m A",strtotime($acondicionamiento->subsanacion_time)),
+																		    'data-format'=>'hh:mm A',
+																		    'class'=>'input-small'));	?>
+								    <?php $this->endWidget(); ?>
+								</div><!-- form -->
+							    </p>
+							</div>
+							<div class="modal-footer">
+							    <?php $this->widget('bootstrap.widgets.TbButton', array(
+												   'type'=>'primary',
+												   'label'=>'Aceptar',
+												   'buttonType'=>'ajaxButton',
+												   'url'=>Yii::app()->createUrl( 'iform/observacion' ),
+												   'ajaxOptions'=>array(
+													'type'=>'POST',
+													'data' => array(
+													    'nacondicionamiento'=>$acondicionamiento->acondicionamiento_number,																											
+													    'id'=>14,
+													    'form'=>$acondicionamiento->form_id,
+													    'hora'=>'js:$("#Acondicionamiento_subsanacion_real_time").val()',
+													    'observacion'=>'observacion',
+													    'fecha' => 'js:$("#Acondicionamiento_subsanacion_real_date").val()' ),
+													'success' => "function( data ){location.reload();}"
+												    ),
+												   'htmlOptions'=>array('data-dismiss'=>'modal',
+																			   'url' => Yii::app()->createUrl( 'iform/observacion' ),
+																			   ),)); ?>
+							</div>
 						</div>
 					<!--Fin de Notificar Visita DE SUBSANACION-->
 				</div>
@@ -546,6 +541,8 @@ foreach($acondicionamientos as $acondicionamiento)
 	
 	$('#myModal_notificar_acond').modal('hide');
 	$('#myModal_btnnotifacon').on('click', function(){$('#myModal_notificar_acond').modal('show');})
+	$('#Acondicionamiento_subsanacion_real_date').datepicker({format: 'dd-mm-yyyy'})
+	
 	
 </script>
 		  

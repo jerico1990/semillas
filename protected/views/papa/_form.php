@@ -4,6 +4,9 @@
 
     <div class="row-fluid">
 	<div class="span12"><h4>Campo de Multiplicación</h4></div>      
+    </div>
+    <div class="row-fluid">
+	<div id="error" style="color: red"></div>      
     </div> 
     <div class="row-fluid">
 	<div class="span3">

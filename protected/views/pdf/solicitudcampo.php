@@ -252,8 +252,8 @@ if($varestacion ===1)
         <div>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td width="20%"></td> 
-                    <td width="60%"><div align="center"><img src="'.Yii::app()->getBaseUrl(true).'/images/'.$img.'" width="'.$width.'" height="'.$height.'"  alt=""/></div></td>
+                    <td width="30%"></td> 
+                    <td width="50%"><div class="text-center" align="center"><img src="'.Yii::app()->getBaseUrl(true).'/images/'.$img.'" width="'.$width.'" height="'.$height.'"  alt=""/></div></td>
                     <td width="20%" style="font-size: 0.8em; text-align: center; font-weight: bold;">Exp Nro: '.$model->form_number.'</td>
                 </tr>
             </table>

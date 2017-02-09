@@ -32,7 +32,7 @@ class IformController extends Controller
 				'actions'=>array('index','view','aindex','aview','asignarinsp','iindex','vsolicitud','vcampo','vacondicionamiento','vmuestreo','vetiquetado',
 									  'iview','observacion','inspection','prueba','acondicionamiento','files','updateacondicionamiento',
 									  'asolicitud','acampo','aacondicionamiento','amuestreo','aetiquetado','PupdateAcondicionamiento',
-									  'PupdateMuestreo','PupdateEtiquetado',
+									  'PupdateMuestreo','PupdateEtiquetado','listadomovilizacion','listadoproduccion',
 									  'ivsolicitud','ivcampo','ivacondicionamiento','ivmuestreo','ivetiquetado','updatemuestreo','send','updateetiquetado',
 									  'acondicionamientoview','cultivar','fmodificacion','fmodificacionindex','eliminaragricultor','eliminarfuente',
 									  'modificacionupdate','produccionindex','movilizacionindex','muestreo','laboratorio','ubicacion','listadocampo'),
@@ -634,17 +634,17 @@ class IformController extends Controller
 	    if($_REQUEST['id']=='1')
 	    {
 		$inbox->estado=0;
-		$inbox->save();
+		$inbox->update();
 		//Expediente
 		$location=Location::model()->find('district_id=:district_id',array(':district_id'=>$form->location_id));
 		$headquarter=Headquarter::model()->find('parent_id=:parent_id and location_id=:location_id',array(':parent_id'=>$form->headquarter_id,':location_id'=>$location->department_id));
 		//Fechaa para diferentes anio
 		$correlativo=$headquarter->correlativo+1;				
 		$headquarter->correlativo=$correlativo;
-		$headquarter->save();
+		$headquarter->update();
 		$expediente=$headquarter->codigo_simple."-".$correlativo."-".date('y');
 		$form->form_number=$expediente;
-		$form->save();
+		$form->update();
 		//Aprobado
 		$aprobado=new Inbox;		
 		$aprobado->date=date('Y-m-d');
@@ -681,7 +681,7 @@ class IformController extends Controller
 		{
 		    $inboxp=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>4));
 		    $inboxp->estado=0;
-		    $inboxp->save();
+		    $inboxp->update();
 		    //Solicitada
 		    $inspectionp=Inspection::model()->find('id=:id',array(':id'=>$inspeccion->id));
 		    if($inspectionp->inspection_number==1)
@@ -698,7 +698,7 @@ class IformController extends Controller
 		    $inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',array(':form_id'=>$form->id,':user_id'=>$inboxp->to,':inspection_number'=>$inspectionp->inspection_number));
 		    $inspeccion->proposed_time=date("H:i",strtotime('12:00 PM'));
 		    $inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha_visita']));
-		    $inspeccion->save();
+		    $inspeccion->update();
 		}
 		
 	    }
@@ -706,7 +706,7 @@ class IformController extends Controller
 	    else if($_REQUEST['id']=='2')
 	    {
 		$inbox->estado=0;
-		$inbox->save();
+		$inbox->update();
 		$observar=new Inbox;		
 		$observar->date=date('Y-m-d');
 		$observar->form_id=$form->id;
@@ -720,7 +720,7 @@ class IformController extends Controller
 	    else if($_REQUEST['id']=='3')
 	    {
 		$inbox->estado=0;
-		$inbox->save();
+		$inbox->update();
 		$rechazar=new Inbox;		
 		$rechazar->date=date('Y-m-d');
 		$rechazar->form_id=$form->id;
@@ -734,7 +734,7 @@ class IformController extends Controller
 	    else if($_REQUEST['id']=='6')
 	    {
 		$inbox->estado=0;
-		$inbox->save();
+		$inbox->update();
 		$rechazar=new Inbox;		
 		$rechazar->date=date('Y-m-d');
 		$rechazar->form_id=$form->id;
@@ -749,7 +749,7 @@ class IformController extends Controller
 	    {		
 		$inbox=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$_REQUEST['form'],':status_id'=>4));
 		$inbox->estado=0;
-		$inbox->save();
+		$inbox->update();
 		//Solicitada
 		if($_REQUEST['inspeccion']==1)
 		{
@@ -765,7 +765,7 @@ class IformController extends Controller
 		$inspeccion=Inspection::model()->find('form_id=:form_id and user_id=:user_id and inspection_number=:inspection_number',array(':form_id'=>$_REQUEST['form'],':user_id'=>$inbox->to,':inspection_number'=>$_REQUEST['inspeccion']));
 		$inspeccion->proposed_time=date("H:i",strtotime($_REQUEST['hora']));
 		$inspeccion->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
-		$inspeccion->save();
+		$inspeccion->update();
 	    }
 	    //NOTIFICAR VISITA iform/iview
 	    else if($_REQUEST['id']=='8')
@@ -798,7 +798,7 @@ class IformController extends Controller
 		    {
 			$solicitada=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$programada->form_id,':status_id'=>7));
 			$solicitada->estado=0;
-			$solicitada->save();
+			$solicitada->update();
 		    }
 		}
 	    }
@@ -818,12 +818,12 @@ class IformController extends Controller
 		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
 		$acondicionamiento->proposed_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
 		$acondicionamiento->proposed_time=date("H:i",strtotime($_REQUEST['hora']));
-		$acondicionamiento->save();
+		$acondicionamiento->update();
 		
 		//Actualiza estado
 		$solicitado=Inbox::model()->find('t.form_id=:form_id and t.status_id=:status_id ', array(':form_id'=>$form->id,':status_id'=>12));
 		$solicitado->estado=0;
-		$solicitado->save();
+		$solicitado->update();
 		
 		//Creando inbox solicitud
 		$solicitar=new Inbox;
@@ -852,34 +852,34 @@ class IformController extends Controller
 		{
 		    $muestreo=Muestreo::model()->find('acondicionamiento_id=:acondicionamiento_id',array(':acondicionamiento_id'=>$_REQUEST['acondicionamiento']));
 		    $muestreo->notificacion_acondicionamiento=1;
-		    $muestreo->save();
+		    $muestreo->update();
 		}
 		//acondicionamient
 		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
 		$acondicionamiento->real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
 		$acondicionamiento->real_time=date("H:i",strtotime($_REQUEST['hora']));
-		$acondicionamiento->save();
+		$acondicionamiento->update();
 	    }
 	    else if($_REQUEST['id']=='12')//Inspeccion Subsanacion
 	    {
 		$inspeccion=Inspection::model()->find('form_id=:form_id and inspection_number=:inspection_number and subsanacion=TRUE',array(':form_id'=>$_REQUEST['form'],':inspection_number'=>$_REQUEST['ninspeccion']));
 		$inspeccion->subsanacion_real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
 		$inspeccion->subsanacion_real_time=date("H:i",strtotime($_REQUEST['hora']));
-		$inspeccion->save();
+		$inspeccion->update();
 	    }
 	    else if($_REQUEST['id']=='13')//Acondicionamiento Subsanacion
 	    {
 		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['acondicionamiento']));
 		$acondicionamiento->subsanacion_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
 		$acondicionamiento->subsanacion_time=date("H:i",strtotime($_REQUEST['hora']));
-		$acondicionamiento->save();
+		$acondicionamiento->update();
 	    }
-	    else if($_REQUEST['id']=='14')//Acondicionamiento Subsanacion
+	    else if($_REQUEST['id']=='14')//Acondicionamiento Subsanacion real
 	    {
 		$acondicionamiento=Acondicionamiento::model()->find('form_id=:form_id and acondicionamiento_number=:acondicionamiento_number and subsanacion=TRUE',array(':form_id'=>$_REQUEST['form'],':acondicionamiento_number'=>$_REQUEST['nacondicionamiento']));
 		$acondicionamiento->subsanacion_real_date=date('Y-m-d',strtotime($_REQUEST['fecha']));
 		$acondicionamiento->subsanacion_real_time=date("H:i",strtotime($_REQUEST['hora']));
-		$acondicionamiento->save();
+		$acondicionamiento->update();
 	    }
 	}
 	
@@ -1137,15 +1137,36 @@ class IformController extends Controller
 	
 	public function actionListadoCampo()
 	{
+	    
+	    // $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));               
+                /*$dataProvider=new CActiveDataProvider('Iform',array(
+                                                                   'criteria'=>array('condition'=>'user_id='.$user->id, 'order'=>'create_time DESC',)
+                ));*/
+		/*
+		$dataProvider=new CActiveDataProvider('Iform', array(
+			'criteria' => array(
+			'condition'=>'status_id=1',
+			'join' =>'INNER JOIN inbox  ON inbox.form_id=t.id and inbox.to='.$user->id,
+			'order'=>'inbox.form_id /'
+			),
+		   'pagination'=>array(
+            'pageSize'=>3,)			
+			));
+		*/
+		
+		
 	    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
 	    $resultados = Yii::app()->db->createCommand()
-		    ->select('form.*,inbox.date,crop.name,a.name variety,maestro.descripcion')
+		    ->select('form.*,inbox.date,crop.name,a.name variety,maestro.descripcion,status.status_name,ubigeo.department,ubigeo.province,ubigeo.district')
 		    ->from('form')
 		    ->join('inbox','inbox.form_id = form.id')
+		    ->join('status','status.id = inbox.status_id')
 		    ->join('crop','crop.id = form.crop_id')
 		    ->join('crop a','a.id = form.variety_id')
+		    ->join('ubigeo','ubigeo.district_id=form.location_id')
 		    ->join('maestro','maestro.codigo="005" and maestro.codigo_detalle=form.category')
-		    ->where('status_id=1 and inbox.to='.$user->id)
+		    ->where('inbox.status_id=1 and inbox.to='.$user->id)
+		    ->order('inbox.id desc')
 		    ->queryAll();
 		    
 	    $nro=0;
@@ -1153,11 +1174,112 @@ class IformController extends Controller
 	    {
 		$nro++;
 		echo "<tr>";
-		echo "<td>" .date("d-m-Y",strtotime($result["date"])) . "</td>";
-		echo "<td>".$result["name"]." / ".$result["variety"]."</td>";
-		echo "<td>".$result["descripcion"]."</td>";
-		echo "<td></td>";
-		echo "<td><a href='vsolicitud/".$result["id"]."'><i class='icon-eye-open'></i></a> <a href='../iform/update/".$result["id"]."'><i class='icon-pencil'></i></a></td>";
+		echo "<td style='font-size:12px'>" .date("d-m-Y",strtotime($result["date"])) . "</td>";
+		echo "<td style='font-size:12px'>".$result["name"]." / ".$result["variety"]."</td>";
+		echo "<td style='font-size:12px'>".$result["descripcion"]."</td>";
+		echo "<td style='font-size:12px'>".$result["department"]."/".$result["province"]."/".$result["district"]."</td>";
+		echo "<td style='font-size:12px'>".$this->getStatus($result["id"],$user->id)."</td>";
+		echo "<td style='font-size:12px'><a href='vsolicitud/".$result["id"]."'><i class='icon-eye-open'></i></a> <a href='../iform/update/".$result["id"]."'><i class='icon-pencil'></i></a></td>";
+		echo "</tr>";
+	    }
+	}
+	
+	
+	public function actionListadoMovilizacion()
+	{
+	    
+	    // $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));               
+                /*$dataProvider=new CActiveDataProvider('Iform',array(
+                                                                   'criteria'=>array('condition'=>'user_id='.$user->id, 'order'=>'create_time DESC',)
+                ));*/
+		/*
+		$dataProvider=new CActiveDataProvider('Iform', array(
+			'criteria' => array(
+			'condition'=>'status_id=1',
+			'join' =>'INNER JOIN inbox  ON inbox.form_id=t.id and inbox.to='.$user->id,
+			'order'=>'inbox.form_id /'
+			),
+		   'pagination'=>array(
+            'pageSize'=>3,)			
+			));
+		*/
+		
+		
+	    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+	    $resultados = Yii::app()->db->createCommand()
+		    ->select('form.*,inbox.date,crop.name,a.name variety,maestro.descripcion,status.status_name,ubigeo.department,ubigeo.province,ubigeo.district')
+		    ->from('form')
+		    ->join('inbox','inbox.form_id = form.id')
+		    ->join('status','status.id = inbox.status_id')
+		    ->join('crop','crop.id = form.crop_id')
+		    ->join('crop a','a.id = form.variety_id')
+		    ->join('ubigeo','ubigeo.district_id=form.location_id')
+		    ->join('maestro','maestro.codigo="005" and maestro.codigo_detalle=form.category')
+		    ->where('inbox.status_id=12 and inbox.to='.$user->id)
+		    ->order('inbox.id desc')
+		    ->queryAll();
+		    
+	    $nro=0;
+	    foreach($resultados as $result)
+	    {
+		$nro++;
+		echo "<tr>";
+		echo "<td style='font-size:12px'>" .date("d-m-Y",strtotime($result["date"])) . "</td>";
+		echo "<td style='font-size:12px'>".$result["name"]." / ".$result["variety"]."</td>";
+		echo "<td style='font-size:12px'>".$result["descripcion"]."</td>";
+		echo "<td style='font-size:12px'>".$result["department"]."/".$result["province"]."/".$result["district"]."</td>";
+		echo "<td style='font-size:12px'>".$this->getStatus($result["id"],$user->id)."</td>";
+		echo "<td style='font-size:12px'><a href='../movilizacion/create/".$result["id"]."'><i class='icon-eye-open'></i></a> </td>";
+		echo "</tr>";
+	    }
+	}
+	
+	
+	public function actionListadoProduccion()
+	{
+	    
+	    // $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));               
+                /*$dataProvider=new CActiveDataProvider('Iform',array(
+                                                                   'criteria'=>array('condition'=>'user_id='.$user->id, 'order'=>'create_time DESC',)
+                ));*/
+		/*
+		$dataProvider=new CActiveDataProvider('Iform', array(
+			'criteria' => array(
+			'condition'=>'status_id=1',
+			'join' =>'INNER JOIN inbox  ON inbox.form_id=t.id and inbox.to='.$user->id,
+			'order'=>'inbox.form_id /'
+			),
+		   'pagination'=>array(
+            'pageSize'=>3,)			
+			));
+		*/
+		
+		
+	    $user=User::model()->find('cruge_user_id=:cruge_user_id', array(':cruge_user_id'=>Yii::app()->user->id));
+	    $resultados = Yii::app()->db->createCommand()
+		    ->select('form.*,inbox.date,crop.name,a.name variety,maestro.descripcion,status.status_name,ubigeo.department,ubigeo.province,ubigeo.district')
+		    ->from('form')
+		    ->join('inbox','inbox.form_id = form.id')
+		    ->join('status','status.id = inbox.status_id')
+		    ->join('crop','crop.id = form.crop_id')
+		    ->join('crop a','a.id = form.variety_id')
+		    ->join('ubigeo','ubigeo.district_id=form.location_id')
+		    ->join('maestro','maestro.codigo="005" and maestro.codigo_detalle=form.category')
+		    ->where('inbox.status_id=12 and inbox.to='.$user->id)
+		    ->order('inbox.id desc')
+		    ->queryAll();
+		    
+	    $nro=0;
+	    foreach($resultados as $result)
+	    {
+		$nro++;
+		echo "<tr>";
+		echo "<td style='font-size:12px'>" .date("d-m-Y",strtotime($result["date"])) . "</td>";
+		echo "<td style='font-size:12px'>".$result["name"]." / ".$result["variety"]."</td>";
+		echo "<td style='font-size:12px'>".$result["descripcion"]."</td>";
+		echo "<td style='font-size:12px'>".$result["department"]."/".$result["province"]."/".$result["district"]."</td>";
+		echo "<td style='font-size:12px'>".$this->getStatus($result["id"],$user->id)."</td>";
+		echo "<td style='font-size:12px'><a href='../produccion/create/".$result["id"]."'><i class='icon-eye-open'></i></a> </td>";
 		echo "</tr>";
 	    }
 	}
@@ -1170,5 +1292,29 @@ class IformController extends Controller
 	public function actionEliminarFuente($id=null)
 	{
 	    SourceDoc::model()->find('id=:id',array(':id'=>$id))->delete();
+	}
+	
+	public function getStatus($form_id,$user)
+	{
+	    
+	    $resultados = Yii::app()->db->createCommand()
+		    ->select('inbox.*,status.status_name')
+		    ->from('inbox')
+		    ->join('status','status.id = inbox.status_id')
+		    ->where('inbox.form_id='.$form_id.'')
+		    ->limit(1)
+		    ->order('id desc')
+		    ->query();
+		    
+	    foreach($resultados as $resultado)
+	    {
+		if($resultado["to"]==$user)
+		{
+		    return $resultado["status_name"];
+		}
+		else{
+		    return $resultado["status_name"];
+		}
+	    }
 	}
 }

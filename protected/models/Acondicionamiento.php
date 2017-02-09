@@ -151,7 +151,7 @@ class Acondicionamiento extends CActiveRecord
 			'real_time' => 'Hora programada',
 			'acondicionamiento_number' => 'Acondicionamiento Number',
 			'subsanacion' => 'Subsanacion',
-			'subsanacion_time' => 'Subsanacion Time',
+			'subsanacion_time' => 'Hora de subsanación',
 			'subsanacion_date' => 'Subsanacion Date',
 			'subsanacion_real_date' => 'Subsanacion Real Date',
 			'subsanacion_real_time' => 'Subsanacion Real Time',

@@ -124,21 +124,21 @@ class AcondicionamientoController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+	    $model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Acondicionamiento']))
-		{
-			$model->attributes=$_POST['Acondicionamiento'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+	    if(isset($_POST['Acondicionamiento']))
+	    {
+		    $model->attributes=$_POST['Acondicionamiento'];
+		    if($model->save())
+			    $this->redirect(array('view','id'=>$model->id));
+	    }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+	    $this->render('update',array(
+		    'model'=>$model,
+	    ));
 	}
 
 	/**
@@ -190,10 +190,10 @@ class AcondicionamientoController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Acondicionamiento::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+	    $model=Acondicionamiento::model()->findByPk($id);
+	    if($model===null)
+		    throw new CHttpException(404,'The requested page does not exist.');
+	    return $model;
 	}
 
 	/**
@@ -220,36 +220,52 @@ class AcondicionamientoController extends Controller
 		$headquarter=Headquarter::model()->find('id=:id',array(':id'=>$form->headquarter_id));
 		$muestreo=Muestreo::model()->find('acondicionamiento_id=:acondicionamiento_id',array(':acondicionamiento_id'=>$acondicionamiento->id));
 		$model->attributes=$_POST['Acondicionamiento'];
-		$model->save();
+		$model->fecha_cosecha=date("Y-m-d", strtotime($model->fecha_cosecha));//$_REQUEST['Acondicionamiento']['subsanacion_date'];
 		
 		if($form->crop_id==1 || $form->crop_id==2 || $form->crop_id==3 || $form->crop_id==4 || $form->crop_id==5 || $form->crop_id==6 || $form->crop_id==7 || $form->crop_id==8 || $form->crop_id==9 || $form->crop_id==10 || $form->crop_id==11 ||$form->crop_id==12 || $form->crop_id==13)			
 		{
-		    if($headquarter->tipo_empresa==2)
+		    
+		    if($model->y01==1)
 		    {
-			$this->Muestreo($form->id,$form->user_id);
+			
+			if($headquarter->tipo_empresa==2)
+			{
+			    $this->Muestreo($form->id,$form->user_id);
+			}
+			else if($headquarter->tipo_empresa==1 && $muestreo!==null)
+			{
+			    $muestreo->fecha_informe_acondicionamiento=date('Y-m-d');
+			    $muestreo->informe_acondicionamiento=1;
+			    $muestreo->save();
+			}
 		    }
-		    else if($headquarter->tipo_empresa==1 && $muestreo!==null)
+		    elseif($model->y01==2)
 		    {
-			$muestreo->fecha_informe_acondicionamiento=date('Y-m-d');
-			$muestreo->informe_acondicionamiento=1;
-			$muestreo->save();
+			$model->subsanacion_date=date("Y-m-d", strtotime($model->subsanacion_date));//$_REQUEST['Acondicionamiento']['subsanacion_date'];
+			$model->subsanacion=1;
+			
+			$condicional=new Inbox;
+			$condicional->date=date('Y-m-d');
+			$condicional->form_id=$acondicionamiento->form_id;
+			$condicional->to=$acondicionamiento->user_id;
+			$condicional->status_id=16;
+			$condicional->estado=1;
+			$condicional->save();
+		    }
+		    elseif($model->y01==3)
+		    {
+			$acondicionamiento->rechazado=1;
+			$rechazado=new Inbox;
+			$rechazado->date=date('d/m/y');
+			$rechazado->form_id=$acondicionamiento->form_id;
+			$rechazado->to=$acondicionamiento->user_id;
+			$rechazado->status_id=15;
+			$rechazado->estado=1;
+			$rechazado->save();
 		    }
 		}
-		else if ($form->crop_id==15)
-		{
-		    $acondicionamiento->afectadas_erwinia=str_replace(',','',$acondicionamiento->afectadas_erwinia);
-		    $acondicionamiento->afectadas_fusarium=str_replace(',','',$acondicionamiento->afectadas_fusarium);
-		    $acondicionamiento->afectadas_rhizoctoniasis=str_replace(',','',$acondicionamiento->afectadas_rhizoctoniasis);
-		    $acondicionamiento->afectadas_mezcla_varietal=str_replace(',','',$acondicionamiento->afectadas_mezcla_varietal);
-		    $acondicionamiento->afectadas_fuera_tamano=str_replace(',','',$acondicionamiento->afectadas_fuera_tamano);
-		    $acondicionamiento->observacion=$acondicionamiento->observacion;
-		    $acondicionamiento->update();
-		    if($headquarter->tipo_empresa==2)
-		    {
-			$this->Muestreo($form->id,$form->user_id);
-		    }
-		}
-		$this->redirect(array('view','id'=>$model->id));
+		$model->update();
+		return $this->redirect(array('iform/ivacondicionamiento','id'=>$form->id));
 	    }
 
 	    $this->render('general',array(
@@ -258,21 +274,63 @@ class AcondicionamientoController extends Controller
 	}
 	public function actionPapa($id)
 	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Acondicionamiento']))
+	    $model=$this->loadModel($id);
+	    if(isset($_POST['Acondicionamiento']))
+	    {
+		$model->attributes=$_POST['Acondicionamiento'];
+		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$model->id));
+		$form=Iform::model()->find('id=:id',array(':id'=>$acondicionamiento->form_id));
+		$headquarter=Headquarter::model()->find('id=:id',array(':id'=>$form->headquarter_id));
+		$muestreo=Muestreo::model()->find('acondicionamiento_id=:acondicionamiento_id',array(':acondicionamiento_id'=>$acondicionamiento->id));
+		$model->attributes=$_POST['Acondicionamiento'];
+		$model->fecha_cosecha=date("Y-m-d", strtotime($model->fecha_cosecha));//$_REQUEST['Acondicionamiento']['subsanacion_date'];
+		
+		if ($form->crop_id==15)
 		{
-			$model->attributes=$_POST['Acondicionamiento'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		    $model->afectadas_erwinia=str_replace(',','',$model->afectadas_erwinia);
+		    $model->afectadas_fusarium=str_replace(',','',$model->afectadas_fusarium);
+		    $model->afectadas_rhizoctoniasis=str_replace(',','',$model->afectadas_rhizoctoniasis);
+		    $model->afectadas_mezcla_varietal=str_replace(',','',$model->afectadas_mezcla_varietal);
+		    $model->afectadas_fuera_tamano=str_replace(',','',$model->afectadas_fuera_tamano);
+			
+		    if($model->y01==1)
+		    {
+			if($headquarter->tipo_empresa==2)
+			{
+			    $this->Muestreo($form->id,$form->user_id);
+			}
+		    }
+		    elseif($model->y01==2)
+		    {
+			$model->subsanacion_date=$model->subsanacion_date;//$_REQUEST['Acondicionamiento']['subsanacion_date'];
+			$model->subsanacion=1;
+			$condicional=new Inbox;
+			$condicional->date=date('Y-m-d');
+			$condicional->form_id=$acondicionamiento->form_id;
+			$condicional->to=$acondicionamiento->user_id;
+			$condicional->status_id=16;
+			$condicional->estado=1;
+			$condicional->save();
+		    }
+		    elseif($model->y01==3)
+		    {
+			$acondicionamiento->rechazado=1;
+			$rechazado=new Inbox;
+			$rechazado->date=date('d/m/y');
+			$rechazado->form_id=$acondicionamiento->form_id;
+			$rechazado->to=$acondicionamiento->user_id;
+			$rechazado->status_id=15;
+			$rechazado->estado=1;
+			$rechazado->save();
+		    }
 		}
+		$model->update();
+		return $this->redirect(array('iform/ivacondicionamiento','id'=>$form->id));
+	    }
 
-		$this->render('papa',array(
-			'model'=>$model,
-		));
+	    $this->render('papa',array(
+		    'model'=>$model,
+	    ));
 	}
 	/*public function actionPapa($id)
 	{
@@ -440,54 +498,57 @@ class AcondicionamientoController extends Controller
 	
 	public function actionCondicional()
 	{	
-		$acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['condicional_acondicionamientoa_id']));
-		$form=Iform::model()->find('id=:id',array(':id'=>$acondicionamiento->form_id));
+	    $acondicionamiento=Acondicionamiento::model()->find('id=:id',array(':id'=>$_REQUEST['condicional_acondicionamientoa_id']));
+	    $form=Iform::model()->find('id=:id',array(':id'=>$acondicionamiento->form_id));
+	    
+	    if($form->crop_id==1 || $form->crop_id==2 || $form->crop_id==3 || $form->crop_id==4 ||
+		    $form->crop_id==5 || $form->crop_id==6 || $form->crop_id==7 || $form->crop_id==8 ||
+		    $form->crop_id==9 || $form->crop_id==10 || $form->crop_id==11 || $form->crop_id==12 || $form->crop_id==13)			
+	    {
 		
-		if($form->crop_id==1 || $form->crop_id==2 || $form->crop_id==3 || $form->crop_id==4 ||
-			$form->crop_id==5 || $form->crop_id==6 || $form->crop_id==7 || $form->crop_id==8 ||
-			$form->crop_id==9 || $form->crop_id==10 || $form->crop_id==11 || $form->crop_id==12 || $form->crop_id==13)			
-		{
-		    $acondicionamiento->subsanacion_date=$_REQUEST['Acondicionamiento']['subsanacion_date'];
-		    $acondicionamiento->district_id=$_REQUEST['Acondicionamiento']['district_id'];
-		    $acondicionamiento->address=$_REQUEST['Acondicionamiento']['address'];
-		    $acondicionamiento->number_envases=$_REQUEST['Acondicionamiento']['number_envases'];
-		    $acondicionamiento->capacidad_envases=$_REQUEST['Acondicionamiento']['capacidad_envases'];
-		    $acondicionamiento->peso_estimado=$_REQUEST['Acondicionamiento']['peso_estimado'];
-		    $acondicionamiento->fecha_cosecha=$_REQUEST['Acondicionamiento']['fecha_cosecha'];
-		    $acondicionamiento->descripcion_secado=$_REQUEST['Acondicionamiento']['descripcion_secado'];
-		    $acondicionamiento->disponibilidad=$_REQUEST['Acondicionamiento']['disponibilidad'];
-		    $acondicionamiento->peso_ingreso=$_REQUEST['Acondicionamiento']['peso_ingreso'];
-		    $acondicionamiento->registro_planta=$_REQUEST['Acondicionamiento']['registro_planta'];
-		    $acondicionamiento->cantidad_lotes=$_REQUEST['Acondicionamiento']['cantidad_lotes'];
-		    $acondicionamiento->cantidad_envases=$_REQUEST['Acondicionamiento']['cantidad_envases'];
-		    $acondicionamiento->tipo_envase=$_REQUEST['Acondicionamiento']['tipo_envase'];
-		    $acondicionamiento->descripcion=$_REQUEST['Acondicionamiento']['descripcion'];
-		    $acondicionamiento->operatividad=$_REQUEST['Acondicionamiento']['operatividad'];
-		    $acondicionamiento->limpieza=$_REQUEST['Acondicionamiento']['limpieza'];
-		    $acondicionamiento->identificacion_lote_semilla=$_REQUEST['Acondicionamiento']['identificacion_lote_semilla'];
-		    $acondicionamiento->observacion=$_REQUEST['Acondicionamiento']['observacion'];
-		    $acondicionamiento->subsanacion=1;
-		    $acondicionamiento->save();
-		}
-		else if($form->crop_id==15)
-		{
-		    $acondicionamiento->subsanacion_date=$_REQUEST['Acondicionamiento']['subsanacion_date'];
-		    $acondicionamiento->afectadas_erwinia=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_erwinia']);
-		    $acondicionamiento->afectadas_fusarium=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_fusarium']);
-		    $acondicionamiento->afectadas_rhizoctoniasis=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_rhizoctoniasis']);
-		    $acondicionamiento->afectadas_mezcla_varietal=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_varietal']);
-		    $acondicionamiento->afectadas_fuera_tamano=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_tamano']);
-		    $acondicionamiento->observacion=$_REQUEST['Acondicionamiento']['papa_observacion'];
-		    $acondicionamiento->subsanacion=1;
-		    $acondicionamiento->save();			
-		}
-		$condicional=new Inbox;
-		$condicional->date=date('Y-m-d');
-		$condicional->form_id=$acondicionamiento->form_id;
-		$condicional->to=$acondicionamiento->user_id;
-		$condicional->status_id=16;
-		$condicional->estado=1;
-		$condicional->save();
+		$acondicionamiento->district_id=$_REQUEST['Acondicionamiento']['district_id'];
+		$acondicionamiento->address=$_REQUEST['Acondicionamiento']['address'];
+		$acondicionamiento->number_envases=$_REQUEST['Acondicionamiento']['number_envases'];
+		$acondicionamiento->capacidad_envases=$_REQUEST['Acondicionamiento']['capacidad_envases'];
+		$acondicionamiento->peso_estimado=$_REQUEST['Acondicionamiento']['peso_estimado'];
+		$acondicionamiento->fecha_cosecha=$_REQUEST['Acondicionamiento']['fecha_cosecha'];
+		$acondicionamiento->descripcion_secado=$_REQUEST['Acondicionamiento']['descripcion_secado'];
+		$acondicionamiento->disponibilidad=$_REQUEST['Acondicionamiento']['disponibilidad'];
+		$acondicionamiento->peso_ingreso=$_REQUEST['Acondicionamiento']['peso_ingreso'];
+		$acondicionamiento->registro_planta=$_REQUEST['Acondicionamiento']['registro_planta'];
+		$acondicionamiento->cantidad_lotes=$_REQUEST['Acondicionamiento']['cantidad_lotes'];
+		$acondicionamiento->cantidad_envases=$_REQUEST['Acondicionamiento']['cantidad_envases'];
+		$acondicionamiento->tipo_envase=$_REQUEST['Acondicionamiento']['tipo_envase'];
+		$acondicionamiento->descripcion=$_REQUEST['Acondicionamiento']['descripcion'];
+		$acondicionamiento->operatividad=$_REQUEST['Acondicionamiento']['operatividad'];
+		$acondicionamiento->limpieza=$_REQUEST['Acondicionamiento']['limpieza'];
+		$acondicionamiento->identificacion_lote_semilla=$_REQUEST['Acondicionamiento']['identificacion_lote_semilla'];
+		$acondicionamiento->observacion=$_REQUEST['Acondicionamiento']['observacion'];
+		
+		$acondicionamiento->subsanacion_date=$_REQUEST['Acondicionamiento']['subsanacion_date'];
+		$acondicionamiento->subsanacion=1;
+		$acondicionamiento->save();
+	    }
+	    else if($form->crop_id==15)
+	    {
+		
+		$acondicionamiento->afectadas_erwinia=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_erwinia']);
+		$acondicionamiento->afectadas_fusarium=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_fusarium']);
+		$acondicionamiento->afectadas_rhizoctoniasis=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_rhizoctoniasis']);
+		$acondicionamiento->afectadas_mezcla_varietal=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_varietal']);
+		$acondicionamiento->afectadas_fuera_tamano=str_replace(',','',$_REQUEST['Acondicionamiento']['papa_tamano']);
+		$acondicionamiento->observacion=$_REQUEST['Acondicionamiento']['papa_observacion'];
+		$acondicionamiento->subsanacion_date=$_REQUEST['Acondicionamiento']['subsanacion_date'];
+		$acondicionamiento->subsanacion=1;
+		$acondicionamiento->save();			
+	    }
+	    $condicional=new Inbox;
+	    $condicional->date=date('Y-m-d');
+	    $condicional->form_id=$acondicionamiento->form_id;
+	    $condicional->to=$acondicionamiento->user_id;
+	    $condicional->status_id=16;
+	    $condicional->estado=1;
+	    $condicional->save();
 	}
 	
 	public function actionRechazado()

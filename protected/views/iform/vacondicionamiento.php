@@ -66,6 +66,8 @@ $(function(){
     $('#Inspection_proposed_time').clockface();
     $('#Iform_time_proposed').clockface();
     $('#Acondicionamiento_proposed_time').clockface();
+    $('#Acondicionamiento_subsanacion_time').clockface();
+    
 });
 </script>
 <br>
@@ -327,7 +329,7 @@ $(function(){
 									  
 									  
 							<?php }
-										//Subsanacion
+							//Subsanacion
 							if($inbox->status_id==16 && $acondicionamiento->subsanacion==1 && $acondicionamiento->subsanacion_time==null)
 							{?>
 								<div class="row-fluid">
@@ -350,58 +352,61 @@ $(function(){
 										</a>
 									<!--Revisar-->	
 									<div id="myModal_acond_subs_acond" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-											<div class="modal-header">
-											  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											  <h4 id="myModalLabel">Solicitar Subsanación</h4>
-											</div>
-											<div class="modal-body">
-												<p>
-													<div class="form">						
-													<?php 
-													$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-													'id'=>'inbox-form',
-													'enableClientValidation'=>true,
-													'clientOptions'=>array('validateOnSubmit'=>true),
-													'htmlOptions'=>array('class'=>'well'),						   
-													));						
-													?>
-													<?php echo $form->datepickerRow($acondicionamiento,'subsanacion_date',
-															  array(
-																'htmlOptions'=>array('value'=>date("d-m-Y", strtotime($acondicionamiento->proposed_date))),
-																'options'=>array( 'format' => 'dd-mm-yyyy',
-																'startDate'=>'',
-																'weekStart'=> 1,
-																'showButtonPanel' => true,
-																'showAnim'=>'fold',))); ?>
-													<?php echo	$form->textFieldRow($acondicionamiento,'subsanacion_time',array('value'=>date("h:m A",strtotime($acondicionamiento->proposed_time)),'data-format'=>'hh:mm A','class'=>'input-small'));	?>	
-													
-													<?php $this->endWidget(); ?>				
-													</div><!-- form -->
-												</p>
-											</div>
-											<div class="modal-footer">
-												<?php $this->widget('bootstrap.widgets.TbButton', array(	
-													'type'=>'primary',
-													'label'=>'Aceptar',
-													'buttonType'=>'ajaxButton',
-													'url'=>Yii::app()->createUrl( 'iform/observacion' ),
-													'ajaxOptions'=>array(			     
-													'type'=>'POST',	
-													'data' => array( 'id'=>13,
-																		 'acondicionamiento'=>$acondicionamiento->id,
-																		 'hora'=>'js:$("#Acondicionamiento_subsanacion_time").val()',
-																		 'form'=>$inbox->form_id,
-																		 'observacion'=>'observacion',
-																		 'fecha' => 'js:$("#Acondicionamiento_subsanacion_date").val()' ),
-													'success' => "function( data ){location.reload();}"
-													),
-													'htmlOptions'=>array('data-dismiss'=>'modal',
-													'url' => Yii::app()->createUrl( 'iform/observacion' ),
-													),));
-													?>	 
-											</div>
+									    <div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+										<h4 id="myModalLabel">Solicitar Subsanación</h4>
+									    </div>
+									    <div class="modal-body">
+										<p>
+										    <div class="form">						
+										    <?php 
+										    $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+										    'id'=>'inbox-form',
+										    'enableClientValidation'=>true,
+										    'clientOptions'=>array('validateOnSubmit'=>true),
+										    'htmlOptions'=>array('class'=>'well'),						   
+										    ));						
+										    ?>
+										    <label for="Acondicionamiento_subsanacion_date">Fecha de subsanación</label>
+										    <input type="text" autocomplete="off" name="Acondicionamiento[subsanacion_date]" id="Acondicionamiento_subsanacion_date">
+										    <?php /*echo $form->datepickerRow($acondicionamiento,'subsanacion_date',
+												      array(
+													    'htmlOptions'=>array('value'=>date("d-m-Y", strtotime($acondicionamiento->proposed_date))),
+													    'options'=>array( 'format' => 'dd-mm-yyyy',
+													    'startDate'=>'',
+													    'weekStart'=> 1,
+													    'showButtonPanel' => true,
+													    'showAnim'=>'fold',)));*/ ?>
+										    <?php echo  $form->textFieldRow($acondicionamiento,'subsanacion_time',array('value'=>date("h:m A",strtotime($acondicionamiento->proposed_time)),'data-format'=>'hh:mm A','class'=>'input-small'));	?>	
+										    <?php //echo  $form->textFieldRow($inspection,'subsanacion_time',array('value'=>date("h:m A",strtotime($inspection->proposed_time)),'data-format'=>'hh:mm A','class'=>'input-small'));	?>	
+										    <?php $this->endWidget(); ?>				
+										    </div><!-- form -->
+										</p>
+									    </div>
+									    <div class="modal-footer">
+										<?php $this->widget('bootstrap.widgets.TbButton', array(	
+											'type'=>'primary',
+											'label'=>'Aceptar',
+											'buttonType'=>'ajaxButton',
+											'url'=>Yii::app()->createUrl( 'iform/observacion' ),
+											'ajaxOptions'=>array(			     
+											'type'=>'POST',	
+											'data' => array(
+													'id'=>13,
+													'acondicionamiento'=>$acondicionamiento->id,
+													'hora'=>'js:$("#Acondicionamiento_subsanacion_time").val()',
+													'form'=>$inbox->form_id,
+													'observacion'=>'observacion',
+													'fecha' => 'js:$("#Acondicionamiento_subsanacion_date").val()' ),
+											'success' => "function( data ){location.reload();}"
+											),
+											'htmlOptions'=>array('data-dismiss'=>'modal',
+											'url' => Yii::app()->createUrl( 'iform/observacion' ),
+											),));
+										?>	 
+									    </div>
 									</div>
-									</div>
+								    </div>
 								</div>
 								<!--Solicitar Subsanacion-->
 								<?php
@@ -531,7 +536,8 @@ $(function(){
 
 
 <script>
-    $('#Acondicionamiento_proposed_date').datepicker({format: 'dd-mm-yyyy'})
+    $('#Acondicionamiento_proposed_date').datepicker({format: 'dd-mm-yyyy'});
+    $('#Acondicionamiento_subsanacion_date').datepicker({format: 'dd-mm-yyyy'})
     $('.produccion').on('blur', function(){
 	$('#Iform_peso_total').val(numeral($('#Iform_peso_total').val()).format('0,0.00'));
 	$('#Iform_peso_envase').val(numeral($('#Iform_peso_envase').val()).format('0,0.00'));

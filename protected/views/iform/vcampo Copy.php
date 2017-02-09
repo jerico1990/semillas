@@ -45,23 +45,34 @@ $maxacond = Acondicionamiento::model()->find($criteria4);
 $step="";
 $headquarter=Headquarter::model()->find('id=:id',array(':id'=>$model->headquarter_id));
 
-$solicitud=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>1));
-$campo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>4));
-$acondicionamiento=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>12));
+$solicitud=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+										  array(':form_id'=>$model->id,':status_id'=>1));
+$campo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+										  array(':form_id'=>$model->id,':status_id'=>4));
+$acondicionamiento=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+										  array(':form_id'=>$model->id,':status_id'=>12));
 
 if($headquarter->tipo_empresa=="1"){										  
-    $muestreo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>12));
-    $etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>12));
+$muestreo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+										  array(':form_id'=>$model->id,':status_id'=>12));
+$etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+										  array(':form_id'=>$model->id,':status_id'=>12));
 }
 else if ($headquarter->tipo_empresa=="2") {
-    if($model->crop_id==15){
-	$muestreo=null;
-	$etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>17));
-    }
-    else{
-	$muestreo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>18));
-	$etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',array(':form_id'=>$model->id,':status_id'=>24));
-    }
+	
+	 if($model->crop_id==15){
+	 $muestreo=null;
+	 $etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+											  array(':form_id'=>$model->id,':status_id'=>17));
+		
+	 }
+	 else
+	 {
+	 $muestreo=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+											  array(':form_id'=>$model->id,':status_id'=>18));
+	 $etiquetado=Inbox::model()->find('form_id=:form_id and status_id=:status_id',
+											  array(':form_id'=>$model->id,':status_id'=>24));
+	 }
 }
 //Pagos
 $paymentcriteria=new CDbCriteria;
@@ -70,89 +81,113 @@ $paymentcriteria->params=array(':form_id'=>$model->id,':user_id'=>$model->user_i
 $paymentcriteria->select='count(form_id) as form_id';
 $cantidadpayment = Payment::model()->find($paymentcriteria);
 ?>
+
+
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/clockface.css" />
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/clockface.js');?>
+
 <script>
+
 $(function(){
     $('#Inspection_proposed_time').clockface();
-    $('#Acondicionamiento_proposed_time').clockface();
+	 $('#Acondicionamiento_proposed_time').clockface();
+
 });
 </script>
 <br>
 <div class="row-fluid span12">
-    <div class="span12">
-	 <!-- WIZARD -->
-	<?php
-	    if($solicitud!==null )
-	    {
-		$step='<li class="active"><span class="badge"></span>'.CHtml::link("Solicitud",array('vsolicitud', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-	    }							
-	    if($campo!==null)
-	    {
-		$step.='<li style="background: #8DC641;" class="active"><span class="badge"></span>'.CHtml::link("Campo",array('vcampo', 'id'=>$model->id)).'<span class="chevron"></span></li>';
-	    }
-	  
-	    if($acondicionamiento!==null)
-	    {
-		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Acondicionamiento",array('vacondicionamiento', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-	    }
-	    
-	    if($muestreo!==null)
-	    {
-		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Muestreo",array('vmuestreo', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-	    }							
-	    if($etiquetado!==null)
-	    {
-		$step.='<li class="active"><span class="badge"></span>'.CHtml::link("Etiquetado",array('vetiquetado', 'id'=>$model->id)).'<span class="prueba"></span></li>';
-	    }
-	    echo '<div class="fuelux"><div id="MyWizard" class="wizard"><ul class="steps">'.$step.'</ul></div></div>';
-	?>
-    </div>
-</div>	
+				 <div class="span12">
+					 <!-- WIZARD -->
+					 <?php
+						
+						  if($solicitud!==null )
+						  {
+							  $step='<li class="active"><span class="badge"></span>'.CHtml::link("Solicitud",array('vsolicitud', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+						  }							
+						  if($campo!==null)
+						  {
+							  $step.='<li style="background: #8DC641;" class="active"><span class="badge"></span>'.CHtml::link("Campo",array('vcampo', 'id'=>$model->id)).'<span class="chevron"></span></li>';
+						  }
+						  
+						  if($acondicionamiento!==null)
+						  {
+							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Acondicionamiento",array('vacondicionamiento', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+						  }
+						  if($muestreo!==null)
+						  {
+							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Muestreo",array('vmuestreo', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+						  }							
+						  if($etiquetado!==null)
+						  {
+							  $step.='<li class="active"><span class="badge"></span>'.CHtml::link("Etiquetado",array('vetiquetado', 'id'=>$model->id)).'<span class="prueba"></span></li>';
+						  }						
+						
+							//$step1.=$step;
+						
+						
+							//Imprime Step
+						 echo
+						 '<div class="fuelux">
+							 <div id="MyWizard" class="wizard">
+								 <ul class="steps">
+									  '.$step.'													 
+								 </ul>										
+							 </div>
+						 </div>
+						 ';
+					 ?>
+				 </div>
+			</div>	
 <div class="row-fluid span12 well">		  
 		<div class="span12">
 			<!--Steps-->
+			  
 			<!--Fin Steps-->
 			<!--Fin Detalle de Solicitud-->
 			</br>
 			<!--1° Fila de la Solicutd-->
 			
 	<!--Inspecciones-->
-	<?php	foreach($inspections as $inspection ){     //Ultima Inspeccion
-		    switch ($inspection->inspection_number)
-		    {
+	<?php	  foreach($inspections as $inspection )
+	{     //Ultima Inspeccion
+		switch ($inspection->inspection_number)
+		{
 			case 1:
-			    $texto="1ra";
-			    $idinspect=1;
-			    break;
+				 $texto="1ra";
+				 $idinspect=1;
+				 break;
 			case 2:
-			    $texto="2da";
-			    $idinspect=2;
-			    break;
+				 $texto="2da";
+				  $idinspect=2;
+				 break;
 			case 3:
-			    $texto="3ra";
-			    $idinspect=3;
-			    break;
-			case 4:
-			    $texto="4ra";
-			    $idinspect=4;
-			    break;
-			case 5:
-			    $texto="5ta";
-			    $idinspect=5;
-			    break;
-		    }
+				 $texto="3ra";
+				  $idinspect=3;
+				 break;
+		   case 4:
+				 $texto="4ra";
+				  $idinspect=4;
+				 break;
+		   case 5:
+				 $texto="5ta";
+				  $idinspect=5;
+				 break;
+		}
+												
+			
 		  if($inspection->inspection_number==$max->inspection_number)
 		  {
-		    foreach($inboxs as $inbox){
-			//Demas Inspecciones
-			if($inbox->status_id==4 && $inspection->proposed_time==null && $acond==null )//Acondicionamientos
-			{
-		?>
-										    <div class="row-fluid">
-										    <div class="span2"></div>
-										    <div class="span9">
-										    <div class="row-fluid">
+					foreach($inboxs as $inbox)
+					{
+								//Demas Inspecciones
+								if($inbox->status_id==4 && $inspection->proposed_time==null && $acond==null )//Acondicionamientos
+								{
+										  echo '<div class="row-fluid">';
+										  echo '<div class="span2">';											 
+										  echo "</div>";									
+										  ?>
+										  <div class="span9">
+										  <div class="row-fluid">
 													 <div class="span12">
 																<?php echo "Fecha Sugerida de $inspection->inspection_number Inspección: ".date("d-m-Y", strtotime($inspection->proposed_date)); ?>
 													 </div>
@@ -304,7 +339,7 @@ $(function(){
 						
 					<?php }
 					  
-					if($inspection->subsanacion==1) { ?>
+					if($inspection->subsanacion==1) {?>
 						<div class="row-fluid">
 							<div class="span2">
 							</div>
@@ -317,7 +352,6 @@ $(function(){
 										  </div>
 									 </div>
 									 <div class="row-fluid">
-											    
 										  <div class="span12"><?php echo CHtml::link('Descargar',array('pdf/solicitudcampo','id'=>$model->id)); ?></div>
 									 </div>								
 							</div>

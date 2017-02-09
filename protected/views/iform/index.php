@@ -10,11 +10,12 @@
     <table id="campos" class="display table table-bordered table-striped table-condensed table-hover" cellspacing="0" >
 	<thead>
 	    <tr>
-		<th>Fecha de solicitud</th>
-		<th>Cultivo / Cultivar</th>
-		<th>Categoria</th>
-		<th>Ubicación</th>
-		<th>Acciones</th>
+		<th style='font-size:12px'>Fecha de solicitud</th>
+		<th style='font-size:12px'>Cultivo / Cultivar</th>
+		<th style='font-size:12px'>Categoria</th>
+		<th style='font-size:12px'>Ubicación</th>
+		<th style='font-size:12px'>Situación</th>
+		<th style='font-size:12px'>Acciones</th>
 	    </tr>
 	</thead>
 	<tbody></tbody>

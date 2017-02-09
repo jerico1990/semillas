@@ -311,6 +311,7 @@ $asignar=CController::createUrl('iform/asignarinsp');
     //Acondicionamiento
     
     $('#asignar').click(function(){
+	$(this).attr("disabled");
 	if ($('#inspector').val()=='') {
 	    alert('Debe seleccionar un inspector');
 	    return false;
@@ -320,7 +321,7 @@ $asignar=CController::createUrl('iform/asignarinsp');
             type: 'POST',
             data: {'form':<?= $model->id ?>, 'inspector':$('#inspector').val()},
             success: function(data){
-                
+                location.reload();
             }
         });
 	return true;

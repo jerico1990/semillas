@@ -50,6 +50,7 @@ class Muestreo extends CActiveRecord
 	public $department_id;
 	public $province_id;
 	public $laboratorio_id;
+	public $y01;
 	public function tableName()
 	{
 		return 'muestreo';
@@ -60,19 +61,19 @@ class Muestreo extends CActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('form_id, user_id, district_id', 'numerical', 'integerOnly'=>true),
-			array('codigo_lote', 'length', 'max'=>120),
-			array('name_muestreador', 'length', 'max'=>150),
-			array('observacion, lugar_ubicacion, registro, inspecciones_campo, inspecciones_observacion, acondicionamiento_campo, folio_acondicionamiento_campo, acondicionamiento_observacion, analisis_semillas, folio_analisis_semillas, analisis_semillas_observacion, observaciones_tecnicos', 'length', 'max'=>300),
-			array('folio_inspecciones_campo', 'length', 'max'=>100),
-			array('date_proposed, time_proposed, date_real, time_real, fecha_solicitud, solicitud, fecha_notificacion, notificacion, fecha_informe, informe, rechazo, fecha_rechazo, tipo_analisis_germinacion, tipo_analisis_humedad, tipo_analisis_pureza, tipo_analisis_otras_especies, hora_notificacion', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, form_id, user_id, date_proposed, time_proposed, codigo_lote, name_muestreador, observacion, date_real, time_real, district_id, lugar_ubicacion, fecha_solicitud, solicitud, fecha_notificacion, notificacion, fecha_informe, informe, rechazo, fecha_rechazo, tipo_analisis_germinacion, tipo_analisis_humedad, tipo_analisis_pureza, tipo_analisis_otras_especies, registro, inspecciones_campo, folio_inspecciones_campo, inspecciones_observacion, acondicionamiento_campo, folio_acondicionamiento_campo, acondicionamiento_observacion, analisis_semillas, folio_analisis_semillas, analisis_semillas_observacion, observaciones_tecnicos, hora_notificacion', 'safe', 'on'=>'search'),
-		);
+	    // NOTE: you should only define rules for those attributes that
+	    // will receive user inputs.
+	    return array(
+		    array('form_id, user_id, district_id', 'numerical', 'integerOnly'=>true),
+		    array('codigo_lote', 'length', 'max'=>120),
+		    array('name_muestreador', 'length', 'max'=>150),
+		    array('observacion, lugar_ubicacion, registro, inspecciones_campo, inspecciones_observacion, acondicionamiento_campo, folio_acondicionamiento_campo, acondicionamiento_observacion, analisis_semillas, folio_analisis_semillas, analisis_semillas_observacion, observaciones_tecnicos', 'length', 'max'=>300),
+		    array('folio_inspecciones_campo', 'length', 'max'=>100),
+		    array('y01,date_proposed, time_proposed, date_real, time_real, fecha_solicitud, solicitud, fecha_notificacion, notificacion, fecha_informe, informe, rechazo, fecha_rechazo, tipo_analisis_germinacion, tipo_analisis_humedad, tipo_analisis_pureza, tipo_analisis_otras_especies, hora_notificacion', 'safe'),
+		    // The following rule is used by search().
+		    // @todo Please remove those attributes that should not be searched.
+		    array('id, form_id, user_id, date_proposed, time_proposed, codigo_lote, name_muestreador, observacion, date_real, time_real, district_id, lugar_ubicacion, fecha_solicitud, solicitud, fecha_notificacion, notificacion, fecha_informe, informe, rechazo, fecha_rechazo, tipo_analisis_germinacion, tipo_analisis_humedad, tipo_analisis_pureza, tipo_analisis_otras_especies, registro, inspecciones_campo, folio_inspecciones_campo, inspecciones_observacion, acondicionamiento_campo, folio_acondicionamiento_campo, acondicionamiento_observacion, analisis_semillas, folio_analisis_semillas, analisis_semillas_observacion, observaciones_tecnicos, hora_notificacion', 'safe', 'on'=>'search'),
+	    );
 	}
 
 	/**

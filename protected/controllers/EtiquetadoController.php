@@ -210,47 +210,51 @@ class EtiquetadoController extends Controller
 	
 	public function actionVista($id)
 	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-		
-		if(isset($_POST['Etiquetado']))
-		{
-			$muestreo=Muestreo::model()->find('id=:id',array(':id'=>$model->muestreo_id));		
-			$muestreo->etiquetado_notificacion=0;
-			$muestreo->save();
-			$model->attributes=$_POST['Etiquetado'];		
-			$model->fecha_emitir_etiquetado=date('Y-m-d');		
-			$model->save();
-			
-			$total=0;
-			for($i = 0; $i < (count($_POST['Etiquetado'])); ++$i)
-				{				
-					if(isset( $_REQUEST['Etiquetado']['cantidad_'.$i.'']) && $_REQUEST['Etiquetado']['cantidad_'.$i.'']!=="")
-					{
-						$etiquetas=new Etiquetas;
-						$etiquetas->user_id=$model->user_id;
-						$etiquetas->form_id=$model->form_id;
-						$etiquetas->muestreo_id=$model->muestreo_id;
-						$etiquetas->serie_inicio=$_REQUEST['Etiquetado']['inicio_'.$i.''];
-						$etiquetas->serie_fin=$_REQUEST['Etiquetado']['fin_'.$i.''];
-						$etiquetas->cantidad=(int)$_REQUEST['Etiquetado']['cantidad_'.$i.''];
-						$etiquetas->etiquetado_id=$model->id;
-						$etiquetas->save();
-						$total=$total+$etiquetas->cantidad+$model->cantidad;
-					}
-				}
-				
-			$model->cantidad=$total;
-			$model->fecha_solicitud=date('Y-m-d');
-			$model->peso_total=str_replace(',','',$_POST['Etiquetado']['peso_total']);
-			if($model->save())
-				$this->redirect(array('iform/iindex'));
-		}
-		$this->render('vista',array(
-			'model'=>$model,
-		));
+	    $model=$this->loadModel($id);
+    
+	    // Uncomment the following line if AJAX validation is needed
+	    // $this->performAjaxValidation($model);
+	    
+	    if(isset($_POST['Etiquetado']))
+	    {
+		    $muestreo=Muestreo::model()->find('id=:id',array(':id'=>$model->muestreo_id));		
+		    $muestreo->etiquetado_notificacion=0;
+		    $muestreo->save();
+		    $model->attributes=$_POST['Etiquetado'];		
+		    $model->fecha_emitir_etiquetado=date('Y-m-d');		
+		    $model->save();
+		    if(!$model->inicios)
+		    {
+			$countEtiquetas=0;
+		    }
+		    else
+		    {
+			$countEtiquetas=count(array_filter($model->inicios));
+		    }
+		    $total=0;
+		    for($i=0;$i<$countEtiquetas;$i++)
+		    {
+			$etiquetas=new Etiquetas;
+			$etiquetas->user_id=$model->user_id;
+			$etiquetas->form_id=$model->form_id;
+			$etiquetas->muestreo_id=$model->muestreo_id;
+			$etiquetas->serie_inicio=$model->inicios[$i];
+			$etiquetas->serie_fin=$model->fines[$i];
+			$etiquetas->cantidad=$model->cantidades[$i];
+			$etiquetas->etiquetado_id=$model->id;
+			$etiquetas->save();
+			$total=$total+$etiquetas->cantidad;
+		    }
+		    
+		    $model->cantidad=$total;
+		    $model->fecha_solicitud=date('Y-m-d');
+		    $model->peso_total=str_replace(',','',$model->peso_total);
+		    $model->save();
+		    $this->redirect(array('iform/iindex'));
+	    }
+	    $this->render('vista',array(
+		    'model'=>$model,
+	    ));
 	}
 	
 	public function actionSolicitud($id)

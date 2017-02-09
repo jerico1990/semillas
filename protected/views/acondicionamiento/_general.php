@@ -167,7 +167,7 @@
 		    <div class="span4">
 		    <!--Aprobado-->
 			<input name="Acondicionamiento[y01]" id="hidden" type="hidden">
-			<button id="btn_apro" class="btn btn-success span12" data-toggle="modal">Cumple</button>
+			<button id="btn_apro" class="btn btn-success span12">Cumple</button>
 		    <!--Fin de Aprobado-->	
 		    </div>
 		    <div class="span4">
@@ -183,188 +183,21 @@
 	    </div>
 	</div>
 	<!--Botones-->
-	
-	<!--
-	<div class="row-fluid">
-		<div class="span12">
-			<div class="form-actions">
-				<div class="span4">
-						<a id="myModal_btn_apro" role="button" class="btn btn-success span12">
-							Cumple
-						</a>
-						<?php $this->widget('bootstrap.widgets.TbButton', array(
-								'id'=>'btn_aprobado_si',								
-								'type'=>'success',
-								'label'=>'Cumple',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'acondicionamiento/cumple' ),
-								'ajaxOptions'=>array(			     
-								'type'=>'POST',	
-								'data' => array(
-											'general_distrito'=>'js:$("#Acondicionamiento_district_id").val()',
-											'general_address'=>'js:$("#Acondicionamiento_address").val()',
-											'general_number_envases'=>'js:$("#Acondicionamiento_number_envases").val()',
-											'general_capacidad_envases'=>'js:$("#Acondicionamiento_capacidad_envases").val()',
-											'general_peso_estimado'=>'js:$("#Acondicionamiento_peso_estimado").val()',
-											'general_fecha_cosecha'=>'js:$("#Acondicionamiento_fecha_cosecha").val()',
-											'general_descripcion_secado'=>'js:$("#Acondicionamiento_descripcion_secado").val()',
-											'general_disponibilidad'=>'js:$("#Acondicionamiento_disponibilidad").val()',
-											'general_peso_ingreso'=>'js:$("#Acondicionamiento_peso_ingreso").val()',
-											'general_registro_planta'=>'js:$("#Acondicionamiento_registro_planta").val()',
-											'general_cantidad_lotes'=>'js:$("#Acondicionamiento_cantidad_lotes").val()',
-											'general_cantidad_envases'=>'js:$("#Acondicionamiento_cantidad_envases").val()',
-											'general_tipo_envase'=>'js:$("#Acondicionamiento_tipo_envase").val()',
-											'general_descripcion'=>'js:$("#Acondicionamiento_descripcion").val()',
-											'general_operatividad'=>'js:$("#Acondicionamiento_operatividad").val()',
-											'general_limpieza'=>'js:$("#Acondicionamiento_limpieza").val()',
-											'general_identificacion_lote_semilla'=>'js:$("input[name=\'Acondicionamiento[identificacion_lote_semilla]\']:checked").val()',
-											'general_observacion'=>'js:$("#Acondicionamiento_observacion").val()',											 
-											'btn'=>'1',
-											'id'=>$model->id,										
-											),
-								'success' => 'function(data){	location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());}'
-								),								
-								'htmlOptions'=>array('data-dismiss'=>'modal','class'=>'span12','id'=>'btn_aprobado_si','name'=>'btn_aprobado_si',
-								'url' => Yii::app()->createUrl( 'acondicionamiento/cumple' ),
-								),));
-								?>
-				</div>
-				<div class="span4">
-						<a id="myModal_btn_condi" role="button" class="btn btn-primary span12">
-							condicional
-						</a>							 										 
-				</div>
-				<div class="span4">														  
-						  <?php $this->widget('bootstrap.widgets.TbButton', array(
-											'id'=>'myModal_btn_recha',
-											'type'=>'danger',
-											'buttonType'=>'ajaxButton',
-											'label'=>'No Cumple',
-											'url'=>Yii::app()->createUrl( 'acondicionamiento/rechazado' ),
-											'ajaxOptions'=>array(
-																		'type'=>'POST',
-																		'data' => 'js:$("#acondicionamiento-form").serialize()',
-																		'success' =>'function( data ){
-																		location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-																		}'
-																		),													
-											'htmlOptions'=>array('class'=>'span12',
-																		'url' => Yii::app()->createUrl( 'acondicionamiento/rechazado' ),))); ?>																		 
-				</div>
-			</div>
-		</div>
-	</div>
-	    -->
-	
-
-<!--Botones-->
-	<!--Aprobado-->
-	<div id="myModal_acond_apro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						  <div class="modal-header">
-							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							 <h4 id="myModalLabel">Pasar a Inspeccion de Acondicionamiento</h4>
-						  </div>
-						  <div class="modal-body">
-							 <p>
-									<div class="form">							
-									<?php echo $form->datepickerRow($model,'aprobado_fecha_propuesta',
-															array(
-															 'options'=>array( 'format' => 'dd/mm/yyyy', 
-															 'weekStart'=> 1,
-															 'showButtonPanel' => true,
-															 'showAnim'=>'fold',))); ?>
-									<?php echo CHtml::hiddenField('formu',$model->form_id); ?>										
-									</div><!-- form -->															  
-							 </p>
-						 
-						  <div class="modal-footer">
-								
-								 <!--Boton de No cumple-->
-								<?php $this->widget('bootstrap.widgets.TbButton', array(
-								'id'=>'btn_aprobado_no',
-								'type'=>'primary',
-								'label'=>'No',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'acondicionamiento/cumple' ),
-								'ajaxOptions'=>array(	  
-								'type'=>'POST',
-								//'data' => "js:$('#inspection-form').serializeArray()",
-								'data' => array(
-								//Parametros
-								'general_distrito'=>'js:$("#Acondicionamiento_district_id").val()',
-								'general_address'=>'js:$("#Acondicionamiento_address").val()',
-								'general_number_envases'=>'js:$("#Acondicionamiento_number_envases").val()',
-								'general_capacidad_envases'=>'js:$("#Acondicionamiento_capacidad_envases").val()',
-								'general_peso_estimado'=>'js:$("#Acondicionamiento_peso_estimado").val()',
-								'general_fecha_cosecha'=>'js:$("#Acondicionamiento_fecha_cosecha").val()',
-								'general_descripcion_secado'=>'js:$("#Acondicionamiento_descripcion_secado").val()',
-								'general_disponibilidad'=>'js:$("#Acondicionamiento_disponibilidad").val()',
-								'general_peso_ingreso'=>'js:$("#Acondicionamiento_peso_ingreso").val()',
-								'general_registro_planta'=>'js:$("#Acondicionamiento_registro_planta").val()',
-								'general_cantidad_lotes'=>'js:$("#Acondicionamiento_cantidad_lotes").val()',
-								'general_cantidad_envases'=>'js:$("#Acondicionamiento_cantidad_envases").val()',
-								'general_tipo_envase'=>'js:$("#Acondicionamiento_tipo_envase").val()',
-								'general_descripcion'=>'js:$("#Acondicionamiento_descripcion").val()',
-								'general_operatividad'=>'js:$("#Acondicionamiento_operatividad").val()',
-								'general_limpieza'=>'js:$("#Acondicionamiento_limpieza").val()',
-								'general_identificacion_lote_semilla'=>'js:$("input[name=\'Acondicionamiento[identificacion_lote_semilla]\']:checked").val()',
-								'general_observacion'=>'js:$("#Acondicionamiento_observacion").val()',						
-								'btn'=>'2',
-								'id'=>$model->id,								
-								'fecha'=>'js:$("#Inspection_aprobado_fecha_propuesta").val()'
-								),
-								'success' => 'function( ){
-													location.replace("'.Yii::app()->getRequest()->getHostInfo().'/peas/iform/iview/"+$("#formu").val());
-																}'
-								),
-								'htmlOptions'=>array('data-dismiss'=>'modal',
-								'url' => Yii::app()->createUrl( 'acondicionamiento/cumple' ),
-								),));
-								?>						
-						  </div>
-						</div>
-	</div>
-	
-	
 	<!--Boton Condicional-->	
-	<div id="myModal_acond_conda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						  <div class="modal-header">
-							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							 <h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
-						  </div>
-						  <div class="modal-body">
-							 <p>
-												
-								<?php echo $form->datepickerRow($model,'subsanacion_date',
-														array(
-														 'options'=>array( 'format' => 'dd-mm-yyyy', 
-														 'weekStart'=> 1,
-														 'showButtonPanel' => true,
-														 'showAnim'=>'fold',))); ?>
-														 
-							 </p>
-						  </div>
-						  <div class="modal-footer">
-								 <!--Boton de Condicional-->
-								<?php $this->widget('bootstrap.widgets.TbButton', array(	
-								'type'=>'primary',
-								'label'=>'Enviar',
-								'buttonType'=>'ajaxButton',
-								'url'=>Yii::app()->createUrl( 'acondicionamiento/condicional' ),
-								'ajaxOptions'=>array(
-								//'dataType'=> 'jsonp',		  
-								'type'=>'POST',	
-								'data' => "js:$('#acondicionamiento-form').serializeArray()",
-								'success' =>'function( data ){
-								location.replace("'.Yii::app()->getRequest()->getHostInfo().'/semillas/iform/iview/"+$("#formu").val());
-								}'
-								),
-								'htmlOptions'=>array('data-dismiss'=>'modal',
-								'url' => Yii::app()->createUrl( 'acondicionamiento/condicional' ),
-								),));
-								?>		
-								 				
-						  </div>
+	<div id="myModal_acond_conda" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+	    <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h4 id="myModalLabel">Fecha sugerida de Subsanación</h4>
+	    </div>
+	    <div class="modal-body">
+		<p>
+		    <label for="Acondicionamiento_subsanacion_date">Subsanación Fecha</label>
+		    <input type="date" name="Acondicionamiento[subsanacion_date]" id="Acondicionamiento_subsanacion_date">
+		</p>
+	    </div>
+	    <div class="modal-footer">
+		<button id="btn_enviar_condicional" class="btn btn-primary">Enviar</button>			
+	    </div>
 	</div>
 <!--Fin de botones-->
 <?php $this->endWidget(); ?>
@@ -477,15 +310,11 @@ $distritos=CController::createUrl('location/districts');
 	    var txt;
 	    var r = confirm("¿Estas seguro de que cumple con el acondicionamiento?");
 	    if (r == true) {
-		
 		$('#hidden').val(1);
 		return true;
 	    } else {
-		
 		return false;
 	    }
-	    //$('#myModal_acond_apro').modal('show');
-	    return true;
 	});
 	
 	$('#btn_condi').on('click', function(){
@@ -639,31 +468,11 @@ $distritos=CController::createUrl('location/districts');
 		return false;
 	    }
 	});
-	/*
-	$('#btn_enviar_aprobado').click(function(){
-	    var error='';
-	    if ($('#Inspection_aprobado_fecha_propuesta').val()=='') {
-		error=error+'Debe ingresar la fecha propuesta\n';
-	    }
-	    if (error!='') {
-		alert(error);
-		return false;
-	    }
-	    
-	    
-	    var txt;
-	    var r = confirm("¿Estas seguro de enviar la fecha sugerida?");
-	    if (r == true) {
-		$('#hidden').val(1);
-		return true;
-	    } else {
-		return false;
-	    }
-	});*/
+	
 	
 	$('#btn_enviar_condicional').click(function(){
 	    var error='';
-	    if ($('#Inspection_subsanacion_date').val()=='') {
+	    if ($('#Acondicionamiento_subsanacion_date').val()=='') {
 		error=error+'Debe ingresar la fecha de subsanación\n';
 	    }
 	    if (error!='') {

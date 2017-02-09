@@ -289,8 +289,6 @@ tr.row td:last-child { border-right: thin solid black; }
       if($identificador=="1"){$html.="Aprobado";}
       elseif($identificador=="2"){$html.="Observado";}
       elseif($identificador=="3"){$html.="Rechazado";}
-      
-     
       $html.='
 </div>
 
